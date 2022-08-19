@@ -1,0 +1,16 @@
+PODS:
+  - CXDownload (1.0.0)
+
+DEPENDENCIES:
+  - CXDownload (from `../`)
+
+EXTERNAL SOURCES:
+  CXDownload:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CXDownload: 32cc69685d4452026de67ec7271d699c61538435
+
+PODFILE CHECKSUM: 26f63c5f854cfbe461c0b8a230da07b476f2cbfd
+
+COCOAPODS: 1.10.1

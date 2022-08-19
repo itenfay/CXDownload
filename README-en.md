@@ -1,40 +1,38 @@
 # CXDownload
 
-实现Swift断点续传下载。
+Implements Swift breakpoint continuation download.
 
 [![CI Status](https://img.shields.io/travis/chenxing640/CXDownload.svg?style=flat)](https://travis-ci.org/chenxing640/CXDownload)
 [![Version](https://img.shields.io/cocoapods/v/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![License](https://img.shields.io/cocoapods/l/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![Platform](https://img.shields.io/cocoapods/p/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 
-[English Instructions (EN)](README-en.md).
+## Example
 
-## 示例项目
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-要运行示例项目，首先克隆repo，并从示例目录运行“pod install”。
+## Installation
 
-## 安装
-
-CXDownload可通过 [CocoaPods](https://cocoapods.org) 获得。安装
-只需将下面一行添加到您的Podfile中:
+CXDownload is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'CXDownload'
 ```
 
-## 说明
+## Explanation
 
-- CXDownloaderManager.swift: **下载网络请求队列管理类**
-- CXDownloader.swift: **下载网络收发**
-- CXFileUtils.swift: **断点续传文件工具类**
-- CXLogger.swift: **日志输出类**
-- String+Cx.swift: **String扩展cx_md5**
+- CXDownloaderManager.swift: **Download network request queue management class.**
+- CXDownloader.swift: **Download network sending and receiving class.**
+- CXFileUtils.swift: **Breakpoint continuation file tool class.**
+- CXLogger.swift: **This class outputs the log to the console.**
+- String+Cx.swift: **This extends the `cx_md5` method for the `String` class.**
 
-## 使用
+## Usage
 
-### 下载
+### Download
 
-- 默认下载目录和文件名
+- Default download directory and file name.
 
 ```
 _ = CXDownloaderManager.shared.asyncDownload(url: urlStr1) { [weak self] progress in
@@ -51,7 +49,7 @@ _ = CXDownloaderManager.shared.asyncDownload(url: urlStr1) { [weak self] progres
 }
 ```
 
-- 自定义下载目录和文件名
+- Custom download directory and file name.
 
 ```
 _ = CXDownloaderManager.shared.asyncDownload(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
@@ -68,32 +66,32 @@ _ = CXDownloaderManager.shared.asyncDownload(url: urlStr2, customDirectory: "Sof
 }
 ```
 
-### 暂停
+### Pause
 
 ```
 CXDownloaderManager.shared.pause(with: urlStr1)
 ```
 
-### 恢复
+### Resume
 
 ```
 CXDownloaderManager.shared.resume(with: urlStr1)
 ```
 
-### 取消
+### Cancel
 
 ```
 CXDownloaderManager.shared.cancel(with: urlStr1)
 ```
 
-### 删除下载文件
+### Delete target file
 
 ```
 CXDownloaderManager.shared.removeTargetFile(url: urlStr1)
 CXDownloaderManager.shared.removeTargetFile(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg")
 ```
 
-### 暂停、恢复和取消所有下载
+### Pause, resume and cancell the all downloads
 
 ```
 CXDownloaderManager.shared.pauseAll()
@@ -101,6 +99,6 @@ CXDownloaderManager.shared.resumeAll()
 CXDownloaderManager.shared.cancelAll()
 ```
 
-## 许可证
+## License
 
-CXDownload在MIT许可下可用。有关更多信息，请参见许可证文件。
+CXDownload is available under the MIT license. See the LICENSE file for more info.

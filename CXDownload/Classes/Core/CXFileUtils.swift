@@ -1,0 +1,138 @@
+//
+//  CXFileUtils.swift
+//  CXDownload
+//
+//  Created by chenxing on 2022/8/15.
+//
+
+import Foundation
+
+public class CXFileUtils {
+    
+    /// The path extension of the URL, or an empty string if the path is an empty string.
+    public class func pathExtension(_ url: URL) -> String {
+        return url.pathExtension
+    }
+    
+    /// A new string made by deleting the extension (if any, and only the last) from the receiver.
+    public class func fileName(_ url: URL) -> String {
+        return (url.lastPathComponent as NSString).deletingPathExtension
+    }
+    
+    /// The last path component of the URL, or an empty string if the path is an empty string.
+    public class func lastPathComponent(_ url: URL) -> String {
+        return url.lastPathComponent
+    }
+    
+    /// Returns a Boolean value that indicates whether a file or directory exists at a specified path.
+    public class func fileExists(atPath path: String) -> Bool {
+        return FileManager.default.fileExists(atPath: path)
+    }
+    
+    /// Returns the path to either the user’s or application’s home directory, depending on the platform.
+    public class func homeDirectory() -> String {
+        return NSHomeDirectory()
+    }
+    
+    /// Returns the path of the temporary directory for the current user.
+    public class func tempDirectory() -> String {
+        return NSTemporaryDirectory()
+    }
+    
+    /// Returns the path of the document directory for the current user.
+    public class func documentDirectory() -> String {
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    }
+    
+    /// Creates a cache directory with the given path component and returns the specified URL.
+    public class func cachePath(withPathComponent pathComponent: String = "CXDownload") -> URL? {
+        do {
+            let cacheURL = try FileManager.default.url(for: .cachesDirectory,
+                                                       in: .userDomainMask,
+                                                       appropriateFor: nil,
+                                                       create: false)
+            let dstURL = cacheURL.appendingPathComponent(pathComponent)
+            var isDir: ObjCBool = false
+            let isDirExist = FileManager.default.fileExists(atPath: dstURL.path, isDirectory: &isDir)
+            if isDirExist && isDir.boolValue {}
+            else {
+                try FileManager.default.createDirectory(at: dstURL, withIntermediateDirectories: true)
+            }
+            return dstURL
+        } catch {
+            CXLogger.log(message: "\(error)", level: .error)
+        }
+        return nil
+    }
+    
+    /// Returns a destination file path by the url, directory, custom file name.
+    public class func filePath(withURL url: URL, at directory: String? = nil, using customFileName: String? = nil) -> String {
+        var cachePath: URL?
+        if let _directory = directory, !_directory.isEmpty {
+            cachePath = self.cachePath(withPathComponent: _directory)
+        } else {
+            cachePath = self.cachePath()
+        }
+        var filePathURL: URL?
+        if let _customFileName = customFileName, !_customFileName.isEmpty {
+            filePathURL = cachePath?.appendingPathComponent(_customFileName)
+        } else {
+            let fileName = self.fileName(url)
+            let fileExt = self.pathExtension(url)
+            let file = (fileName.cx_md5 ?? fileName) + "." + fileExt
+            filePathURL = cachePath?.appendingPathComponent(file)
+        }
+        return filePathURL?.path ?? ""
+    }
+    
+    /// The file’s size in bytes.
+    public class func fileSize(_ filePath: String) -> Int64 {
+        var fileSizeBytes: Int64 = 0
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: filePath) {
+            return fileSizeBytes
+        }
+        do {
+            let attriDict = try fileManager.attributesOfItem(atPath: filePath)
+            fileSizeBytes = attriDict[.size] as? Int64 ?? 0
+        } catch let error {
+            CXLogger.log(message: "\(error)", level: .error)
+        }
+        return fileSizeBytes
+    }
+    
+    /// Moves the file or directory at the specified path to a new location synchronously.
+    public class func moveFile(from srcPath: String, to dstPath: String) {
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: srcPath) { return }
+        do {
+            try fileManager.moveItem(atPath: srcPath, toPath: dstPath)
+        } catch {
+            CXLogger.log(message: "\(error)", level: .error)
+        }
+    }
+    
+    /// Removes the file or directory at the specified path.
+    public class func removeFile(atPath path: String) {
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: path) { return }
+        do {
+            try fileManager.removeItem(atPath: path)
+        } catch {
+            CXLogger.log(message: "\(error)", level: .error)
+        }
+    }
+    
+    /// Writes the specified data synchronously to the file handle.
+    public class func write(data: Data, atPath path: String) {
+        do {
+            let fileHandle = try FileHandle.init(forUpdating: URL.init(fileURLWithPath: path))
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(data)
+            fileHandle.closeFile()
+        } catch let error {
+            CXLogger.log(message: "\(error)", level: .error)
+        }
+    }
+    
+}

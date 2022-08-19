@@ -1,0 +1,11 @@
+platform :ios, '9.0'
+
+target 'CXDownload_Example' do
+  use_frameworks!
+  pod 'CXDownload', :path => '../'
+
+  target 'CXDownload_Tests' do
+    inherit! :search_paths
+    
+  end
+end
