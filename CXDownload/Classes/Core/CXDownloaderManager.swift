@@ -92,7 +92,7 @@ public class CXDownloaderManager {
         return downloader
     }
     
-    /// Resumes a download task with the url.
+    /// Resumes a download task through a specified url.
     public func resume(with url: String) {
         _ = downloaderDict.first {
             if $0.key == url.cx_md5 { $0.value.resume()
@@ -101,7 +101,7 @@ public class CXDownloaderManager {
         }
     }
     
-    /// Pauses a download task with the url.
+    /// Pauses a download task through a specified url.
     public func pause(with url: String) {
         _ = downloaderDict.first {
             if $0.key == url.cx_md5 { $0.value.pause()
@@ -110,7 +110,7 @@ public class CXDownloaderManager {
         }
     }
     
-    /// Cancels a download task with the url.
+    /// Cancels a download task through a specified url.
     public func cancel(with url: String) {
         _ = downloaderDict.first {
             if $0.key == url.cx_md5 { $0.value.cancel()
@@ -119,22 +119,22 @@ public class CXDownloaderManager {
         }
     }
     
-    /// Resumes the all download task.
+    /// Resumes the all download tasks.
     public func resumeAll() {
         downloaderDict.forEach { $0.value.resume() }
     }
     
-    /// Pauses the all download task.
+    /// Pauses the all download tasks.
     public func pauseAll() {
         downloaderDict.forEach { $0.value.pause() }
     }
     
-    /// Cancels the all download task.
+    /// Cancels the all download tasks.
     public func cancelAll() {
         downloaderDict.forEach { $0.value.cancel() }
     }
     
-    /// Removes the target file.
+    /// Removes the target file through a specified url, the target directory and the custom filename.
     public func removeTargetFile(url: String, customDirectory: String? = nil, customFileName: String? = nil) {
         guard let anURL = URL.init(string: url) else {
             return

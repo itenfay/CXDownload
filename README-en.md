@@ -49,6 +49,25 @@ _ = CXDownloaderManager.shared.asyncDownload(url: urlStr1) { [weak self] progres
 }
 ```
 
+```dl
+let downloader = downloadButton1.dl.download(url: urlStr1) { [weak self] progress in
+    self?.progressLabel1.text = "\(progress) %"
+} success: { filePath in
+    CXLogger.log(message: "filePath: \(filePath)", level: .info)
+} failure: { error in
+    switch error {
+    case .error(let code, let message):
+        CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+    }
+}
+if let _downloader = downloader {
+    if _downloader.state == .pause {
+        _downloader.resume()
+        pauseButton1.isSelected = false
+    }
+}
+```
+
 - Custom download directory and file name.
 
 ```
@@ -66,10 +85,33 @@ _ = CXDownloaderManager.shared.asyncDownload(url: urlStr2, customDirectory: "Sof
 }
 ```
 
+```dl
+let downloader = downloadButton2.dl.download(url: urlStr1, to: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
+    self?.progressLabel1.text = "\(progress) %"
+} success: { filePath in
+    CXLogger.log(message: "filePath: \(filePath)", level: .info)
+} failure: { error in
+    switch error {
+    case .error(let code, let message):
+        CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+    }
+}
+if let _downloader = downloader {
+    if _downloader.state == .pause {
+        _downloader.resume()
+        pauseButton1.isSelected = false
+    }
+}
+```
+
 ### Pause
 
 ```
 CXDownloaderManager.shared.pause(with: urlStr1)
+```
+
+```dl
+pauseButton1.dl.pause(url: urlStr1)
 ```
 
 ### Resume
@@ -78,17 +120,31 @@ CXDownloaderManager.shared.pause(with: urlStr1)
 CXDownloaderManager.shared.resume(with: urlStr1)
 ```
 
+```dl
+pauseButton1.dl.resume(url: urlStr1)
+```
+
 ### Cancel
 
 ```
 CXDownloaderManager.shared.cancel(with: urlStr1)
 ```
 
+```dl
+cancelButton1.dl.cancel(url: urlStr1)
+```
+
+
 ### Delete target file
 
 ```
 CXDownloaderManager.shared.removeTargetFile(url: urlStr1)
 CXDownloaderManager.shared.removeTargetFile(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg")
+```
+
+```dl
+deleteButton1.dl.removeTargetFile(url: urlStr1)
+deleteButton2.dl.removeTargetFile(url: urlStr2, at: "Softwares", customFileName: "MacDict_v1.20.30.dmg")
 ```
 
 ### Pause, resume and cancell the all downloads

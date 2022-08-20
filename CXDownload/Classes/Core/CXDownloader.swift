@@ -45,7 +45,7 @@ public class CXDownloader: NSObject {
     private(set) var customDirectory: String?
     private(set) var customFileName: String?
     
-    private(set) var state: DownloadState = .pause {
+    public private(set) var state: DownloadState = .pause {
         didSet {
             stateChangeClosure?(state)
             if state == .success || state == .failed || state == .cancelled {

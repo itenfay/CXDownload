@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CXDownload'
-  s.version          = '0.2.1'
+  s.version          = '0.3.0'
   s.summary          = 'Implements Swift breakpoint continuation download for iOS.'
 
 # This description is used to generate tags and improve search results.
