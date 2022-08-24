@@ -30,9 +30,9 @@ public extension CXDownloadBase where T : UIButton {
                 progress(_progress_)
             }
         }, success: { filePath in
-            DispatchQueue.main.async {  success(filePath) }
+            DispatchQueue.main.async { success(filePath) }
         }) { error in
-            DispatchQueue.main.async {  failure(error) }
+            DispatchQueue.main.async { failure(error) }
         }
     }
     

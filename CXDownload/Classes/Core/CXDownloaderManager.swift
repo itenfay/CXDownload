@@ -30,16 +30,16 @@ public class CXDownloaderManager {
     @discardableResult
     public func asyncDownload(url: String, progress: @escaping CXDownloader.ProgressClosure, success: @escaping CXDownloader.SuccessClosure, failure: @escaping CXDownloader.FailureClosure) -> CXDownloader? {
         guard let urlMD5 = url.cx_md5, !urlMD5.isEmpty else {
-            CXLogger.log(message: "The url MD5 is empty.", level: .info)
-            failure(CXDownloader.DownloadError.error(code: -1999, message: "The url MD5 is empty."))
+            CXLogger.log(message: "The url md5 is empty.", level: .info)
+            failure(CXDownloader.DownloadError.error(code: -1999, message: "The url md5 is empty."))
             return nil
         }
         //CXLogger.log(message: "urlMD5: \(urlMD5)", level: .info)
         if let resultDict = downloaderDict.first(where: { $0.key == urlMD5 }) {
             let _downloader = resultDict.value
+            CXLogger.log(message: "Downloader: \(_downloader)", level: .info)
             if _downloader.state == .success || _downloader.state == .failed || _downloader.state == .cancelled {
-                downloaderDict.removeValue(forKey: resultDict.key)
-                return nil
+                _downloader.onComplete()
             }
             return _downloader
         }
@@ -62,16 +62,16 @@ public class CXDownloaderManager {
     @discardableResult
     public func asyncDownload(url: String, customDirectory: String?, customFileName: String?, progress: @escaping CXDownloader.ProgressClosure, success: @escaping CXDownloader.SuccessClosure, failure: @escaping CXDownloader.FailureClosure) -> CXDownloader? {
         guard let urlMD5 = url.cx_md5, !urlMD5.isEmpty else {
-            CXLogger.log(message: "The url MD5 is empty.", level: .info)
-            failure(CXDownloader.DownloadError.error(code: -1999, message: "The url MD5 is empty."))
+            CXLogger.log(message: "The url md5 is empty.", level: .info)
+            failure(CXDownloader.DownloadError.error(code: -1999, message: "The url md5 is empty."))
             return nil
         }
         //CXLogger.log(message: "urlMD5: \(urlMD5)", level: .info)
         if let resultDict = downloaderDict.first(where: { $0.key == urlMD5 }) {
             let _downloader = resultDict.value
+            CXLogger.log(message: "Downloader: \(_downloader)", level: .info)
             if _downloader.state == .success || _downloader.state == .failed || _downloader.state == .cancelled {
-                downloaderDict.removeValue(forKey: resultDict.key)
-                return nil
+                _downloader.onComplete()
             }
             return _downloader
         }
@@ -141,6 +141,18 @@ public class CXDownloaderManager {
         }
         let filepath = CXFileUtils.filePath(withURL: anURL, at: customDirectory, using: customFileName)
         CXFileUtils.removeFile(atPath: filepath)
+    }
+    
+    /// Cleans up the invalid download tasks.
+    public func cleanUpInvalidTasks() {
+        for key in downloaderDict.keys {
+            guard let downloader = downloaderDict[key] else {
+                continue
+            }
+            if downloader.state == .success || downloader.state == .failed || downloader.state == .cancelled {
+                downloaderDict.removeValue(forKey: key)
+            }
+        }
     }
     
 }

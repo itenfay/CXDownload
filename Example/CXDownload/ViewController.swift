@@ -12,8 +12,9 @@ import CXDownload
 /// The url for this example.
 public let urlStr1 = "https://dldir1.qq.com/qqfile/QQIntl/QQi_PC/QQIntl2.11.exe"
 public let urlStr2 = "http://codown.youdao.com/cidian/download/MacDict.dmg"
-/// The urlStr3 occurs 403 error.
-public let urlStr3 = "https://accktv.sd-rtn.com/202206211419/178223ad632f0428131b7138f78b0fb6/release/lyric/lrc/1/64ef53ade26b4ba18cc424e6dd6e1628.lrc"
+public let urlStr3 = "https://www.apple.com/105/media/cn/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-cn-20170912_1280x720h.mp4"
+/// The urlStr4 occurs 403 error.
+public let urlStr4 = "https://accktv.sd-rtn.com/202206211419/178223ad632f0428131b7138f78b0fb6/release/lyric/lrc/1/64ef53ade26b4ba18cc424e6dd6e1628.lrc"
 
 class ViewController: UIViewController {
     

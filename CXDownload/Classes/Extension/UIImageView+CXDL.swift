@@ -24,13 +24,12 @@ public extension CXDownloadBase where T : UIImageView {
                                                  customFileName: customFileName,
                                                  progress: { _progress in
             DispatchQueue.main.async {
-                let _progress_ = Int(_progress * 100)
-                progress(_progress_)
+                progress(Int(_progress * 100))
             }
         }, success: { filePath in
-            DispatchQueue.main.async {  success(filePath) }
+            DispatchQueue.main.async { success(filePath) }
         }) { error in
-            DispatchQueue.main.async {  failure(error) }
+            DispatchQueue.main.async { failure(error) }
         }
     }
     

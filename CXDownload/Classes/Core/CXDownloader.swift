@@ -124,7 +124,7 @@ public class CXDownloader: NSObject {
     
     /// Pauses the current data task.
     public func pause() {
-        if state == .downLoading {
+        if dataTask != nil && state == .downLoading {
             dataTask?.suspend()
             state = .pause
         }
@@ -132,8 +132,15 @@ public class CXDownloader: NSObject {
     
     /// Cancels the current data task.
     public func cancel() {
-        state = .cancelled
-        dataTask?.cancel()
+        if dataTask != nil {
+            dataTask?.cancel()
+            state = .cancelled
+        }
+    }
+    
+    /// Handles the completed logics.
+    public func onComplete() {
+        onDownload()
     }
     
     private func download(with url: URL, offset: Int64) {
@@ -146,12 +153,12 @@ public class CXDownloader: NSObject {
     
     private func onDownload() {
         guard let url = URL.init(string: urlString) else {
-            CXLogger.log(message: "The URL is empty.", level: .info)
+            CXLogger.log(message: "The url is empty.", level: .info)
+            failureClosure?(DownloadError.error(code: -2000, message: "The url is empty."))
             state = .failed
-            failureClosure?(DownloadError.error(code: -2000, message: "The URL is empty."))
             return
         }
-        CXLogger.log(message: "URL: \(url)", level: .info)
+        CXLogger.log(message: "url: \(url)", level: .info)
         
         /// The current data task exists.
         if url == dataTask?.originalRequest?.url {
@@ -167,10 +174,10 @@ public class CXDownloader: NSObject {
         dstPath = CXFileUtils.filePath(withURL: url, at: customDirectory, using: customFileName)
         CXLogger.log(message: "DstPath: \(dstPath)", level: .info)
         if CXFileUtils.fileExists(atPath: dstPath) {
-            state = .success
             progress = 1.0
             progressClosure?(progress)
             successClosure?(dstPath)
+            state = .success
             return
         }
         
@@ -214,9 +221,9 @@ extension CXDownloader: URLSessionDataDelegate {
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         guard let _response = response as? HTTPURLResponse else {
-            CXLogger.log(message: "The HTTP url response is empty.", level: .info)
+            CXLogger.log(message: "The http url response is empty.", level: .info)
+            failureClosure?(DownloadError.error(code: -2001, message: "The http url response is empty."))
             state = .failed
-            failureClosure?(DownloadError.error(code: -2001, message: "The HTTP url response is empty."))
             completionHandler(.cancel)
             return
         }
@@ -236,10 +243,10 @@ extension CXDownloader: URLSessionDataDelegate {
         if totalSize > 0 && resumedFileSize == totalSize {
             CXFileUtils.moveFile(from: tmpPath, to: dstPath)
             completionHandler(.cancel)
-            state = .success
             progress = 1.0
             progressClosure?(progress)
             successClosure?(dstPath)
+            state = .success
             return
         }
         
@@ -262,8 +269,8 @@ extension CXDownloader: URLSessionDataDelegate {
         
         /// 403, no permission access.
         CXLogger.log(message: "An error occurs, the code is \(_response.statusCode).", level: .info)
-        state = .failed
         failureClosure?(DownloadError.error(code: _response.statusCode, message: "An error occurs."))
+        state = .failed
         completionHandler(.cancel)
     }
     
@@ -287,8 +294,8 @@ extension CXDownloader: URLSessionDataDelegate {
             /// if error is nil, the url session become invalid.
             return
         }
-        state = .failed
         failureClosure?(DownloadError.error(code: error.code, message: error.localizedDescription))
+        state = .failed
     }
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
@@ -296,16 +303,16 @@ extension CXDownloader: URLSessionDataDelegate {
         /// If no error, handle the successful logic.
         guard let error = error as? NSError else {
             CXFileUtils.moveFile(from: tmpPath, to: dstPath)
-            state = .success
             successClosure?(dstPath)
+            state = .success
             return
         }
         /// Cancels the data task.
         if error.code == NSURLErrorCancelled {
             CXLogger.log(message: "Code: \(error.code), message: \(error.localizedDescription)", level: .info)
         } else { /** No network, etc. */
-            state = .failed
             failureClosure?(DownloadError.error(code: error.code, message: error.localizedDescription))
+            state = .failed
         }
     }
     
