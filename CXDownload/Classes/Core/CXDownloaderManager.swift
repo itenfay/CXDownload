@@ -38,9 +38,6 @@ public class CXDownloaderManager {
         if let resultDict = downloaderDict.first(where: { $0.key == urlMD5 }) {
             let _downloader = resultDict.value
             CXLogger.log(message: "Downloader: \(_downloader)", level: .info)
-            if _downloader.state == .success || _downloader.state == .failed || _downloader.state == .cancelled {
-                _downloader.onComplete()
-            }
             return _downloader
         }
         /// Creates a downloader instance.
@@ -50,7 +47,7 @@ public class CXDownloaderManager {
                                                failure: failure) {
             [unowned self] urlString in
             if let key = urlString.cx_md5 {
-                //CXLogger.log(message: "key: \(key)", level: .info)
+                CXLogger.log(message: "Remove key: \(key)", level: .info)
                 self.downloaderDict.removeValue(forKey: key)
             }
         }
@@ -70,9 +67,6 @@ public class CXDownloaderManager {
         if let resultDict = downloaderDict.first(where: { $0.key == urlMD5 }) {
             let _downloader = resultDict.value
             CXLogger.log(message: "Downloader: \(_downloader)", level: .info)
-            if _downloader.state == .success || _downloader.state == .failed || _downloader.state == .cancelled {
-                _downloader.onComplete()
-            }
             return _downloader
         }
         /// Creates a downloader instance.
@@ -84,7 +78,7 @@ public class CXDownloaderManager {
                                                failure: failure) {
             [unowned self] urlString in
             if let key = urlString.cx_md5 {
-                //CXLogger.log(message: "key: \(key)", level: .info)
+                CXLogger.log(message: "Remove key: \(key)", level: .info)
                 self.downloaderDict.removeValue(forKey: key)
             }
         }

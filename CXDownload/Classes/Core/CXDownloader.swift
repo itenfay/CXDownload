@@ -50,7 +50,9 @@ public class CXDownloader: NSObject {
             stateChangeClosure?(state)
             if state == .success || state == .failed || state == .cancelled {
                 invalidateURLSession()
-                callCancelClosure?(urlString)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.callCancelClosure?(self.urlString)
+                }
             }
         }
     }
