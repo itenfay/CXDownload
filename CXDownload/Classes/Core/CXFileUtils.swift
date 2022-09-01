@@ -44,6 +44,22 @@ public class CXFileUtils {
         return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
     }
     
+    /// Creates a directory at the specified path.
+    public class func createDirectory(atPath path: String) -> Bool {
+        do {
+            var isDir: ObjCBool = false
+            let isDirExist = FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
+            if isDirExist && isDir.boolValue {}
+            else {
+                try FileManager.default.createDirectory(at: URL.init(fileURLWithPath: path), withIntermediateDirectories: true)
+            }
+            return true
+        } catch {
+            CXLogger.log(message: "\(error)", level: .error)
+        }
+        return false
+    }
+    
     /// Creates a cache directory with the given path component and returns the specified URL.
     public class func cachePath(withPathComponent pathComponent: String = "CXDownload") -> URL? {
         do {

@@ -8,10 +8,10 @@
 import Foundation
 import CommonCrypto
 
-extension String {
+public extension String {
     
     /// Returns a optinal md5 string.
-    public var cx_md5: String? {
+    var cx_md5: String? {
         guard let utf8 = cString(using: .utf8) else { return nil }
         var digest = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
         CC_MD5(utf8, CC_LONG(utf8.count - 1), &digest)

@@ -26,7 +26,7 @@ pod 'CXDownload'
 - CXDownloader.swift: **Download network sending and receiving class.**
 - CXFileUtils.swift: **Breakpoint continuation file tool class.**
 - CXLogger.swift: **This class outputs the log to the console.**
-- String+Cx.swift: **This extends the `cx_md5` method for the `String` class.**
+- String+Cx.swift: **This extends the `cx_md5` property for the `String` class.**
 
 ## Usage
 

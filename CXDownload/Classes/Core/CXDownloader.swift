@@ -22,13 +22,13 @@ public class CXDownloader: NSObject {
     public typealias ProgressClosure = (_ progress: Float) -> Void
     public typealias SuccessClosure = (_ filePath: String) -> Void
     public typealias FailureClosure = (_ error: DownloadError) -> Void
-    public typealias CallCancelClosure = (_ url: String) -> Void
+    public typealias FinishClosure = (_ url: String) -> Void
     public typealias StateChangeClosure = (_ state: DownloadState) -> Void
     
     private var progressClosure: ProgressClosure?
     private var successClosure: SuccessClosure?
     private var failureClosure: FailureClosure?
-    private var callCancelClosure: CallCancelClosure?
+    private var finishClosure: FinishClosure?
     
     private(set) var urlString: String!
     /// The progress is 0..1.
@@ -39,31 +39,32 @@ public class CXDownloader: NSObject {
     private var dstPath: String = ""
     /// The temp file path.
     private var tmpPath: String = ""
-    private var dataTask: URLSessionDataTask?
-    private var outputStream: OutputStream?
     
     private(set) var customDirectory: String?
     private(set) var customFileName: String?
+    
+    private var urlSession: URLSession?
+    private var dataTask: URLSessionDataTask?
+    private var outputStream: OutputStream?
+    
+    /// Creates an operation queue with the lazy load.
+    private lazy var downloadQueue: OperationQueue = {
+        let queue = OperationQueue.init()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
     
     public private(set) var state: DownloadState = .pause {
         didSet {
             stateChangeClosure?(state)
             if state == .success || state == .failed || state == .cancelled {
-                invalidateURLSession()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    self.callCancelClosure?(self.urlString)
-                }
+                finishTasksAndInvalidateSession()
+                asyncExecute { self.finishClosure?(self.urlString) }
             }
         }
     }
     
     public var stateChangeClosure: StateChangeClosure?
-    
-    private lazy var urlSession: URLSession = {
-        let config = URLSessionConfiguration.default
-        let session = URLSession.init(configuration: config, delegate: self, delegateQueue: OperationQueue.current)
-        return session
-    }()
     
     /// Initializes the url.
     init(url: String) {
@@ -78,41 +79,41 @@ public class CXDownloader: NSObject {
     }
     
     /// Initializes the some required parameters.
-    init(url: String, progess: ProgressClosure?, success: SuccessClosure?, failure: FailureClosure?, callCancel: CallCancelClosure?) {
+    init(url: String, progess: ProgressClosure?, success: SuccessClosure?, failure: FailureClosure?, finish: FinishClosure?) {
         self.urlString = url
         self.progressClosure = progess
         self.successClosure = success
         self.failureClosure = failure
-        self.callCancelClosure = callCancel
+        self.finishClosure = finish
     }
     
     /// Initializes the url, custom directory, custom file name and some other required parameters.
-    convenience init(url: String, customDirectory: String?, customFileName: String?, progess: ProgressClosure?, success: SuccessClosure?, failure: FailureClosure?, callCancel: CallCancelClosure?) {
-        self.init(url: url, progess: progess, success: success, failure: failure, callCancel: callCancel)
+    convenience init(url: String, customDirectory: String?, customFileName: String?, progess: ProgressClosure?, success: SuccessClosure?, failure: FailureClosure?, finish: FinishClosure?) {
+        self.init(url: url, progess: progess, success: success, failure: failure, finish: finish)
         self.customDirectory = customDirectory
         self.customFileName = customFileName
     }
     
     /// Executes the download task with the some required parameters.
-    public static func download(url: String, progess: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure, callCancel: @escaping CallCancelClosure) -> CXDownloader {
-        let downloader = CXDownloader.init(url: url, progess: progess, success: success, failure: failure, callCancel: callCancel)
+    public static func download(url: String, progess: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure, finish: @escaping FinishClosure) -> CXDownloader {
+        let downloader = CXDownloader.init(url: url, progess: progess, success: success, failure: failure, finish: finish)
         downloader.onDownload()
         return downloader
     }
     
     /// Executes the download task with the some required parameters.
-    public static func download(url: String, customDirectory: String?, customFileName: String?, progess: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure, callCancel: @escaping CallCancelClosure) -> CXDownloader {
-        let downloader = CXDownloader.init(url: url, customDirectory: customDirectory, customFileName: customFileName, progess: progess, success: success, failure: failure, callCancel: callCancel)
+    public static func download(url: String, customDirectory: String?, customFileName: String?, progess: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure, finish: @escaping FinishClosure) -> CXDownloader {
+        let downloader = CXDownloader.init(url: url, customDirectory: customDirectory, customFileName: customFileName, progess: progess, success: success, failure: failure, finish: finish)
         downloader.onDownload()
         return downloader
     }
     
     /// if call init(:) or init(:::), you need to call onCallback(::::).
-    public func onCallback(progess: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure, callCancel: @escaping CallCancelClosure) {
+    public func onCallback(progess: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure, finish: @escaping FinishClosure) {
         self.progressClosure = progess
         self.successClosure = success
         self.failureClosure = failure
-        self.callCancelClosure = callCancel
+        self.finishClosure = finish
         self.onDownload()
     }
     
@@ -140,23 +141,38 @@ public class CXDownloader: NSObject {
         }
     }
     
-    /// Handles the completed logics.
-    public func onComplete() {
-        onDownload()
+    /// Schedules a block asynchronously for execution on main thread.
+    public func runOnMainThread(block: @escaping () -> Void) {
+        DispatchQueue.main.async(execute: block)
+    }
+    
+    /// Schedules a block asynchronously for execution after delay.
+    public func asyncExecute(afterDelay delay: TimeInterval = 0.2, block: @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: block)
+    }
+    
+    private func createURLSession() -> URLSession {
+        let config = URLSessionConfiguration.default
+        let urlSession = URLSession.init(configuration: config, delegate: self, delegateQueue: downloadQueue)
+        self.urlSession = urlSession
+        return urlSession
     }
     
     private func download(with url: URL, offset: Int64) {
+        _ = createURLSession()
         var urlRequest = URLRequest.init(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
         let requestRange = String(format: "bytes=%llu-", offset)
         urlRequest.setValue(requestRange, forHTTPHeaderField: "Range")
-        self.dataTask = urlSession.dataTask(with: urlRequest)
+        self.dataTask = urlSession?.dataTask(with: urlRequest)
         self.resume()
     }
     
     private func onDownload() {
         guard let url = URL.init(string: urlString) else {
             CXLogger.log(message: "The url is empty.", level: .info)
-            failureClosure?(DownloadError.error(code: -2000, message: "The url is empty."))
+            runOnMainThread {
+                self.failureClosure?(DownloadError.error(code: -2000, message: "The url is empty."))
+            }
             state = .failed
             return
         }
@@ -177,8 +193,10 @@ public class CXDownloader: NSObject {
         CXLogger.log(message: "DstPath: \(dstPath)", level: .info)
         if CXFileUtils.fileExists(atPath: dstPath) {
             progress = 1.0
-            progressClosure?(progress)
-            successClosure?(dstPath)
+            runOnMainThread {
+                self.progressClosure?(self.progress)
+                self.successClosure?(self.dstPath)
+            }
             state = .success
             return
         }
@@ -204,13 +222,13 @@ public class CXDownloader: NSObject {
     }
     
     /// Invalidates the session, allowing any outstanding tasks to finish.
-    public func invalidateURLSession() {
-        urlSession.finishTasksAndInvalidate()
+    public func finishTasksAndInvalidateSession() {
+        urlSession?.finishTasksAndInvalidate()
     }
     
     /// Cancels all outstanding tasks and then invalidates the session.
-    public func invalidateAndCancelURLSession() {
-        urlSession.invalidateAndCancel()
+    public func invalidateSessionAndCancelTasks() {
+        urlSession?.invalidateAndCancel()
     }
     
     deinit {
@@ -224,14 +242,15 @@ extension CXDownloader: URLSessionDataDelegate {
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         guard let _response = response as? HTTPURLResponse else {
             CXLogger.log(message: "The http url response is empty.", level: .info)
-            failureClosure?(DownloadError.error(code: -2001, message: "The http url response is empty."))
+            runOnMainThread {
+                self.failureClosure?(DownloadError.error(code: -2001, message: "The http url response is empty."))
+            }
             state = .failed
             completionHandler(.cancel)
             return
         }
         
         //CXLogger.log(message: "response.allHeaderFields: \(_response.allHeaderFields)", level: .info)
-        
         /// The total size.
         var totalSize = Int64((_response.allHeaderFields["Content-Length"] as? String) ?? "") ?? 0
         let contentRange = (_response.allHeaderFields["Content-Range"] as? String) ?? ""
@@ -246,8 +265,10 @@ extension CXDownloader: URLSessionDataDelegate {
             CXFileUtils.moveFile(from: tmpPath, to: dstPath)
             completionHandler(.cancel)
             progress = 1.0
-            progressClosure?(progress)
-            successClosure?(dstPath)
+            runOnMainThread {
+                self.progressClosure?(self.progress)
+                self.successClosure?(self.dstPath)
+            }
             state = .success
             return
         }
@@ -262,6 +283,8 @@ extension CXDownloader: URLSessionDataDelegate {
         
         /// No point break resume, code is 200, point break resume, code is 206
         if _response.statusCode == 200 || _response.statusCode == 206 {
+            progress = Float(resumedFileSize) / Float(totalSize)
+            runOnMainThread { self.progressClosure?(self.progress) }
             state = .downLoading
             outputStream = OutputStream.init(toFileAtPath: tmpPath, append: true)
             outputStream?.open()
@@ -269,9 +292,11 @@ extension CXDownloader: URLSessionDataDelegate {
             return
         }
         
-        /// 403, no permission access.
+        /// 403, no permission access, ....
         CXLogger.log(message: "An error occurs, the code is \(_response.statusCode).", level: .info)
-        failureClosure?(DownloadError.error(code: _response.statusCode, message: "An error occurs."))
+        runOnMainThread {
+            self.failureClosure?(DownloadError.error(code: _response.statusCode, message: "An error occurs."))
+        }
         state = .failed
         completionHandler(.cancel)
     }
@@ -281,7 +306,7 @@ extension CXDownloader: URLSessionDataDelegate {
         let allBytes = dataTask.countOfBytesExpectedToReceive + resumedFileSize
         progress = Float(receivedBytes) / Float(allBytes)
         //CXLogger.log(message: "progress: \(progress)", level: .info)
-        progressClosure?(progress)
+        runOnMainThread { self.progressClosure?(self.progress) }
         /// Writes the received data to the temp file.
         let dataLength = data.count
         let _ = data.withUnsafeBytes { [weak self] in
@@ -296,7 +321,9 @@ extension CXDownloader: URLSessionDataDelegate {
             /// if error is nil, the url session become invalid.
             return
         }
-        failureClosure?(DownloadError.error(code: error.code, message: error.localizedDescription))
+        runOnMainThread {
+            self.failureClosure?(DownloadError.error(code: error.code, message: error.localizedDescription))
+        }
         state = .failed
     }
     
@@ -305,7 +332,7 @@ extension CXDownloader: URLSessionDataDelegate {
         /// If no error, handle the successful logic.
         guard let error = error as? NSError else {
             CXFileUtils.moveFile(from: tmpPath, to: dstPath)
-            successClosure?(dstPath)
+            runOnMainThread { self.successClosure?(self.dstPath) }
             state = .success
             return
         }
@@ -313,7 +340,9 @@ extension CXDownloader: URLSessionDataDelegate {
         if error.code == NSURLErrorCancelled {
             CXLogger.log(message: "Code: \(error.code), message: \(error.localizedDescription)", level: .info)
         } else { /** No network, etc. */
-            failureClosure?(DownloadError.error(code: error.code, message: error.localizedDescription))
+            runOnMainThread {
+                self.failureClosure?(DownloadError.error(code: error.code, message: error.localizedDescription))
+            }
             state = .failed
         }
     }

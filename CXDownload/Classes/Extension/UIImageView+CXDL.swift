@@ -17,19 +17,14 @@ public extension CXDownloadBase where T : UIImageView {
         customFileName: String? = nil,
         progress: @escaping (_ progress: Int) -> Void,
         success: @escaping CXDownloader.SuccessClosure,
-        failure: @escaping CXDownloader.FailureClosure) -> CXDownloader?
-    {
-        CXDownloaderManager.shared.asyncDownload(url: url,
-                                                 customDirectory: targetDirectory,
-                                                 customFileName: customFileName,
-                                                 progress: { _progress in
-            DispatchQueue.main.async {
-                progress(Int(_progress * 100))
-            }
+        failure: @escaping CXDownloader.FailureClosure
+    ) -> CXDownloader? {
+        return CXDownloaderManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { _progress in
+            progress(Int(_progress * 100))
         }, success: { filePath in
-            DispatchQueue.main.async { success(filePath) }
+            success(filePath)
         }) { error in
-            DispatchQueue.main.async { failure(error) }
+            failure(error)
         }
     }
     

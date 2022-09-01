@@ -28,7 +28,7 @@ pod 'CXDownload'
 - CXDownloader.swift: **下载网络收发**
 - CXFileUtils.swift: **断点续传文件工具类**
 - CXLogger.swift: **日志输出类**
-- String+Cx.swift: **String扩展cx_md5**
+- String+Cx.swift: **String扩展cx_md5属性**
 
 ## 使用
 

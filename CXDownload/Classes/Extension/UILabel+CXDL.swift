@@ -17,21 +17,16 @@ public extension CXDownloadBase where T : UILabel {
         customFileName: String? = nil,
         progress: @escaping (_ progress: Int) -> Void,
         success: @escaping CXDownloader.SuccessClosure,
-        failure: @escaping CXDownloader.FailureClosure) -> CXDownloader?
-    {
-        CXDownloaderManager.shared.asyncDownload(url: url,
-                                                 customDirectory: targetDirectory,
-                                                 customFileName: customFileName,
-                                                 progress: { [weak _base = self.base] _progress in
-            DispatchQueue.main.async {
-                let _progress_ = Int(_progress * 100)
-                _base?.text = "\(_progress_) %"
-                progress(_progress_)
-            }
+        failure: @escaping CXDownloader.FailureClosure
+    ) -> CXDownloader? {
+        return CXDownloaderManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { [weak _base = self.base] _progress in
+            let _progress_ = Int(_progress * 100)
+            _base?.text = "\(_progress_)%"
+            progress(_progress_)
         }, success: { filePath in
-            DispatchQueue.main.async { success(filePath) }
+            success(filePath)
         }) { error in
-            DispatchQueue.main.async { failure(error) }
+            failure(error)
         }
     }
     

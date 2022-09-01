@@ -10,9 +10,9 @@
 		32B64FD83371986EBE8661B60C59CA10 /* CXDownload-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F6405A1EE997B58D14C376CD0DACFE6F /* CXDownload-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5271482A910BCEC8C12D5DFBBACF5BE6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		5C6404B1F263A8D6BE3B8954919B91C3 /* Pods-CXDownload_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6524F42EAA445ED137CFD3BCEF09CD71 /* Pods-CXDownload_Tests-dummy.m */; };
+		7912CBD728C095F1008817B0 /* String+Cx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7912CBD628C095F1008817B0 /* String+Cx.swift */; };
 		7953D87728AE1B9A002DC2AB /* CXLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87228AE1B9A002DC2AB /* CXLogger.swift */; };
 		7953D87828AE1B9A002DC2AB /* CXDownloaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87328AE1B9A002DC2AB /* CXDownloaderManager.swift */; };
-		7953D87928AE1B9A002DC2AB /* String+Cx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87428AE1B9A002DC2AB /* String+Cx.swift */; };
 		7953D87A28AE1B9A002DC2AB /* CXFileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87528AE1B9A002DC2AB /* CXFileUtils.swift */; };
 		7953D87B28AE1B9A002DC2AB /* CXDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87628AE1B9A002DC2AB /* CXDownloader.swift */; };
 		795BADC928B073BE00901E48 /* CXDownloadBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BADC828B073BE00901E48 /* CXDownloadBase.swift */; };
@@ -61,9 +61,9 @@
 		6524F42EAA445ED137CFD3BCEF09CD71 /* Pods-CXDownload_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-CXDownload_Tests-dummy.m"; sourceTree = "<group>"; };
 		68967142DA717ACEF4611196240D91EA /* CXDownload.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CXDownload.modulemap; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		7912CBD628C095F1008817B0 /* String+Cx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Cx.swift"; sourceTree = "<group>"; };
 		7953D87228AE1B9A002DC2AB /* CXLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXLogger.swift; sourceTree = "<group>"; };
 		7953D87328AE1B9A002DC2AB /* CXDownloaderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDownloaderManager.swift; sourceTree = "<group>"; };
-		7953D87428AE1B9A002DC2AB /* String+Cx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Cx.swift"; sourceTree = "<group>"; };
 		7953D87528AE1B9A002DC2AB /* CXFileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXFileUtils.swift; sourceTree = "<group>"; };
 		7953D87628AE1B9A002DC2AB /* CXDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDownloader.swift; sourceTree = "<group>"; };
 		795BADC828B073BE00901E48 /* CXDownloadBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CXDownloadBase.swift; sourceTree = "<group>"; };
@@ -191,7 +191,6 @@
 				7953D87328AE1B9A002DC2AB /* CXDownloaderManager.swift */,
 				7953D87528AE1B9A002DC2AB /* CXFileUtils.swift */,
 				7953D87228AE1B9A002DC2AB /* CXLogger.swift */,
-				7953D87428AE1B9A002DC2AB /* String+Cx.swift */,
 			);
 			name = Core;
 			path = CXDownload/Classes/Core;
@@ -201,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				795BADC828B073BE00901E48 /* CXDownloadBase.swift */,
+				7912CBD628C095F1008817B0 /* String+Cx.swift */,
 				795BADD028B07E5E00901E48 /* UIView+CXDL.swift */,
 				795BADCA28B078C500901E48 /* UIButton+CXDL.swift */,
 				795BADCC28B078DB00901E48 /* UILabel+CXDL.swift */,
@@ -431,8 +431,8 @@
 				795BADD128B07E5E00901E48 /* UIView+CXDL.swift in Sources */,
 				795BADC928B073BE00901E48 /* CXDownloadBase.swift in Sources */,
 				795BADCF28B0794D00901E48 /* UIImageView+CXDL.swift in Sources */,
+				7912CBD728C095F1008817B0 /* String+Cx.swift in Sources */,
 				8EFACDEFD806A21A872F752AD5FD69FD /* CXDownload-dummy.m in Sources */,
-				7953D87928AE1B9A002DC2AB /* String+Cx.swift in Sources */,
 				795BADCB28B078C500901E48 /* UIButton+CXDL.swift in Sources */,
 				795BADCD28B078DB00901E48 /* UILabel+CXDL.swift in Sources */,
 				7953D87B28AE1B9A002DC2AB /* CXDownloader.swift in Sources */,
