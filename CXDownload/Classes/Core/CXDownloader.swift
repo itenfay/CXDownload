@@ -11,7 +11,7 @@ public class CXDownloader: NSObject {
     
     /// The state for the download.
     public enum DownloadState: UInt8 {
-        case pause, downLoading, success, failed, cancelled
+        case waiting, pause, downloading, success, failed, cancelled
     }
     
     /// The error for the download.
@@ -54,7 +54,7 @@ public class CXDownloader: NSObject {
         return queue
     }()
     
-    public private(set) var state: DownloadState = .pause {
+    public private(set) var state: DownloadState = .waiting {
         didSet {
             stateChangeClosure?(state)
             if state == .success || state == .failed || state == .cancelled {
@@ -69,6 +69,7 @@ public class CXDownloader: NSObject {
     /// Initializes the url.
     init(url: String) {
         self.urlString = url
+        self.state = .waiting
     }
     
     /// Initializes the url, custom directory, custom file name.
@@ -85,6 +86,7 @@ public class CXDownloader: NSObject {
         self.successClosure = success
         self.failureClosure = failure
         self.finishClosure = finish
+        self.state = .waiting
     }
     
     /// Initializes the url, custom directory, custom file name and some other required parameters.
@@ -97,14 +99,12 @@ public class CXDownloader: NSObject {
     /// Executes the download task with the some required parameters.
     public static func download(url: String, progess: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure, finish: @escaping FinishClosure) -> CXDownloader {
         let downloader = CXDownloader.init(url: url, progess: progess, success: success, failure: failure, finish: finish)
-        downloader.onDownload()
         return downloader
     }
     
     /// Executes the download task with the some required parameters.
     public static func download(url: String, customDirectory: String?, customFileName: String?, progess: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure, finish: @escaping FinishClosure) -> CXDownloader {
         let downloader = CXDownloader.init(url: url, customDirectory: customDirectory, customFileName: customFileName, progess: progess, success: success, failure: failure, finish: finish)
-        downloader.onDownload()
         return downloader
     }
     
@@ -114,20 +114,19 @@ public class CXDownloader: NSObject {
         self.successClosure = success
         self.failureClosure = failure
         self.finishClosure = finish
-        self.onDownload()
     }
     
     /// Resumes the current data task.
     public func resume() {
         if dataTask != nil && state == .pause {
             dataTask?.resume()
-            state = .downLoading
+            state = .downloading
         }
     }
     
     /// Pauses the current data task.
     public func pause() {
-        if dataTask != nil && state == .downLoading {
+        if dataTask != nil && state == .downloading {
             dataTask?.suspend()
             state = .pause
         }
@@ -164,10 +163,11 @@ public class CXDownloader: NSObject {
         let requestRange = String(format: "bytes=%llu-", offset)
         urlRequest.setValue(requestRange, forHTTPHeaderField: "Range")
         self.dataTask = urlSession?.dataTask(with: urlRequest)
+        self.state = .pause
         self.resume()
     }
     
-    private func onDownload() {
+    func onDownload() {
         guard let url = URL.init(string: urlString) else {
             CXLogger.log(message: "The url is empty.", level: .info)
             runOnMainThread {
@@ -285,7 +285,7 @@ extension CXDownloader: URLSessionDataDelegate {
         if _response.statusCode == 200 || _response.statusCode == 206 {
             progress = Float(resumedFileSize) / Float(totalSize)
             runOnMainThread { self.progressClosure?(self.progress) }
-            state = .downLoading
+            state = .downloading
             outputStream = OutputStream.init(toFileAtPath: tmpPath, append: true)
             outputStream?.open()
             completionHandler(.allow)

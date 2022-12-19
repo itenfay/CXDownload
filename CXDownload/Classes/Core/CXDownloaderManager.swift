@@ -54,6 +54,7 @@ public class CXDownloaderManager {
             }
         }
         downloaderDict[urlMD5] = downloader
+        downloader.onDownload()
         return downloader
     }
     
@@ -85,6 +86,7 @@ public class CXDownloaderManager {
             }
         }
         downloaderDict[urlMD5] = downloader
+        downloader.onDownload()
         return downloader
     }
     
