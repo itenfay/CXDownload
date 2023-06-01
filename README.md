@@ -24,11 +24,11 @@ pod 'CXDownload'
 
 ## 说明
 
-- CXDownloaderManager.swift: **下载网络请求队列管理类**
+- CXDownloadManager.swift: **下载网络请求队列管理类**
 - CXDownloader.swift: **下载网络收发**
-- CXFileUtils.swift: **断点续传文件工具类**
-- CXLogger.swift: **日志输出类**
-- String+Cx.swift: **String扩展cx_md5属性**
+- CXDFileUtils.swift: **断点续传文件工具类**
+- CXDLogger.swift: **日志输出类**
+- String+CXDL.swift: **String扩展cxd_md5、cxd_sha2属性**
 
 ## 使用
 
@@ -37,16 +37,16 @@ pod 'CXDownload'
 - 默认下载目录和文件名
 
 ```
-_ = CXDownloaderManager.shared.asyncDownload(url: urlStr1) { [weak self] progress in
+_ = CXDownloadManager.shared.asyncDownload(url: urlStr1) { [weak self] progress in
     DispatchQueue.main.async {
         self?.progressLabel1.text = "\(Int(progress * 100)) %"
     }
 } success: { filePath in
-    CXLogger.log(message: "filePath: \(filePath)", level: .info)
+    CXDLogger.log(message: "filePath: \(filePath)", level: .info)
 } failure: { error in
     switch error {
         case .error(let code, let message):
-            CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+            CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
     }
 }
 ```
@@ -55,11 +55,11 @@ _ = CXDownloaderManager.shared.asyncDownload(url: urlStr1) { [weak self] progres
 let downloader = downloadButton1.dl.download(url: urlStr1) { [weak self] progress in
     self?.progressLabel1.text = "\(progress) %"
 } success: { filePath in
-    CXLogger.log(message: "filePath: \(filePath)", level: .info)
+    CXDLogger.log(message: "filePath: \(filePath)", level: .info)
 } failure: { error in
     switch error {
     case .error(let code, let message):
-        CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+        CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
     }
 }
 if let _downloader = downloader {
@@ -73,16 +73,16 @@ if let _downloader = downloader {
 - 自定义下载目录和文件名
 
 ```
-_ = CXDownloaderManager.shared.asyncDownload(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
+_ = CXDownloadManager.shared.asyncDownload(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
     DispatchQueue.main.async {
         self?.progressLabel2.text = "\(Int(progress * 100)) %"
     }
 } success: { filePath in
-    CXLogger.log(message: "filePath: \(filePath)", level: .info)
+    CXDLogger.log(message: "filePath: \(filePath)", level: .info)
 } failure: { error in
     switch error {
         case .error(let code, let message):
-            CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+            CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
     }
 }
 ```
@@ -91,11 +91,11 @@ _ = CXDownloaderManager.shared.asyncDownload(url: urlStr2, customDirectory: "Sof
 let downloader = downloadButton2.dl.download(url: urlStr1, to: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
     self?.progressLabel1.text = "\(progress) %"
 } success: { filePath in
-    CXLogger.log(message: "filePath: \(filePath)", level: .info)
+    CXDLogger.log(message: "filePath: \(filePath)", level: .info)
 } failure: { error in
     switch error {
     case .error(let code, let message):
-        CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+        CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
     }
 }
 if let _downloader = downloader {
@@ -109,7 +109,7 @@ if let _downloader = downloader {
 ### 暂停
 
 ```
-CXDownloaderManager.shared.pause(with: urlStr1)
+CXDownloadManager.shared.pause(with: urlStr1)
 ```
 
 ```dl
@@ -119,7 +119,7 @@ pauseButton1.dl.pause(url: urlStr1)
 ### 恢复
 
 ```
-CXDownloaderManager.shared.resume(with: urlStr1)
+CXDownloadManager.shared.resume(with: urlStr1)
 ```
 
 ```dl
@@ -129,7 +129,7 @@ pauseButton1.dl.resume(url: urlStr1)
 ### 取消
 
 ```
-CXDownloaderManager.shared.cancel(with: urlStr1)
+CXDownloadManager.shared.cancel(with: urlStr1)
 ```
 
 ```dl
@@ -139,8 +139,8 @@ cancelButton1.dl.cancel(url: urlStr1)
 ### 删除下载文件
 
 ```
-CXDownloaderManager.shared.removeTargetFile(url: urlStr1)
-CXDownloaderManager.shared.removeTargetFile(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg")
+CXDownloadManager.shared.removeTargetFile(url: urlStr1)
+CXDownloadManager.shared.removeTargetFile(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg")
 ```
 
 ```dl
@@ -151,9 +151,9 @@ deleteButton2.dl.removeTargetFile(url: urlStr2, at: "Softwares", customFileName:
 ### 暂停、恢复和取消所有下载
 
 ```
-CXDownloaderManager.shared.pauseAll()
-CXDownloaderManager.shared.resumeAll()
-CXDownloaderManager.shared.cancelAll()
+CXDownloadManager.shared.pauseAll()
+CXDownloadManager.shared.resumeAll()
+CXDownloadManager.shared.cancelAll()
 ```
 
 ## 许可证
