@@ -42,7 +42,7 @@ public class CXDownloadManager {
             CXDLogger.log(message: "Downloader: \(_downloader)", level: .info)
             return _downloader
         }
-        /// Creates a downloader instance.
+        // Creates a downloader instance.
         let downloader = CXDownloader.download(url: url,
                                                progess: progress,
                                                success: success,
@@ -72,7 +72,7 @@ public class CXDownloadManager {
             CXDLogger.log(message: "Downloader: \(_downloader)", level: .info)
             return _downloader
         }
-        /// Creates a downloader instance.
+        // Creates a downloader instance.
         let downloader = CXDownloader.download(url: url,
                                                customDirectory: customDirectory,
                                                customFileName: customFileName,
