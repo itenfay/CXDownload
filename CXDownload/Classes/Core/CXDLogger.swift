@@ -1,5 +1,5 @@
 //
-//  CXLogger.swift
+//  CXDLogger.swift
 //  CXDownload
 //
 //  Created by chenxing on 2022/8/10.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// The level of the log.
-public enum CXLogLevel {
+public enum CXDLogLevel {
     case info, warning, error
     
     var description: String {
@@ -20,9 +20,9 @@ public enum CXLogLevel {
     }
 }
 
-public struct CXLogger {
+public struct CXDLogger {
     
-    private static func log(message: String, level: CXLogLevel) {
+    private static func log(message: String, level: CXDLogLevel) {
         if CXDownloaderManager.shared.configuration.enableLog {
             print("[CX] [\(level.description)] \(message)")
         } else {
@@ -33,13 +33,13 @@ public struct CXLogger {
     }
     
     /// Outputs the log to the console.
-    public static func log(message: String, level: CXLogLevel, file: String = #file, method: String = #function, lineNumber: Int = #line) {
+    public static func log(message: String, level: CXDLogLevel, file: String = #file, method: String = #function, lineNumber: Int = #line) {
         let fileName = (file as NSString).lastPathComponent
         log(message: "[F: \(fileName) M: \(method) L: \(lineNumber)] \(message)", level: level)
     }
     
     /// Outputs the log to the console.
-    public static func log(obj: Any, message: String, level: CXLogLevel) {
+    public static func log(obj: Any, message: String, level: CXDLogLevel) {
         log(message: "\(type(of: obj)) \(message)", level: level)
     }
     

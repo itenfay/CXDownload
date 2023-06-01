@@ -1,5 +1,5 @@
 //
-//  CXDownloaderManager.swift
+//  CXDownloadManager.swift
 //  CXDownload
 //
 //  Created by chenxing on 2022/8/15.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-public class CXDownloaderManager {
+public class CXDownloadManager {
     
     /// Returns a singleton instance.
-    public static let shared = CXDownloaderManager.init()
+    public static let shared = CXDownloadManager.init()
     
     /// Privatizes the constructor.
     private init() {}
@@ -31,15 +31,15 @@ public class CXDownloaderManager {
     /// Executes an asynchronous download with the url and some callback closures.
     @discardableResult
     public func asyncDownload(url: String, progress: @escaping CXDownloader.ProgressClosure, success: @escaping CXDownloader.SuccessClosure, failure: @escaping CXDownloader.FailureClosure) -> CXDownloader? {
-        guard let urlMD5 = url.cx_md5, !urlMD5.isEmpty else {
-            CXLogger.log(message: "The url md5 is empty.", level: .info)
+        guard let urlSha2 = url.cxd_sha2, !urlSha2.isEmpty else {
+            CXDLogger.log(message: "The url md5 is empty.", level: .info)
             failure(CXDownloader.DownloadError.error(code: -1999, message: "The url md5 is empty."))
             return nil
         }
-        //CXLogger.log(message: "urlMD5: \(urlMD5)", level: .info)
-        if let resultDict = downloaderDict.first(where: { $0.key == urlMD5 }) {
+        //CXDLogger.log(message: "urlSha2: \(urlSha2)", level: .info)
+        if let resultDict = downloaderDict.first(where: { $0.key == urlSha2 }) {
             let _downloader = resultDict.value
-            CXLogger.log(message: "Downloader: \(_downloader)", level: .info)
+            CXDLogger.log(message: "Downloader: \(_downloader)", level: .info)
             return _downloader
         }
         /// Creates a downloader instance.
@@ -48,28 +48,28 @@ public class CXDownloaderManager {
                                                success: success,
                                                failure: failure) {
             [unowned self] urlString in
-            if let key = urlString.cx_md5 {
-                CXLogger.log(message: "Remove key: \(key)", level: .info)
+            if let key = urlString.cxd_sha2 {
+                CXDLogger.log(message: "Remove key: \(key)", level: .info)
                 self.downloaderDict.removeValue(forKey: key)
             }
         }
-        downloaderDict[urlMD5] = downloader
-        downloader.onDownload()
+        downloaderDict[urlSha2] = downloader
+        downloader.startDownloading()
         return downloader
     }
     
     /// Executes an asynchronous download with the url and some callback closures.
     @discardableResult
     public func asyncDownload(url: String, customDirectory: String?, customFileName: String?, progress: @escaping CXDownloader.ProgressClosure, success: @escaping CXDownloader.SuccessClosure, failure: @escaping CXDownloader.FailureClosure) -> CXDownloader? {
-        guard let urlMD5 = url.cx_md5, !urlMD5.isEmpty else {
-            CXLogger.log(message: "The url md5 is empty.", level: .info)
+        guard let urlSha2 = url.cxd_sha2, !urlSha2.isEmpty else {
+            CXDLogger.log(message: "The url md5 is empty.", level: .info)
             failure(CXDownloader.DownloadError.error(code: -1999, message: "The url md5 is empty."))
             return nil
         }
-        //CXLogger.log(message: "urlMD5: \(urlMD5)", level: .info)
-        if let resultDict = downloaderDict.first(where: { $0.key == urlMD5 }) {
+        //CXDLogger.log(message: "urlSha2: \(urlSha2)", level: .info)
+        if let resultDict = downloaderDict.first(where: { $0.key == urlSha2 }) {
             let _downloader = resultDict.value
-            CXLogger.log(message: "Downloader: \(_downloader)", level: .info)
+            CXDLogger.log(message: "Downloader: \(_downloader)", level: .info)
             return _downloader
         }
         /// Creates a downloader instance.
@@ -80,20 +80,20 @@ public class CXDownloaderManager {
                                                success: success,
                                                failure: failure) {
             [unowned self] urlString in
-            if let key = urlString.cx_md5 {
-                CXLogger.log(message: "Remove key: \(key)", level: .info)
+            if let key = urlString.cxd_sha2 {
+                CXDLogger.log(message: "Remove key: \(key)", level: .info)
                 self.downloaderDict.removeValue(forKey: key)
             }
         }
-        downloaderDict[urlMD5] = downloader
-        downloader.onDownload()
+        downloaderDict[urlSha2] = downloader
+        downloader.startDownloading()
         return downloader
     }
     
     /// Resumes a download task through a specified url.
     public func resume(with url: String) {
         _ = downloaderDict.first {
-            if $0.key == url.cx_md5 { $0.value.resume()
+            if $0.key == url.cxd_sha2 { $0.value.resume()
                 return true
             } else { return false }
         }
@@ -102,7 +102,7 @@ public class CXDownloaderManager {
     /// Pauses a download task through a specified url.
     public func pause(with url: String) {
         _ = downloaderDict.first {
-            if $0.key == url.cx_md5 { $0.value.pause()
+            if $0.key == url.cxd_sha2 { $0.value.pause()
                 return true
             } else { return false }
         }
@@ -111,7 +111,7 @@ public class CXDownloaderManager {
     /// Cancels a download task through a specified url.
     public func cancel(with url: String) {
         _ = downloaderDict.first {
-            if $0.key == url.cx_md5 { $0.value.cancel()
+            if $0.key == url.cxd_sha2 { $0.value.cancel()
                 return true
             } else { return false }
         }
@@ -137,8 +137,8 @@ public class CXDownloaderManager {
         guard let anURL = URL.init(string: url) else {
             return
         }
-        let filepath = CXFileUtils.filePath(withURL: anURL, at: customDirectory, using: customFileName)
-        CXFileUtils.removeFile(atPath: filepath)
+        let filepath = CXDFileUtils.filePath(withURL: anURL, at: customDirectory, using: customFileName)
+        CXDFileUtils.removeFile(atPath: filepath)
     }
     
     /// Cleans up the invalid download tasks.

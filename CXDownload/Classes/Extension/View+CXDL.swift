@@ -6,8 +6,14 @@
 //
 
 import Foundation
+#if os(iOS) || os(tvOS) || os(macOS)
+#if os(iOS) || os(tvOS)
+import UIKit
+#else
+import AppKit
+#endif
 
-extension CXDownloadBase where T : UIView {
+extension CXDownloadBase where T : CXDView {
     
     /// Resumes the download task through a specified url.
     public func resume(url: String) {
@@ -30,3 +36,5 @@ extension CXDownloadBase where T : UIView {
     }
     
 }
+
+#endif

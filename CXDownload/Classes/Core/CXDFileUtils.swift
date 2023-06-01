@@ -55,7 +55,7 @@ public class CXFileUtils {
             }
             return true
         } catch {
-            CXLogger.log(message: "\(error)", level: .error)
+            CXDLogger.log(message: "\(error)", level: .error)
         }
         return false
     }
@@ -76,7 +76,7 @@ public class CXFileUtils {
             }
             return dstURL
         } catch {
-            CXLogger.log(message: "\(error)", level: .error)
+            CXDLogger.log(message: "\(error)", level: .error)
         }
         return nil
     }
@@ -112,7 +112,7 @@ public class CXFileUtils {
             let attriDict = try fileManager.attributesOfItem(atPath: filePath)
             fileSizeBytes = attriDict[.size] as? Int64 ?? 0
         } catch let error {
-            CXLogger.log(message: "\(error)", level: .error)
+            CXDLogger.log(message: "\(error)", level: .error)
         }
         return fileSizeBytes
     }
@@ -124,7 +124,7 @@ public class CXFileUtils {
         do {
             try fileManager.moveItem(atPath: srcPath, toPath: dstPath)
         } catch {
-            CXLogger.log(message: "\(error)", level: .error)
+            CXDLogger.log(message: "\(error)", level: .error)
         }
     }
     
@@ -135,7 +135,7 @@ public class CXFileUtils {
         do {
             try fileManager.removeItem(atPath: path)
         } catch {
-            CXLogger.log(message: "\(error)", level: .error)
+            CXDLogger.log(message: "\(error)", level: .error)
         }
     }
     
@@ -147,7 +147,7 @@ public class CXFileUtils {
             fileHandle.write(data)
             fileHandle.closeFile()
         } catch let error {
-            CXLogger.log(message: "\(error)", level: .error)
+            CXDLogger.log(message: "\(error)", level: .error)
         }
     }
     

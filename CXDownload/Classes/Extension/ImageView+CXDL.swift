@@ -1,13 +1,19 @@
 //
-//  UIButton+CXDL.swift
+//  UIImageView+CXDL.swift
 //  CXDownload
 //
 //  Created by chenxing on 2022/8/20.
 //
 
 import Foundation
+#if os(iOS) || os(tvOS) || os(macOS)
+#if os(iOS) || os(tvOS)
+import UIKit
+#else
+import AppKit
+#endif
 
-extension CXDownloadBase where T : UIButton {
+extension CXDownloadBase where T : CXDImageView {
     
     /// Executes an asynchronous download by the url and other parameters.
     @discardableResult public func download(
@@ -18,11 +24,8 @@ extension CXDownloadBase where T : UIButton {
         success: @escaping CXDownloader.SuccessClosure,
         failure: @escaping CXDownloader.FailureClosure) -> CXDownloader?
     {
-        return CXDownloaderManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { [weak _base = self.base] _progress in
-            let _progress_ = Int(_progress * 100)
-            _base?.isSelected = false
-            _base?.setTitle("\(_progress_)%", for: .normal)
-            progress(_progress_)
+        return CXDownloaderManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { _progress in
+            progress(Int(_progress * 100))
         }, success: { filePath in
             success(filePath)
         }) { error in
@@ -31,3 +34,5 @@ extension CXDownloadBase where T : UIButton {
     }
     
 }
+
+#endif
