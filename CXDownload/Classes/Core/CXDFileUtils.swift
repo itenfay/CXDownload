@@ -1,5 +1,5 @@
 //
-//  CXFileUtils.swift
+//  CXDFileUtils.swift
 //  CXDownload
 //
 //  Created by chenxing on 2022/8/15.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class CXFileUtils {
+public class CXDFileUtils {
     
     /// The path extension of the URL, or an empty string if the path is an empty string.
     public class func pathExtension(_ url: URL) -> String {
@@ -51,7 +51,7 @@ public class CXFileUtils {
             let isDirExist = FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
             if isDirExist && isDir.boolValue {}
             else {
-                try FileManager.default.createDirectory(at: URL.init(fileURLWithPath: path), withIntermediateDirectories: true)
+                try FileManager.default.createDirectory(at: URL.init(withFilePath: path), withIntermediateDirectories: true)
             }
             return true
         } catch {
@@ -61,7 +61,7 @@ public class CXFileUtils {
     }
     
     /// Creates a cache directory with the given path component and returns the specified URL.
-    public class func cachePath(withPathComponent pathComponent: String = "CXDownload") -> URL? {
+    public class func cachePath(withPathComponent pathComponent: String = "cx.download.caches") -> URL? {
         do {
             let cacheURL = try FileManager.default.url(for: .cachesDirectory,
                                                        in: .userDomainMask,
@@ -69,7 +69,7 @@ public class CXFileUtils {
                                                        create: false)
             let dstURL = cacheURL.appendingPathComponent(pathComponent)
             var isDir: ObjCBool = false
-            let isDirExist = FileManager.default.fileExists(atPath: dstURL.path, isDirectory: &isDir)
+            let isDirExist = FileManager.default.fileExists(atPath: dstURL.cxd_path, isDirectory: &isDir)
             if isDirExist && isDir.boolValue {}
             else {
                 try FileManager.default.createDirectory(at: dstURL, withIntermediateDirectories: true)
@@ -95,10 +95,10 @@ public class CXFileUtils {
         } else {
             let fileName = self.fileName(url)
             let fileExt = self.pathExtension(url)
-            let file = (fileName.cx_md5 ?? fileName) + "." + fileExt
+            let file = (fileName.cxd_sha2 ?? fileName) + "." + fileExt
             filePathURL = cachePath?.appendingPathComponent(file)
         }
-        return filePathURL?.path ?? ""
+        return filePathURL?.cxd_path ?? ""
     }
     
     /// The file’s size in bytes.
@@ -142,10 +142,17 @@ public class CXFileUtils {
     /// Writes the specified data synchronously to the file handle.
     public class func write(data: Data, atPath path: String) {
         do {
-            let fileHandle = try FileHandle.init(forUpdating: URL.init(fileURLWithPath: path))
-            fileHandle.seekToEndOfFile()
-            fileHandle.write(data)
-            fileHandle.closeFile()
+            let fileHandle = try FileHandle(forUpdating: URL.init(withFilePath: path))
+            if #available(macOS 10.15.4, iOS 13.4, watchOS 6.2, tvOS 13.4, *) {
+                try fileHandle.seekToEnd()
+                try fileHandle.write(contentsOf: data)
+                // macos(10.15), ios(13.0), watchos(6.0), tvos(13.0)
+                try fileHandle.close()
+            } else {
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(data)
+                fileHandle.closeFile()
+            }
         } catch let error {
             CXDLogger.log(message: "\(error)", level: .error)
         }
