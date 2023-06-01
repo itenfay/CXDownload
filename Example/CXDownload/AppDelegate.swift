@@ -19,9 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         #if DEBUG
-        CXDownloaderManager.shared.configuration.enableLog = true
+        CXDownloadManager.shared.configuration.enableLog = true
         #else
-        CXDownloaderManager.shared.configuration.enableLog = false
+        CXDownloadManager.shared.configuration.enableLog = false
         #endif
         
         return true

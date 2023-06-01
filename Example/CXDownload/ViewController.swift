@@ -76,26 +76,26 @@ class ViewController: UIViewController {
         let button = sender as! UIButton
         if button == downloadButton1 {
             /*
-            _ = CXDownloaderManager.shared.asyncDownload(url: urlStr1) { [weak self] progress in
+            _ = CXDownloadManager.shared.asyncDownload(url: urlStr1) { [weak self] progress in
                 DispatchQueue.main.async {
                     self?.progressLabel1.text = "\(Int(progress * 100)) %"
                 }
             } success: { filePath in
-                CXLogger.log(message: "filePath: \(filePath)", level: .info)
+                CXDLogger.log(message: "filePath: \(filePath)", level: .info)
             } failure: { error in
                 switch error {
                 case .error(let code, let message):
-                    CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+                    CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
                 }
             }*/
             let downloader = downloadButton1.dl.download(url: urlStr1) { [weak self] progress in
                 self?.progressLabel1.text = "\(progress) %"
             } success: { filePath in
-                CXLogger.log(message: "filePath: \(filePath)", level: .info)
+                CXDLogger.log(message: "filePath: \(filePath)", level: .info)
             } failure: { error in
                 switch error {
                 case .error(let code, let message):
-                    CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+                    CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
                 }
             }
             if let _downloader = downloader {
@@ -107,26 +107,26 @@ class ViewController: UIViewController {
         }
         else if button == downloadButton2 {
             /*
-            _ = CXDownloaderManager.shared.asyncDownload(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
+            _ = CXDownloadManager.shared.asyncDownload(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
                 DispatchQueue.main.async {
                     self?.progressLabel2.text = "\(Int(progress * 100)) %"
                 }
             } success: { filePath in
-                CXLogger.log(message: "filePath: \(filePath)", level: .info)
+                CXDLogger.log(message: "filePath: \(filePath)", level: .info)
             } failure: { error in
                 switch error {
                 case .error(let code, let message):
-                    CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+                    CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
                 }
             }*/
             let downloader = downloadButton2.dl.download(url: urlStr2, to: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
                 self?.progressLabel2.text = "\(progress) %"
             } success: { filePath in
-                CXLogger.log(message: "filePath: \(filePath)", level: .info)
+                CXDLogger.log(message: "filePath: \(filePath)", level: .info)
             } failure: { error in
                 switch error {
                 case .error(let code, let message):
-                    CXLogger.log(message: "error: \(code), message: \(message)", level: .info)
+                    CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
                 }
             }
             if let _downloader = downloader {
@@ -143,19 +143,19 @@ class ViewController: UIViewController {
         button.isSelected = !button.isSelected
         if button == pauseButton1 {
             if button.isSelected {
-                //CXDownloaderManager.shared.pause(with: urlStr1)
+                //CXDownloadManager.shared.pause(with: urlStr1)
                 pauseButton1.dl.pause(url: urlStr1)
             } else {
-                //CXDownloaderManager.shared.resume(with: urlStr1)
+                //CXDownloadManager.shared.resume(with: urlStr1)
                 pauseButton1.dl.resume(url: urlStr1)
             }
         }
         else if button == pauseButton2 {
             if button.isSelected {
-                //CXDownloaderManager.shared.pause(with: urlStr2)
+                //CXDownloadManager.shared.pause(with: urlStr2)
                 pauseButton2.dl.pause(url: urlStr2)
             } else {
-                //CXDownloaderManager.shared.resume(with: urlStr2)
+                //CXDownloadManager.shared.resume(with: urlStr2)
                 pauseButton2.dl.resume(url: urlStr2)
             }
         }
@@ -164,14 +164,14 @@ class ViewController: UIViewController {
     @IBAction func onCancelAction(_ sender: Any) {
         let button = sender as! UIButton
         if button == cancelButton1 {
-            //CXDownloaderManager.shared.cancel(with: urlStr1)
+            //CXDownloadManager.shared.cancel(with: urlStr1)
             cancelButton1.dl.cancel(url: urlStr1)
             downloadButton1.setTitle("下载", for: .normal)
             progressLabel1.text = "0%"
             pauseButton1.isSelected = false
         }
         else if button == cancelButton2 {
-            //CXDownloaderManager.shared.cancel(with: urlStr2)
+            //CXDownloadManager.shared.cancel(with: urlStr2)
             cancelButton2.dl.cancel(url: urlStr2)
             downloadButton2.setTitle("下载", for: .normal)
             progressLabel2.text = "0%"
@@ -182,7 +182,7 @@ class ViewController: UIViewController {
     @IBAction func onDeleteAction(_ sender: Any) {
         let button = sender as! UIButton
         if button == deleteButton1 {
-            //CXDownloaderManager.shared.removeTargetFile(url: urlStr1)
+            //CXDownloadManager.shared.removeTargetFile(url: urlStr1)
             deleteButton1.dl.removeTargetFile(url: urlStr1)
             downloadButton1.setTitle("下载", for: .normal)
             progressLabel1.text = "0%"
@@ -190,7 +190,7 @@ class ViewController: UIViewController {
         }
         else if button == deleteButton2 {
             /*
-             CXDownloaderManager.shared.removeTargetFile(
+             CXDownloadManager.shared.removeTargetFile(
              url: urlStr2,
              customDirectory: "Softwares",
              customFileName: "MacDict_v1.20.30.dmg"
