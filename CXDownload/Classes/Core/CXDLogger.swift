@@ -8,11 +8,12 @@
 import Foundation
 
 /// The level of the log.
-public enum CXDLogLevel {
-    case info, warning, error
+public enum CXDLogLevel: CustomStringConvertible {
+    case debug, info, warning, error
     
-    var description: String {
+    public var description: String {
         switch self {
+        case .debug: return "Debug"
         case .info: return "Info"
         case .warning: return "Warning"
         case .error: return "Error"
@@ -22,12 +23,15 @@ public enum CXDLogLevel {
 
 public struct CXDLogger {
     
-    private static func log(message: String, level: CXDLogLevel) {
-        if CXDownloaderManager.shared.configuration.enableLog {
-            print("[CX] [\(level.description)] \(message)")
+    private static func log(prefix: String, message: String, level: CXDLogLevel) {
+        let dateFormatter = DateFormatter.init()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
+        let dateString = dateFormatter.string(from: Date())
+        if CXDownloadManager.shared.configuration.enableLog {
+            print("\(dateString) \(prefix) [CXD] [\(level.description)] \(message)")
         } else {
-            if level == .error {
-                print("[CX] [\(level.description)] \(message)")
+            if level == .debug {
+                print("\(dateString) \(prefix) [CXD] [\(level.description)] \(message)")
             }
         }
     }
@@ -35,12 +39,12 @@ public struct CXDLogger {
     /// Outputs the log to the console.
     public static func log(message: String, level: CXDLogLevel, file: String = #file, method: String = #function, lineNumber: Int = #line) {
         let fileName = (file as NSString).lastPathComponent
-        log(message: "[F: \(fileName) M: \(method) L: \(lineNumber)] \(message)", level: level)
+        log(prefix: "[F: \(fileName) M: \(method) L: \(lineNumber)]", message: message, level: level)
     }
     
     /// Outputs the log to the console.
     public static func log(obj: Any, message: String, level: CXDLogLevel) {
-        log(message: "\(type(of: obj)) \(message)", level: level)
+        log(prefix: "[\(type(of: obj))]", message: message, level: level)
     }
     
 }
