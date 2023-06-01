@@ -1,5 +1,5 @@
 //
-//  UIButton+CXDL.swift
+//  Button+CXDL.swift
 //  CXDownload
 //
 //  Created by chenxing on 2022/8/20.
@@ -24,7 +24,7 @@ extension CXDownloadBase where T : CXDButton {
         success: @escaping CXDownloader.SuccessClosure,
         failure: @escaping CXDownloader.FailureClosure) -> CXDownloader?
     {
-        return CXDownloaderManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { [weak _base = self.base] _progress in
+        return CXDownloadManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { [weak _base = self.base] _progress in
             let _progress_ = Int(_progress * 100)
             _base?.isSelected = false
             _base?.setTitle("\(_progress_)%", for: .normal)

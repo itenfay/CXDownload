@@ -1,5 +1,5 @@
 //
-//  UIImageView+CXDL.swift
+//  ImageView+CXDL.swift
 //  CXDownload
 //
 //  Created by chenxing on 2022/8/20.
@@ -24,7 +24,7 @@ extension CXDownloadBase where T : CXDImageView {
         success: @escaping CXDownloader.SuccessClosure,
         failure: @escaping CXDownloader.FailureClosure) -> CXDownloader?
     {
-        return CXDownloaderManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { _progress in
+        return CXDownloadManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { _progress in
             progress(Int(_progress * 100))
         }, success: { filePath in
             success(filePath)
