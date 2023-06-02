@@ -33,7 +33,7 @@ extension URL {
     }
     
     /// Creates a file URL that references the local file or directory at path.
-    public init(withFilePath path: String) {
+    public init(fileAtPath path: String) {
         if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             self.init(filePath: path, directoryHint: .inferFromPath, relativeTo: nil)
         } else {

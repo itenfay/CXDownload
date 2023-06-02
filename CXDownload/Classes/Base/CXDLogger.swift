@@ -27,13 +27,13 @@ public struct CXDLogger {
         let dateFormatter = DateFormatter.init()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
         let dateString = dateFormatter.string(from: Date())
-        if CXDownloadManager.shared.configuration.enableLog {
+        #if DEBUG
+        print("\(dateString) \(prefix) [CXD] [\(level.description)] \(message)")
+        #else
+        if level == .debug {
             print("\(dateString) \(prefix) [CXD] [\(level.description)] \(message)")
-        } else {
-            if level == .debug {
-                print("\(dateString) \(prefix) [CXD] [\(level.description)] \(message)")
-            }
         }
+        #endif
     }
     
     /// Outputs the log to the console.

@@ -51,7 +51,7 @@ public class CXDFileUtils {
             let isDirExist = FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
             if isDirExist && isDir.boolValue {}
             else {
-                try FileManager.default.createDirectory(at: URL.init(withFilePath: path), withIntermediateDirectories: true)
+                try FileManager.default.createDirectory(at: URL(fileAtPath: path), withIntermediateDirectories: true)
             }
             return true
         } catch {
@@ -142,7 +142,7 @@ public class CXDFileUtils {
     /// Writes the specified data synchronously to the file handle.
     public class func write(data: Data, atPath path: String) {
         do {
-            let fileHandle = try FileHandle(forUpdating: URL.init(withFilePath: path))
+            let fileHandle = try FileHandle(forUpdating: URL(fileAtPath: path))
             if #available(macOS 10.15.4, iOS 13.4, watchOS 6.2, tvOS 13.4, *) {
                 try fileHandle.seekToEnd()
                 try fileHandle.write(contentsOf: data)
