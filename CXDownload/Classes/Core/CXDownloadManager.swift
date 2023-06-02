@@ -20,13 +20,12 @@ public class CXDownloadManager {
     
     /// The configuration for the download.
     public struct Configuration {
-        public var enableLog: Bool
         /// The max count for the download.
         public var maxDownloadCount: Int
     }
     
     /// Initializes an configuration instance, default log is enabled.
-    public var configuration = Configuration.init(enableLog: true, maxDownloadCount: 1)
+    public var configuration = Configuration(maxDownloadCount: 1)
     
     /// Executes an asynchronous download with the url and some callback closures.
     @discardableResult
