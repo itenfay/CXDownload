@@ -29,20 +29,26 @@ Pod::Spec.new do |s|
     # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
     
     s.swift_versions = ['4.2', '5.0']
-    s.ios.deployment_target = '9.0'
-    s.osx.deployment_target = '10.9'
-    s.tvos.deployment_target = '9.0'
+    s.ios.deployment_target = '10.0'
+    s.osx.deployment_target = '11.0'
+    s.tvos.deployment_target = '10.0'
     s.watchos.deployment_target = "5.0"
     
     s.requires_arc = true
     
+    s.subspec "Base" do |base|
+        base.source_files = 'CXDownload/Classes/Base/*.{swift}'
+        base.requires_arc = true
+    end
+    
     s.subspec "Core" do |core|
-        core.source_files = 'CXDownload/Classes/Core/*'
+        core.source_files = 'CXDownload/Classes/Core/*.{swift}'
+        core.dependency 'CXDownload/Base'
         core.requires_arc = true
     end
     
     s.subspec "Extension" do |ex|
-        ex.source_files = 'CXDownload/Classes/Extension/*'
+        ex.source_files = 'CXDownload/Classes/Extension/*.{swift}'
         ex.dependency 'CXDownload/Core'
         ex.requires_arc = true
     end
