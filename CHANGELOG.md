@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-### 1.0.2 (06/02/2023)
+### 1.0.3 (06/02/2023)
 
-- Add subspec and improve compatibility.
+- Add subspecs and improve compatibility.
 
 ### 0.3.3 (09/01/2022)
 
