@@ -10,17 +10,18 @@
 		32B64FD83371986EBE8661B60C59CA10 /* CXDownload-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F6405A1EE997B58D14C376CD0DACFE6F /* CXDownload-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5271482A910BCEC8C12D5DFBBACF5BE6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		5C6404B1F263A8D6BE3B8954919B91C3 /* Pods-CXDownload_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6524F42EAA445ED137CFD3BCEF09CD71 /* Pods-CXDownload_Tests-dummy.m */; };
-		7912CBD728C095F1008817B0 /* String+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7912CBD628C095F1008817B0 /* String+CXDL.swift */; };
-		7953D87728AE1B9A002DC2AB /* CXDLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87228AE1B9A002DC2AB /* CXDLogger.swift */; };
 		7953D87828AE1B9A002DC2AB /* CXDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87328AE1B9A002DC2AB /* CXDownloadManager.swift */; };
-		7953D87A28AE1B9A002DC2AB /* CXDFileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87528AE1B9A002DC2AB /* CXDFileUtils.swift */; };
 		7953D87B28AE1B9A002DC2AB /* CXDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953D87628AE1B9A002DC2AB /* CXDownloader.swift */; };
-		795BADC928B073BE00901E48 /* DownloadBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BADC828B073BE00901E48 /* DownloadBase.swift */; };
 		795BADCB28B078C500901E48 /* Button+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BADCA28B078C500901E48 /* Button+CXDL.swift */; };
 		795BADCD28B078DB00901E48 /* Label+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BADCC28B078DB00901E48 /* Label+CXDL.swift */; };
 		795BADCF28B0794D00901E48 /* ImageView+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BADCE28B0794D00901E48 /* ImageView+CXDL.swift */; };
 		795BADD128B07E5E00901E48 /* View+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BADD028B07E5E00901E48 /* View+CXDL.swift */; };
-		795D685C2A289B120052B7C4 /* URL+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D685B2A289B120052B7C4 /* URL+CXDL.swift */; };
+		79EAD0BE2A29B65400C463C8 /* CXDTypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAD0BB2A29B65400C463C8 /* CXDTypeAlias.swift */; };
+		79EAD0BF2A29B65400C463C8 /* CXDLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAD0BC2A29B65400C463C8 /* CXDLogger.swift */; };
+		79EAD0C02A29B65400C463C8 /* CXDFileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAD0BD2A29B65400C463C8 /* CXDFileUtils.swift */; };
+		79EAD0C22A29B66500C463C8 /* Download+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAD0C12A29B66500C463C8 /* Download+CXDL.swift */; };
+		79EAD0C52A29BD3C00C463C8 /* String+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAD0C32A29BD3C00C463C8 /* String+CXDL.swift */; };
+		79EAD0C62A29BD3C00C463C8 /* URL+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAD0C42A29BD3C00C463C8 /* URL+CXDL.swift */; };
 		85CBDB2B78C5EF63DC00C85302EE6374 /* Pods-CXDownload_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F1A89E88DDA4266A8D7190795FB87CD /* Pods-CXDownload_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		887A23419018BF3995942C5D67227BC6 /* Pods-CXDownload_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9022941CD461790D15512D02D9C69285 /* Pods-CXDownload_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EFACDEFD806A21A872F752AD5FD69FD /* CXDownload-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C940A0FB562645FC3CA091D1C0A4EBF /* CXDownload-dummy.m */; };
@@ -62,17 +63,18 @@
 		6524F42EAA445ED137CFD3BCEF09CD71 /* Pods-CXDownload_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-CXDownload_Tests-dummy.m"; sourceTree = "<group>"; };
 		68967142DA717ACEF4611196240D91EA /* CXDownload.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CXDownload.modulemap; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		7912CBD628C095F1008817B0 /* String+CXDL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+CXDL.swift"; sourceTree = "<group>"; };
-		7953D87228AE1B9A002DC2AB /* CXDLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDLogger.swift; sourceTree = "<group>"; };
 		7953D87328AE1B9A002DC2AB /* CXDownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDownloadManager.swift; sourceTree = "<group>"; };
-		7953D87528AE1B9A002DC2AB /* CXDFileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDFileUtils.swift; sourceTree = "<group>"; };
 		7953D87628AE1B9A002DC2AB /* CXDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDownloader.swift; sourceTree = "<group>"; };
-		795BADC828B073BE00901E48 /* DownloadBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadBase.swift; sourceTree = "<group>"; };
 		795BADCA28B078C500901E48 /* Button+CXDL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+CXDL.swift"; sourceTree = "<group>"; };
 		795BADCC28B078DB00901E48 /* Label+CXDL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+CXDL.swift"; sourceTree = "<group>"; };
 		795BADCE28B0794D00901E48 /* ImageView+CXDL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageView+CXDL.swift"; sourceTree = "<group>"; };
 		795BADD028B07E5E00901E48 /* View+CXDL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CXDL.swift"; sourceTree = "<group>"; };
-		795D685B2A289B120052B7C4 /* URL+CXDL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+CXDL.swift"; sourceTree = "<group>"; };
+		79EAD0BB2A29B65400C463C8 /* CXDTypeAlias.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDTypeAlias.swift; sourceTree = "<group>"; };
+		79EAD0BC2A29B65400C463C8 /* CXDLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDLogger.swift; sourceTree = "<group>"; };
+		79EAD0BD2A29B65400C463C8 /* CXDFileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDFileUtils.swift; sourceTree = "<group>"; };
+		79EAD0C12A29B66500C463C8 /* Download+CXDL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Download+CXDL.swift"; sourceTree = "<group>"; };
+		79EAD0C32A29BD3C00C463C8 /* String+CXDL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+CXDL.swift"; sourceTree = "<group>"; };
+		79EAD0C42A29BD3C00C463C8 /* URL+CXDL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+CXDL.swift"; sourceTree = "<group>"; };
 		7B91105F8F43EDCB651EAEAC521518B7 /* Pods_CXDownload_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CXDownload_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BF9BBBCA5CB1F7F8FA6F6E46DEE897C /* CXDownload.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CXDownload.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C461668FE8B3C8E33727F3FDD33193A /* CXDownload.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CXDownload.debug.xcconfig; sourceTree = "<group>"; };
@@ -189,8 +191,6 @@
 		7953D86728AE1B8B002DC2AB /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				7953D87528AE1B9A002DC2AB /* CXDFileUtils.swift */,
-				7953D87228AE1B9A002DC2AB /* CXDLogger.swift */,
 				7953D87628AE1B9A002DC2AB /* CXDownloader.swift */,
 				7953D87328AE1B9A002DC2AB /* CXDownloadManager.swift */,
 			);
@@ -202,15 +202,26 @@
 			isa = PBXGroup;
 			children = (
 				795BADCA28B078C500901E48 /* Button+CXDL.swift */,
-				795BADC828B073BE00901E48 /* DownloadBase.swift */,
+				79EAD0C12A29B66500C463C8 /* Download+CXDL.swift */,
 				795BADCE28B0794D00901E48 /* ImageView+CXDL.swift */,
 				795BADCC28B078DB00901E48 /* Label+CXDL.swift */,
-				7912CBD628C095F1008817B0 /* String+CXDL.swift */,
-				795D685B2A289B120052B7C4 /* URL+CXDL.swift */,
 				795BADD028B07E5E00901E48 /* View+CXDL.swift */,
 			);
 			name = Extension;
 			path = CXDownload/Classes/Extension;
+			sourceTree = "<group>";
+		};
+		79EAD0BA2A29B65400C463C8 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				79EAD0BD2A29B65400C463C8 /* CXDFileUtils.swift */,
+				79EAD0BC2A29B65400C463C8 /* CXDLogger.swift */,
+				79EAD0BB2A29B65400C463C8 /* CXDTypeAlias.swift */,
+				79EAD0C32A29BD3C00C463C8 /* String+CXDL.swift */,
+				79EAD0C42A29BD3C00C463C8 /* URL+CXDL.swift */,
+			);
+			name = Base;
+			path = CXDownload/Classes/Base;
 			sourceTree = "<group>";
 		};
 		873FBFA82F1A1A403345432896FE2F73 /* Targets Support Files */ = {
@@ -244,6 +255,7 @@
 		DCC66C88CBBAE1A55CBA1EEFDA1EECA8 /* CXDownload */ = {
 			isa = PBXGroup;
 			children = (
+				79EAD0BA2A29B65400C463C8 /* Base */,
 				7953D86728AE1B8B002DC2AB /* Core */,
 				795BADC728B0738700901E48 /* Extension */,
 				2D692E5DCECDAAEE3E58CBFBF35D28BC /* Pod */,
@@ -428,18 +440,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7953D87A28AE1B9A002DC2AB /* CXDFileUtils.swift in Sources */,
 				7953D87828AE1B9A002DC2AB /* CXDownloadManager.swift in Sources */,
-				795D685C2A289B120052B7C4 /* URL+CXDL.swift in Sources */,
-				7953D87728AE1B9A002DC2AB /* CXDLogger.swift in Sources */,
+				79EAD0C02A29B65400C463C8 /* CXDFileUtils.swift in Sources */,
 				795BADD128B07E5E00901E48 /* View+CXDL.swift in Sources */,
-				795BADC928B073BE00901E48 /* DownloadBase.swift in Sources */,
 				795BADCF28B0794D00901E48 /* ImageView+CXDL.swift in Sources */,
-				7912CBD728C095F1008817B0 /* String+CXDL.swift in Sources */,
+				79EAD0C52A29BD3C00C463C8 /* String+CXDL.swift in Sources */,
+				79EAD0C22A29B66500C463C8 /* Download+CXDL.swift in Sources */,
 				8EFACDEFD806A21A872F752AD5FD69FD /* CXDownload-dummy.m in Sources */,
+				79EAD0BE2A29B65400C463C8 /* CXDTypeAlias.swift in Sources */,
 				795BADCB28B078C500901E48 /* Button+CXDL.swift in Sources */,
+				79EAD0BF2A29B65400C463C8 /* CXDLogger.swift in Sources */,
 				795BADCD28B078DB00901E48 /* Label+CXDL.swift in Sources */,
 				7953D87B28AE1B9A002DC2AB /* CXDownloader.swift in Sources */,
+				79EAD0C62A29BD3C00C463C8 /* URL+CXDL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
