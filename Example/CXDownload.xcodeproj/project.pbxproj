@@ -478,7 +478,7 @@
 			baseConfigurationReference = F0DA02FF373675C4432FFE12 /* Pods-CXDownload_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 0601;
+				CURRENT_PROJECT_VERSION = 0602;
 				INFOPLIST_FILE = CXDownload/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -497,7 +497,7 @@
 			baseConfigurationReference = C09F599F40D911B084FE0FFD /* Pods-CXDownload_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 0601;
+				CURRENT_PROJECT_VERSION = 0602;
 				INFOPLIST_FILE = CXDownload/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
