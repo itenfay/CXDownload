@@ -26,8 +26,10 @@ extension CXDownloadBase where T : CXDButton {
     {
         return CXDownloadManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { [weak _base = self.base] _progress in
             let _progress_ = Int(_progress * 100)
+            #if !os(macOS)
             _base?.isSelected = false
             _base?.setTitle("\(_progress_)%", for: .normal)
+            #endif
             progress(_progress_)
         }, success: { filePath in
             success(filePath)
