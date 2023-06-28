@@ -44,6 +44,11 @@ public class CXDFileUtils {
         return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
     }
     
+    /// Returns the path of the caches directory for the current user.
+    public class func cachesDirectory() -> String {
+        return NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
+    }
+    
     /// Creates a directory at the specified path.
     public class func createDirectory(atPath path: String) -> Bool {
         do {
@@ -81,17 +86,17 @@ public class CXDFileUtils {
         return nil
     }
     
-    /// Returns a destination file path by the url, directory, custom file name.
+    /// Returns a destination file path by the remote url, directory, custom file name.
     public class func filePath(withURL url: URL, at directory: String? = nil, using customFileName: String? = nil) -> String {
         var cachePath: URL?
-        if let _directory = directory, !_directory.isEmpty {
-            cachePath = self.cachePath(withPathComponent: _directory)
+        if let dir = directory, !dir.isEmpty {
+            cachePath = self.cachePath(withPathComponent: dir)
         } else {
             cachePath = self.cachePath()
         }
         var filePathURL: URL?
-        if let _customFileName = customFileName, !_customFileName.isEmpty {
-            filePathURL = cachePath?.appendingPathComponent(_customFileName)
+        if let cFileName = customFileName, !cFileName.isEmpty {
+            filePathURL = cachePath?.appendingPathComponent(cFileName)
         } else {
             let fileName = self.fileName(url)
             let fileExt = self.pathExtension(url)

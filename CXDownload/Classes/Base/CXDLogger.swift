@@ -28,10 +28,10 @@ public struct CXDLogger {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
         let dateString = dateFormatter.string(from: Date())
         #if DEBUG
-        print("\(dateString) \(prefix) [CXD] [\(level.description)] \(message)")
+        print("\(dateString) [\(level.description)] \(prefix) [CXD] \(message)")
         #else
         if level == .debug {
-            print("\(dateString) \(prefix) [CXD] [\(level.description)] \(message)")
+            print("\(dateString) [\(level.description)] \(prefix) [CXD] \(message)")
         }
         #endif
     }
