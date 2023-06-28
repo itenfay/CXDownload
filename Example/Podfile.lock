@@ -1,16 +1,33 @@
 PODS:
-  - CXDownload (1.0.0)
+  - CXDownload (1.0.3):
+    - CXDownload/Base (= 1.0.3)
+    - CXDownload/Core (= 1.0.3)
+    - CXDownload/Extension (= 1.0.3)
+  - CXDownload/Base (1.0.3)
+  - CXDownload/Core (1.0.3):
+    - CXDownload/Base
+  - CXDownload/Extension (1.0.3):
+    - CXDownload/Core
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
 
 DEPENDENCIES:
   - CXDownload (from `../`)
+  - FMDB
+
+SPEC REPOS:
+  https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
+    - FMDB
 
 EXTERNAL SOURCES:
   CXDownload:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CXDownload: 32cc69685d4452026de67ec7271d699c61538435
+  CXDownload: 9c0e528c8392691ccf00c6585e0226fbd4f48875
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
 
-PODFILE CHECKSUM: 26f63c5f854cfbe461c0b8a230da07b476f2cbfd
+PODFILE CHECKSUM: d164793d35d24b53b6ddff2c93939b057b77987a
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.3
