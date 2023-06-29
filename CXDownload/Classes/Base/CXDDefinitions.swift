@@ -1,5 +1,5 @@
 //
-//  CXDTypeAlias.swift
+//  CXDDefinitions.swift
 //  CXDownload
 //
 //  Created by chenxing on 2022/8/20.

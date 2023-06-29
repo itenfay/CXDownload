@@ -7,16 +7,39 @@
 
 import Foundation
 
+/// The state for the download.
+@objc public enum CXDownloadState: Int, CustomStringConvertible {
+    // Represents download state.
+    case downloading, waiting, paused, cancelled, finish, error
+    
+    public var description: String {
+        switch self {
+        case .downloading: return "Downloading"
+        case .waiting: return "Waiting"
+        case .paused: return "Paused"
+        case .cancelled: return "Cancelled"
+        case .finish: return "Finish"
+        case .error: return "Error"
+        }
+    }
+}
+
+typealias ProgressClosure = (_ progress: Float) -> Void
+typealias SuccessClosure = (_ filePath: String) -> Void
+typealias FailureClosure = (_ code: Int, _ message: String) -> Void
+typealias FinishClosure = (_ url: String) -> Void
+typealias StateChangeClosure = (_ state: CXDownloadState) -> Void
+
 public class CXDownloadManager {
     
     /// Returns a singleton instance.
-    public static let shared = CXDownloadManager.init()
+    public static let shared = CXDownloadManager()
     
     /// Privatizes the constructor.
     private init() {}
     
     /// The dictionary stores the downloader.
-    private var downloaderDict: [String : CXDownloader] = [:]
+    private var downloaderDict: [String : CXDownloadProcessor] = [:]
     
     /// The configuration for the download.
     public struct Configuration {
@@ -29,7 +52,7 @@ public class CXDownloadManager {
     
     /// Executes an asynchronous download with the url and some callback closures.
     @discardableResult
-    public func asyncDownload(url: String, progress: @escaping CXDownloader.ProgressClosure, success: @escaping CXDownloader.SuccessClosure, failure: @escaping CXDownloader.FailureClosure) -> CXDownloader? {
+    public func download(url: String, progress: @escaping ProgressClosure, success: @escaping SuccessClosure, failure: @escaping FailureClosure) -> CXDownloader? {
         guard let urlSha2 = url.cxd_sha2, !urlSha2.isEmpty else {
             CXDLogger.log(message: "The url md5 is empty.", level: .info)
             failure(CXDownloader.DownloadError.error(code: -1999, message: "The url md5 is empty."))
@@ -59,7 +82,7 @@ public class CXDownloadManager {
     
     /// Executes an asynchronous download with the url and some callback closures.
     @discardableResult
-    public func asyncDownload(url: String, customDirectory: String?, customFileName: String?, progress: @escaping CXDownloader.ProgressClosure, success: @escaping CXDownloader.SuccessClosure, failure: @escaping CXDownloader.FailureClosure) -> CXDownloader? {
+    public func download(url: String, customDirectory: String?, customFileName: String?, progress: @escaping CXDownloader.ProgressClosure, success: @escaping CXDownloader.SuccessClosure, failure: @escaping CXDownloader.FailureClosure) -> CXDownloader? {
         guard let urlSha2 = url.cxd_sha2, !urlSha2.isEmpty else {
             CXDLogger.log(message: "The url md5 is empty.", level: .info)
             failure(CXDownloader.DownloadError.error(code: -1999, message: "The url md5 is empty."))
