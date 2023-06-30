@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class CXDFileUtils {
+@objcMembers public class CXDFileUtils: NSObject {
     
     /// The path extension of the URL, or an empty string if the path is an empty string.
     public class func pathExtension(_ url: URL) -> String {
