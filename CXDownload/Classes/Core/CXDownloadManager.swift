@@ -59,6 +59,7 @@ public class CXDownloadManager: NSObject {
     /// Whether to allow cellular network download.
     public var allowsCellularAccess: Bool = false
     
+    /// Sends the specified string("NotReachable", "ReachableViaWWAN" or "ReachableViaWiFi") by notification.object.
     private var networkReachabilityStatus: String = ""
     private var queue: OperationQueue!
     private var session: URLSession!
@@ -224,7 +225,14 @@ extension CXDownloadManager {
     }
     
     @objc private func networkingReachabilityDidChange(_ notification: Notification) {
-        
+        networkReachabilityStatus = (notification.object as? String) ?? ""
+    }
+    
+    private func networkingAllowsDownloadTask() -> Bool {
+        if networkReachabilityStatus == "" || networkReachabilityStatus == "NotReachable" || (networkReachabilityStatus == "ReachableViaWWAN" && !allowsCellularAccess) {
+            return false
+        }
+        return true
     }
     
 }
