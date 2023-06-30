@@ -10,6 +10,11 @@ import Foundation
 import FMDB
 #endif
 
+@objcMembers public class CXDownloadStateInfo: NSObject {
+    public var code: Int = 0
+    public var message: String = ""
+}
+
 @objcMembers public class CXDownloadModel: NSObject {
     /// The identifier of file.
     public var fid: String?
@@ -17,6 +22,8 @@ import FMDB
     public var fileName: String?
     /// The url of file.
     public var url: String?
+    /// The local path of file.
+    public var localPath: String?
     /// The total size of file.
     public var totalFileSize: Int64 = 0
     /// The resumed size of file.
@@ -27,6 +34,8 @@ import FMDB
     public var speed: Int = 0
     /// The state for the download.
     public var state: CXDownloadState = .waiting
+    /// The state information for the download.
+    public var stateInfo: CXDownloadStateInfo?
     /// The last timestamp for calculating speed.
     public var lastSpeedTime: TimeInterval = 0
     /// The file size of speed time.
