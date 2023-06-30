@@ -9,7 +9,7 @@ import Foundation
 #if canImport(FMDB)
 import FMDB
 
-enum CXDBGetDataOption: Int {
+enum CXDBGetDataType: Int {
     case allCacheData           // Get all cache data.
     case allDownloadingData     // Get all downloading data.
     case allDownloadedData      // Get all downloaded data.
@@ -37,22 +37,17 @@ struct CXDBUpdateOption: OptionSet {
     static let allParam = CXDBUpdateOption(rawValue: 1 << 3)
 }
 
-class CXDownloadDatabaseManager {
+public class CXDownloadDatabaseManager: NSObject {
     
-    static let shared = CXDownloadDatabaseManager()
+    @objc public static let shared = CXDownloadDatabaseManager()
     
     private var dbQueue: FMDatabaseQueue!
     /// Represents the table is created.
     private var tableCreated: Bool = false
     
-    private var stateChangedHandler: ((CXDownloadModel) -> Void)?
-    
-    private init() {
+    private override init() {
+        super.init()
         self.createTable()
-    }
-    
-    func observeState(handler: @escaping (CXDownloadModel) -> Void) {
-        stateChangedHandler = handler
     }
     
     /// Create a table.
@@ -63,7 +58,7 @@ class CXDownloadDatabaseManager {
         dbQueue = FMDatabaseQueue(path: path)
         
         dbQueue.inDatabase { db in
-            let sql = "CREATE TABLE IF NOT EXISTS t_fileCaches (id integer PRIMARY KEY AUTOINCREMENT, fid text, fileName text, url text, hashCode text, totalFileSize integer, tmpFileSize integer, state integer, progress float, lastSpeedTime double, intervalFileSize integer, lastStateTime integer);"
+            let sql = "CREATE TABLE IF NOT EXISTS t_fileCaches (id integer PRIMARY KEY AUTOINCREMENT, fid text, fileName text, url text, totalFileSize integer, tmpFileSize integer, state integer, progress float, lastSpeedTime double, intervalFileSize integer, lastStateTime integer);"
             do {
                 try db.executeUpdate(sql, values: nil)
                 tableCreated = true
@@ -78,9 +73,9 @@ class CXDownloadDatabaseManager {
     func insertModel(_ model: CXDownloadModel) {
         guard tableCreated else { return }
         dbQueue.inDatabase { db in
-            let sql = "INSERT INTO t_fileCaches (fid, fileName, url, hashCode, totalFileSize, tmpFileSize, state, progress, lastSpeedTime, intervalFileSize, lastStateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+            let sql = "INSERT INTO t_fileCaches (fid, fileName, url, totalFileSize, tmpFileSize, state, progress, lastSpeedTime, intervalFileSize, lastStateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
             do {
-                try db.executeUpdate(sql, values: [model.fid ?? "", model.fileName ?? "", model.url ?? "", model.hashCode ?? "", model.totalFileSize, model.tmpFileSize, model.state.rawValue, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
+                try db.executeUpdate(sql, values: [model.fid ?? "", model.fileName ?? "", model.url ?? "", model.totalFileSize, model.tmpFileSize, model.state.rawValue, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
                 CXDLogger.log(message: "Inserting data is successful.", level: .info)
             } catch {
                 CXDLogger.log(message: "Insert data: \(error.localizedDescription)", level: .error)
@@ -89,16 +84,16 @@ class CXDownloadDatabaseManager {
     }
     
     func getModel(by url: String) -> CXDownloadModel? {
-        return getModel(with: CXDBGetDataOption.modelByUrl, url: url)
+        return getModel(with: CXDBGetDataType.modelByUrl, url: url)
     }
     
-    func getModel(with option: CXDBGetDataOption, url: String) -> CXDownloadModel? {
+    func getModel(with dataType: CXDBGetDataType, url: String) -> CXDownloadModel? {
         guard tableCreated else { return nil }
         var model: CXDownloadModel?
         dbQueue.inDatabase { db in
             do {
                 var resultSet: FMResultSet!
-                switch option {
+                switch dataType {
                 case .modelByUrl:
                     resultSet = try db.executeQuery("SELECT * FROM t_fileCaches WHERE url = ?;", values: [url])
                 case .waitingModel:
@@ -131,7 +126,7 @@ class CXDownloadDatabaseManager {
     }
     
     /// Gets the all cache data.
-    func getAllCacheData() -> [CXDownloadModel] {
+    @objc public func getAllCacheData() -> [CXDownloadModel] {
         return getModels(with: .allCacheData)
     }
     
@@ -141,12 +136,12 @@ class CXDownloadDatabaseManager {
     }
     
     /// Gets the all downloaded data.
-    func getAllDownloadedData() -> [CXDownloadModel] {
+    @objc public func getAllDownloadedData() -> [CXDownloadModel] {
         return getModels(with: .allDownloadedData)
     }
     
     /// Gets the all undownloaded data.
-    func getAllUnDownloadedData() -> [CXDownloadModel] {
+    @objc public func getAllUnDownloadedData() -> [CXDownloadModel] {
         return getModels(with: .allUnDownloadedData)
     }
     
@@ -155,12 +150,12 @@ class CXDownloadDatabaseManager {
         return getModels(with: .allWaitingData)
     }
     
-    func getModels(with option: CXDBGetDataOption) -> [CXDownloadModel] {
+    func getModels(with dataType: CXDBGetDataType) -> [CXDownloadModel] {
         var dataArray: [CXDownloadModel] = []
         guard tableCreated else { return dataArray }
         dbQueue.inDatabase { db in
             var resultSet: FMResultSet!
-            switch option {
+            switch dataType {
             case .allCacheData:
                 resultSet = try? db.executeQuery("SELECT * FROM t_fileCaches;", values: nil)
             case .allDownloadingData:
@@ -191,7 +186,7 @@ class CXDownloadDatabaseManager {
                 return
             }
             if option.contains(.state) {
-                self?.onStateChangedCallback(with: db, model: model)
+                self?.postStateChangeNotification(with: db, model: model)
                 try? db.executeUpdate("UPDATE t_fileCaches SET state = ? WHERE url = ?;", values: [model.state.rawValue, url])
             }
             if option.contains(.lastStateTime) {
@@ -201,13 +196,13 @@ class CXDownloadDatabaseManager {
                 try? db.executeUpdate("UPDATE t_fileCaches SET totalFileSize = ?, tmpFileSize = ?, progress = ?, lastSpeedTime = ?, intervalFileSize = ? WHERE url = ?;", values: [model.totalFileSize, model.tmpFileSize, model.progress, model.lastSpeedTime, model.intervalFileSize, url])
             }
             if option.contains(.allParam) {
-                self?.onStateChangedCallback(with: db, model: model)
+                self?.postStateChangeNotification(with: db, model: model)
                 try? db.executeUpdate("UPDATE t_fileCaches SET totalFileSize = ?, tmpFileSize = ?, progress = ?, state = ?, lastSpeedTime = ?, intervalFileSize = ?, lastStateTime = ? WHERE url = ?;", values: [model.totalFileSize, model.tmpFileSize, model.progress, model.state, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime, url])
             }
         }
     }
     
-    private func onStateChangedCallback(with db: FMDatabase, model: CXDownloadModel) {
+    private func postStateChangeNotification(with db: FMDatabase, model: CXDownloadModel) {
         guard let url  = model.url else { return }
         guard let rs = try? db.executeQuery("SELECT state FROM t_fileCaches WHERE url = ?;", values: [url]) else {
             return
@@ -216,8 +211,8 @@ class CXDownloadDatabaseManager {
         while rs.next() {
             oldState = CXDownloadState(rawValue: rs.long(forColumn: "state"))
         }
-        if let oState = oldState, oState != .finish {
-            stateChangedHandler?(model)
+        if let oState = oldState, oldState != model.state, oState != .finish {
+            NotificationCenter.default.post(name: CXDownloadConfig.stateChangeNotification, object: model)
         }
     }
     
