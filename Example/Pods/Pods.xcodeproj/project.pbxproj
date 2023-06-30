@@ -26,11 +26,10 @@
 		6011E4D66F10BFF8D11D40D96C599134 /* Download+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E210AD374AB95331D8822B7A22B2CDF /* Download+CXDL.swift */; };
 		73C10CDFEAC1F11878A7B3AD41B9907C /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = B9ABAC87F0D8409475F68A59DD49201C /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		77BFEC0CB11BC106F2C8251E2E5D8578 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4D247B56F3C354FB04D528D1587258 /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		7959EA932A4D1202007F3FC9 /* CXDownloadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7959EA902A4D1202007F3FC9 /* CXDownloadProcessor.swift */; };
+		7959EA932A4D1202007F3FC9 /* CXDownloadTaskProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7959EA902A4D1202007F3FC9 /* CXDownloadTaskProcessor.swift */; };
 		7959EA942A4D1202007F3FC9 /* CXDownloadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7959EA912A4D1202007F3FC9 /* CXDownloadModel.swift */; };
 		7959EA952A4D1202007F3FC9 /* CXDownloadDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7959EA922A4D1202007F3FC9 /* CXDownloadDatabaseManager.swift */; };
 		797760BC2A4BE139000684F0 /* FMDB in Frameworks */ = {isa = PBXBuildFile; fileRef = A3A80BA70CFB7F75C5391BEBBBA8C9DA /* FMDB */; };
-		7C55D68501FD20C88BFBD116C9A8AC7E /* CXDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB81255E5C94BA08EFD63FBEC47AC5DF /* CXDownloader.swift */; };
 		7FC8ADF759D465DCD354901C52AE5162 /* URLEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15FA60CFD89E05064A43E8000778AB1 /* URLEx.swift */; };
 		8246D862087C7890593899AEA5898697 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = D8F518F5CE26E4D5B0AF64A54ADA4187 /* FMResultSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8D4AD353F950B32D364F9832B43466A1 /* CXDDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878458C15B659ACCB681A64AB1283A1 /* CXDDefinitions.swift */; };
@@ -102,7 +101,7 @@
 		6E11987375DB4C73E96E3F80D700602B /* CXDownload.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = CXDownload.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6E210AD374AB95331D8822B7A22B2CDF /* Download+CXDL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Download+CXDL.swift"; path = "CXDownload/Classes/Extension/Download+CXDL.swift"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		7959EA902A4D1202007F3FC9 /* CXDownloadProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CXDownloadProcessor.swift; path = CXDownload/Classes/Core/CXDownloadProcessor.swift; sourceTree = "<group>"; };
+		7959EA902A4D1202007F3FC9 /* CXDownloadTaskProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CXDownloadTaskProcessor.swift; path = CXDownload/Classes/Core/CXDownloadTaskProcessor.swift; sourceTree = "<group>"; };
 		7959EA912A4D1202007F3FC9 /* CXDownloadModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CXDownloadModel.swift; path = CXDownload/Classes/Core/CXDownloadModel.swift; sourceTree = "<group>"; };
 		7959EA922A4D1202007F3FC9 /* CXDownloadDatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CXDownloadDatabaseManager.swift; path = CXDownload/Classes/Core/CXDownloadDatabaseManager.swift; sourceTree = "<group>"; };
 		7B91105F8F43EDCB651EAEAC521518B7 /* Pods-CXDownload_Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-CXDownload_Tests"; path = Pods_CXDownload_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,7 +124,6 @@
 		D7675B55C1BE46C7D3D375F223CE119D /* FMDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = src/fmdb/FMDatabase.m; sourceTree = "<group>"; };
 		D7735B8EBC221831E4D2A62D56D34CD4 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = src/fmdb/FMDatabaseQueue.h; sourceTree = "<group>"; };
 		D8F518F5CE26E4D5B0AF64A54ADA4187 /* FMResultSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = src/fmdb/FMResultSet.h; sourceTree = "<group>"; };
-		DB81255E5C94BA08EFD63FBEC47AC5DF /* CXDownloader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CXDownloader.swift; path = CXDownload/Classes/Core/CXDownloader.swift; sourceTree = "<group>"; };
 		DDB84D9A0F15E735FC534A12711BC72D /* FMDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FMDB-prefix.pch"; sourceTree = "<group>"; };
 		DFADDA2B7A0A413E2234057A047C81D7 /* CXDownload-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CXDownload-umbrella.h"; sourceTree = "<group>"; };
 		DFC7FCB163982668F35644CC9927F08C /* FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FMDB-dummy.m"; sourceTree = "<group>"; };
@@ -263,10 +261,9 @@
 			isa = PBXGroup;
 			children = (
 				7959EA922A4D1202007F3FC9 /* CXDownloadDatabaseManager.swift */,
-				DB81255E5C94BA08EFD63FBEC47AC5DF /* CXDownloader.swift */,
 				8511777C112398161ECCF67EEF3237E5 /* CXDownloadManager.swift */,
 				7959EA912A4D1202007F3FC9 /* CXDownloadModel.swift */,
-				7959EA902A4D1202007F3FC9 /* CXDownloadProcessor.swift */,
+				7959EA902A4D1202007F3FC9 /* CXDownloadTaskProcessor.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -593,12 +590,11 @@
 				9E1FC3877F80303A90262BA133493DE9 /* CXDFileUtils.swift in Sources */,
 				C7F01118E1D834EA7D37541373D9C2AC /* CXDLogger.swift in Sources */,
 				E7ACDD9E79A60795B216CEC395CF4049 /* CXDownload-dummy.m in Sources */,
-				7C55D68501FD20C88BFBD116C9A8AC7E /* CXDownloader.swift in Sources */,
 				AD471783641540A6FA093332946EDB89 /* CXDownloadManager.swift in Sources */,
 				8D4AD353F950B32D364F9832B43466A1 /* CXDDefinitions.swift in Sources */,
 				6011E4D66F10BFF8D11D40D96C599134 /* Download+CXDL.swift in Sources */,
 				B0B23F9EF7DBB3ACED910B05FB2FA11F /* ImageView+CXDL.swift in Sources */,
-				7959EA932A4D1202007F3FC9 /* CXDownloadProcessor.swift in Sources */,
+				7959EA932A4D1202007F3FC9 /* CXDownloadTaskProcessor.swift in Sources */,
 				291552997E18B4F36E97480F481C7EA9 /* Label+CXDL.swift in Sources */,
 				7959EA942A4D1202007F3FC9 /* CXDownloadModel.swift in Sources */,
 				EBF8392D6A0AF857E6ADCA8F29D92388 /* StringEx.swift in Sources */,
