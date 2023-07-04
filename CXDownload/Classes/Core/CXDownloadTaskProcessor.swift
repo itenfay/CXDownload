@@ -9,6 +9,8 @@ import Foundation
 
 protocol ICXDownloadTaskProcessor {
     var urlSession: URLSession? { get set }
+    var url: String? { get }
+    var state: CXDownloadState { get set }
 }
 
 class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
@@ -18,25 +20,30 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
     private var failureCallback: CXDownloadCallback?
     private var finishCallback: CXDownloadCallback?
     
-    private(set) var urlString: String!
-    /// The progress is 0..1.
-    private(set) var progress: Float = 0
-    
     private var resumedFileSize: Int64 = 0
     /// The destination file path.
     private var dstPath: String = ""
     /// The temp file path.
     private var tmpPath: String = ""
     
-    private(set) var customDirectory: String?
-    private(set) var customFileName: String?
+    private(set) var atDirectory: String?
+    private(set) var fileName: String?
     
+    private var autoCancelled: Bool = false
     private let model: CXDownloadModel
     private var outputStream: OutputStream?
     private var dataTask: URLSessionDataTask?
+    
     weak var urlSession: URLSession?
     
-    private(set) var state: CXDownloadState = .waiting
+    var url: String? { model.url }
+    
+    var state: CXDownloadState {
+        get { model.state }
+        set {
+            model.state = newValue
+        }
+    }
     
     /// Initializes the some required parameters.
     init(
@@ -47,94 +54,128 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         finish: CXDownloadCallback?)
     {
         self.model = model
-        self.urlString = model.url
         self.progressCallback = progess
         self.successCallback = success
         self.failureCallback = failure
         self.finishCallback = finish
-        self.state = .waiting
     }
     
-    /// Initializes the model, custom directory, custom file name and some other required parameters.
+    /// Initializes the model, target directory, custom file name and some other required parameters.
     convenience init(
         model: CXDownloadModel,
-        customDirectory: String?,
-        customFileName: String?,
+        atDirectory: String?,
+        fileName: String?,
         progess: CXDownloadCallback?,
         success: CXDownloadCallback?,
         failure: CXDownloadCallback?,
         finish: CXDownloadCallback?)
     {
         self.init(model: model, progess: progess, success: success, failure: failure, finish: finish)
-        self.customDirectory = customDirectory
-        self.customFileName = customFileName
+        self.atDirectory = atDirectory
+        self.fileName = fileName
+    }
+    
+    func updateStateAsWaiting() {
+        state = .waiting
+        model.lastStateTime = Int64(CXDToolbox.getTimestampWithDate(Date()))
+        CXDownloadDatabaseManager.shared.updateModel(model, option: [.state, .lastStateTime])
     }
     
     /// Resumes the current data task.
     func resumeTask() {
         if dataTask != nil && state == .paused {
-            dataTask?.resume()
+            // The state that represents the task is downloading.
             state = .downloading
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+            // Resumes the data task.
+            dataTask?.resume()
         }
     }
     
     /// Pauses the current data task.
     func pauseTask() {
         if dataTask != nil && state == .downloading {
-            dataTask?.suspend()
             state = .paused
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+            dataTask?.suspend()
         }
     }
     
     /// Cancels the current data task.
     func cancelTask() {
         if dataTask != nil {
-            dataTask?.cancel()
+            autoCancelled = false
             state = .cancelled
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+            dataTask?.cancel()
         }
     }
     
-    /// Schedules a block asynchronously for execution on main thread.
-    private func execOnMainThread(block: @escaping () -> Void) {
-        DispatchQueue.main.async(execute: block)
+    func autoCancel() {
+        autoCancelled = true
+        dataTask?.cancel()
     }
     
-    /// Schedules a block asynchronously for execution after delay.
-    private func asyncExec(afterDelay delay: TimeInterval = 0.2, block: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: block)
+    private func finishTask() {
+        finishCallback?(model)
+    }
+    
+    private func getRequestURL() -> URL? {
+        // This has been verified before invoking download's API.
+        //guard let urlString = model.url, let url = URL(string: urlString) else {
+        //    CXDLogger.log(message: "The url is invalid.", level: .info)
+        //    state = .error
+        //    let stateInfo = CXDownloadStateInfo()
+        //    stateInfo.code = -2000
+        //    stateInfo.message = "The url is invalid"
+        //    model.stateInfo = stateInfo
+        //    CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+        //    runOnMainThread {
+        //        self.failureCallback?(self.model)
+        //    }
+        //    finishTask()
+        //    return
+        //}
+        return URL(string: model.url!)
     }
     
     func process() {
-        guard let url = URL.init(string: urlString) else {
-            CXDLogger.log(message: "The url is empty.", level: .info)
-            execOnMainThread {
-                self.failureCallback?(-2000, "The url is empty.")
-            }
-            state = .error
-            return
-        }
+        let url = getRequestURL()!
         CXDLogger.log(message: "url: \(url)", level: .info)
         
-        // The current data task exists.
-        if url == dataTask?.originalRequest?.url {
-            CXDLogger.log(message: "The current data task exists.", level: .info)
-            // If the download state is pause, resume the data task.
-            if state == .paused {
-                resumeTask()
+        if dataTask != nil {
+            // If the current data task exists.
+            if let req = dataTask!.originalRequest, url == req.url {
+                // If the download state is paused, resume the data task.
+                if state == .paused {
+                    resumeTask()
+                    return
+                }
+            } else {
+                if state == .paused {
+                    resumeTask()
+                    return
+                }
             }
-            return
         }
         
+        prepareToDownload(url)
+    }
+    
+    private func prepareToDownload(_ url: URL) {
         // The dest file exists, this that indicates the download was completed.
-        dstPath = CXDFileUtils.filePath(withURL: url, at: customDirectory, using: customFileName)
+        dstPath = CXDFileUtils.filePath(withURL: url, atDirectory: atDirectory, fileName: fileName)
         CXDLogger.log(message: "DstPath: \(dstPath)", level: .info)
         if CXDFileUtils.fileExists(atPath: dstPath) {
-            progress = 1.0
-            execOnMainThread {
-                //self.progressCallback?(self.progress)
-                //self.successCallback?(self.dstPath)
-            }
             state = .finish
+            model.progress = 1.0
+            model.localPath = dstPath
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
+            runOnMainThread {
+                self.progressCallback?(self.model)
+                self.successCallback?(self.model)
+            }
+            finishTask()
             return
         }
         
@@ -157,34 +198,37 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         var urlRequest = URLRequest.init(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
         let requestRange = String(format: "bytes=%llu-", offset)
         urlRequest.setValue(requestRange, forHTTPHeaderField: "Range")
-        self.dataTask = urlSession?.dataTask(with: urlRequest)
-        self.state = .paused
-        self.resumeTask()
+        dataTask = urlSession?.dataTask(with: urlRequest)
+        // Adds an app-provided string value for the current task.
+        dataTask?.taskDescription = model.url
+        
+        // The state that represents the task is downloading.
+        state = .downloading
+        CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+        
+        // Resume the data task
+        dataTask?.resume()
     }
     
     /// Removes the temp file.
-    func removeTempFile() {
+    private func removeTempFile() {
         CXDFileUtils.removeFile(atPath: tmpPath)
     }
     
-    /// Invalidates the session, allowing any outstanding tasks to finish.
-    //func finishTasksAndInvalidateSession() {
-    //    urlSession?.finishTasksAndInvalidate()
-    //}
-    
-    /// Cancels all outstanding tasks and then invalidates the session.
-    //func invalidateSessionAndCancelTasks() {
-    //    urlSession?.invalidateAndCancel()
-    //}
-    
     func processSession(dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         guard let resp = response as? HTTPURLResponse else {
-            CXDLogger.log(message: "The http url response is empty.", level: .info)
-            execOnMainThread {
-                self.failureCallback?(-2001, "The http url response is empty.")
-            }
-            state = .error
+            CXDLogger.log(message: "Fail to convert URLResponse to HTTPURLResponse.", level: .info)
             completionHandler(.cancel)
+            state = .error
+            let stateInfo = CXDownloadStateInfo()
+            stateInfo.code = -2001
+            stateInfo.message = "Fail to convert URLResponse to HTTPURLResponse"
+            model.stateInfo = stateInfo
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+            runOnMainThread {
+                self.failureCallback?(self.model)
+            }
+            finishTask()
             return
         }
         
@@ -193,8 +237,8 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         var totalSize = Int64((resp.allHeaderFields["Content-Length"] as? String) ?? "") ?? 0
         let contentRange = (resp.allHeaderFields["Content-Range"] as? String) ?? ""
         if !contentRange.isEmpty {
-            if let lastStr = contentRange.components(separatedBy: "/").last {
-                totalSize = Int64(lastStr) ?? 0
+            if let lastComp = contentRange.components(separatedBy: "/").last {
+                totalSize = Int64(lastComp) ?? 0
             }
         }
         
@@ -202,12 +246,15 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         if totalSize > 0 && resumedFileSize == totalSize {
             CXDFileUtils.moveFile(from: tmpPath, to: dstPath)
             completionHandler(.cancel)
-            progress = 1.0
-            execOnMainThread {
-                //self.progressCallback?(self.progress)
-                //self.successCallback?(self.dstPath)
-            }
             state = .finish
+            model.progress = 1.0
+            model.localPath = dstPath
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
+            runOnMainThread {
+                self.progressCallback?(self.model)
+                self.successCallback?(self.model)
+            }
+            finishTask()
             return
         }
         
@@ -221,9 +268,13 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         
         // No point break resume, code is 200, point break resume, code is 206
         if resp.statusCode == 200 || resp.statusCode == 206 {
-            progress = Float(resumedFileSize) / Float(totalSize)
-            //execOnMainThread { self.progressCallback?(self.progress) }
             state = .downloading
+            let progress = Float(resumedFileSize) / Float(totalSize)
+            model.progress = progress
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
+            runOnMainThread {
+                self.progressCallback?(self.model)
+            }
             outputStream = OutputStream.init(toFileAtPath: tmpPath, append: true)
             outputStream?.open()
             completionHandler(.allow)
@@ -232,21 +283,52 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         
         // 403, no permission access, ....
         CXDLogger.log(message: "An error occurs, the code is \(resp.statusCode).", level: .info)
-        execOnMainThread {
-            self.failureCallback?(resp.statusCode, "An error occurs.")
-        }
         state = .error
+        let stateInfo = CXDownloadStateInfo()
+        stateInfo.code = resp.statusCode
+        stateInfo.message = "An error occurs"
+        model.stateInfo = stateInfo
+        CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+        runOnMainThread {
+            self.failureCallback?(self.model)
+        }
+        finishTask()
         completionHandler(.cancel)
     }
     
     func processSession(dataTask: URLSessionDataTask, didReceive data: Data) {
         let receivedBytes = dataTask.countOfBytesReceived + resumedFileSize
         let allBytes = dataTask.countOfBytesExpectedToReceive + resumedFileSize
-        progress = Float(receivedBytes) / Float(allBytes)
-        //CXDLogger.log(message: "progress: \(progress)", level: .info)
-        //execOnMainThread { self.progressCallback?(self.progress) }
-        // Writes the received data to the temp file.
+        model.totalFileSize = allBytes
+        model.tmpFileSize = receivedBytes
+        
         let dataLength = data.count
+        // Calculate the size of the downloaded file within the speed time.
+        model.intervalFileSize += Int64(dataLength)
+        
+        let intervals = CXDToolbox.getIntervalsWithTimestamp(model.lastSpeedTime)
+        if intervals > 1 {
+            // Calc speed
+            model.speed = model.intervalFileSize / intervals
+            
+            model.lastSpeedTime = CXDToolbox.getTimestampWithDate(Date())
+        }
+        
+        let progress = Float(receivedBytes) / Float(allBytes)
+        //CXDLogger.log(message: "progress: \(progress)", level: .info)
+        model.progress = progress
+        
+        // Update the specified model in database.
+        CXDownloadDatabaseManager.shared.updateModel(model, option: .progressData)
+        
+        runOnMainThread {
+            self.progressCallback?(self.model)
+        }
+        
+        // Reset it.
+        model.intervalFileSize = 0
+        
+        // Writes the received data to the temp file.
         let _ = data.withUnsafeBytes { [weak self] in
             if let baseAddress = $0.bindMemory(to: UTF8.self).baseAddress {
                 self?.outputStream?.write(baseAddress, maxLength: dataLength)
@@ -257,33 +339,53 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
     func processSessionError(_ error: Error?) {
         guard let error = error as? NSError else {
             // if error is nil, the url session become invalid.
+            finishTask()
             return
         }
-        execOnMainThread {
-            self.failureCallback?(error.code, error.localizedDescription)
-        }
         state = .error
+        let stateInfo = CXDownloadStateInfo()
+        stateInfo.code = error.code
+        stateInfo.message = error.localizedDescription
+        model.stateInfo = stateInfo
+        CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+        runOnMainThread {
+            self.failureCallback?(self.model)
+        }
+        finishTask()
     }
     
-    func processSessionTaskDidComplete(with error: Error?) {
+    func processSession(task: URLSessionTask, didCompleteWithError error: Error?) {
         outputStream?.close()
         // If no error, handle the successful logic.
         guard let error = error as? NSError else {
             CXDFileUtils.moveFile(from: tmpPath, to: dstPath)
-            model.localPath = dstPath
-            execOnMainThread { self.successCallback?(self.model) }
             state = .finish
+            model.localPath = dstPath
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+            runOnMainThread {
+                self.successCallback?(self.model)
+            }
+            finishTask()
             return
         }
         // Cancels the data task.
         if error.code == NSURLErrorCancelled {
             CXDLogger.log(message: "Code: \(error.code), message: \(error.localizedDescription)", level: .info)
-        } else {
-            // No network, etc.
-            execOnMainThread {
-                self.failureCallback?(error.code, error.localizedDescription)
+            if !autoCancelled {
+                finishTask()
             }
+        } else {
+            // Occurs an error, etc.
             state = .error
+            let stateInfo = CXDownloadStateInfo()
+            stateInfo.code = error.code
+            stateInfo.message = error.localizedDescription
+            model.stateInfo = stateInfo
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+            runOnMainThread {
+                self.failureCallback?(self.model)
+            }
+            finishTask()
         }
     }
     
