@@ -35,6 +35,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
+        let dataArray = CXDownloadDatabaseManager.shared.getAllCacheData()
+        for model in dataArray {
+            print("\(model)")
+        }
     }
     
     private func setup() {
@@ -75,64 +79,45 @@ class ViewController: UIViewController {
     @IBAction func onDownloadAction(_ sender: Any) {
         let button = sender as! UIButton
         if button == downloadButton1 {
-            /*
-            _ = CXDownloadManager.shared.asyncDownload(url: urlStr1) { [weak self] progress in
-                DispatchQueue.main.async {
-                    self?.progressLabel1.text = "\(Int(progress * 100)) %"
-                }
-            } success: { filePath in
-                CXDLogger.log(message: "filePath: \(filePath)", level: .info)
-            } failure: { error in
-                switch error {
-                case .error(let code, let message):
-                    CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
+            /*CXDownloadManager.shared.download(url: urlStr1) { [weak self] model in
+                self?.progressLabel1.text = "\(Int(model.progress * 100)) %"
+            } success: { model in
+                CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
+            } failure: { model in
+                if let stateInfo = model.stateInfo {
+                    CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
                 }
             }*/
-            let downloader = downloadButton1.dl.download(url: urlStr1) { [weak self] progress in
-                self?.progressLabel1.text = "\(progress) %"
-            } success: { filePath in
-                CXDLogger.log(message: "filePath: \(filePath)", level: .info)
-            } failure: { error in
-                switch error {
-                case .error(let code, let message):
-                    CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
-                }
-            }
-            if let _downloader = downloader {
-                if _downloader.state == .pause {
-                    _downloader.resume()
-                    pauseButton1.isSelected = false
+            
+            downloadButton1.dl.download(url: urlStr1) { [weak self] model in
+                self?.progressLabel1.text = "\(Int(model.progress * 100)) %"
+            } success: { model in
+                CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
+            } failure: {  model in
+                if let stateInfo = model.stateInfo {
+                    CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
                 }
             }
         }
+        
         else if button == downloadButton2 {
-            /*
-            _ = CXDownloadManager.shared.asyncDownload(url: urlStr2, customDirectory: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
-                DispatchQueue.main.async {
-                    self?.progressLabel2.text = "\(Int(progress * 100)) %"
-                }
-            } success: { filePath in
-                CXDLogger.log(message: "filePath: \(filePath)", level: .info)
-            } failure: { error in
-                switch error {
-                case .error(let code, let message):
-                    CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
+            /*CXDownloadManager.shared.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") { [weak self] model in
+                self?.progressLabel2.text = "\(Int(model.progress * 100)) %"
+            } success: { model in
+                CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
+            } failure: { model in
+                if let stateInfo = model.stateInfo {
+                    CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
                 }
             }*/
-            let downloader = downloadButton2.dl.download(url: urlStr2, to: "Softwares", customFileName: "MacDict_v1.20.30.dmg") { [weak self] progress in
-                self?.progressLabel2.text = "\(progress) %"
-            } success: { filePath in
-                CXDLogger.log(message: "filePath: \(filePath)", level: .info)
-            } failure: { error in
-                switch error {
-                case .error(let code, let message):
-                    CXDLogger.log(message: "error: \(code), message: \(message)", level: .info)
-                }
-            }
-            if let _downloader = downloader {
-                if _downloader.state == .pause {
-                    _downloader.resume()
-                    pauseButton2.isSelected = false
+            
+            downloadButton2.dl.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") { [weak self] model in
+                self?.progressLabel2.text = "\(Int(model.progress * 100)) %"
+            } success: { model in
+                CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
+            } failure: {  model in
+                if let stateInfo = model.stateInfo {
+                    CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
                 }
             }
         }
@@ -143,20 +128,20 @@ class ViewController: UIViewController {
         button.isSelected = !button.isSelected
         if button == pauseButton1 {
             if button.isSelected {
-                //CXDownloadManager.shared.pause(with: urlStr1)
-                pauseButton1.dl.pause(url: urlStr1)
+                //CXDownloadManager.shared.pauseWithURLString(urlStr1)
+                pauseButton1.dl.pauseDownloadTask(urlStr1)
             } else {
-                //CXDownloadManager.shared.resume(with: urlStr1)
-                pauseButton1.dl.resume(url: urlStr1)
+                //CXDownloadManager.shared.resumeWithURLString(urlStr1)
+                pauseButton1.dl.resumeDownloadTask(urlStr1)
             }
         }
         else if button == pauseButton2 {
             if button.isSelected {
-                //CXDownloadManager.shared.pause(with: urlStr2)
-                pauseButton2.dl.pause(url: urlStr2)
+                //CXDownloadManager.shared.pauseWithURLString(urlStr2)
+                pauseButton2.dl.pauseDownloadTask(urlStr2)
             } else {
-                //CXDownloadManager.shared.resume(with: urlStr2)
-                pauseButton2.dl.resume(url: urlStr2)
+                //CXDownloadManager.shared.resumeWithURLString(urlStr2)
+                pauseButton2.dl.resumeDownloadTask(urlStr2)
             }
         }
     }
@@ -164,15 +149,15 @@ class ViewController: UIViewController {
     @IBAction func onCancelAction(_ sender: Any) {
         let button = sender as! UIButton
         if button == cancelButton1 {
-            //CXDownloadManager.shared.cancel(with: urlStr1)
-            cancelButton1.dl.cancel(url: urlStr1)
+            //CXDownloadManager.shared.cancelWithURLString(urlStr1)
+            cancelButton1.dl.cancelDownloadTask(urlStr1)
             downloadButton1.setTitle("下载", for: .normal)
             progressLabel1.text = "0%"
             pauseButton1.isSelected = false
         }
         else if button == cancelButton2 {
-            //CXDownloadManager.shared.cancel(with: urlStr2)
-            cancelButton2.dl.cancel(url: urlStr2)
+            //CXDownloadManager.shared.cancelWithURLString(urlStr2)
+            cancelButton2.dl.cancelDownloadTask(urlStr2)
             downloadButton2.setTitle("下载", for: .normal)
             progressLabel2.text = "0%"
             pauseButton2.isSelected = false
@@ -182,23 +167,23 @@ class ViewController: UIViewController {
     @IBAction func onDeleteAction(_ sender: Any) {
         let button = sender as! UIButton
         if button == deleteButton1 {
-            //CXDownloadManager.shared.removeTargetFile(url: urlStr1)
-            deleteButton1.dl.removeTargetFile(url: urlStr1)
+            //CXDownloadManager.shared.deleteTaskAndCache(url: urlStr1)
+            deleteButton1.dl.deleteTaskAndCache(url: urlStr1)
             downloadButton1.setTitle("下载", for: .normal)
             progressLabel1.text = "0%"
             pauseButton1.isSelected = false
         }
         else if button == deleteButton2 {
             /*
-             CXDownloadManager.shared.removeTargetFile(
-             url: urlStr2,
-             customDirectory: "Softwares",
-             customFileName: "MacDict_v1.20.30.dmg"
-             )*/
-            deleteButton2.dl.removeTargetFile(
+            CXDownloadManager.shared.deleteTaskAndCache(
                 url: urlStr2,
-                at: "Softwares",
-                customFileName: "MacDict_v1.20.30.dmg"
+                atDirectory: "Softwares",
+                fileName: "MacDict_v1.20.30.dmg"
+            )*/
+            deleteButton2.dl.deleteTaskAndCache(
+                url: urlStr2,
+                atDirectory: "Softwares",
+                fileName: "MacDict_v1.20.30.dmg"
             )
             downloadButton2.setTitle("下载", for: .normal)
             progressLabel2.text = "0%"
