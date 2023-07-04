@@ -16,21 +16,21 @@ import AppKit
 extension CXDownloadBase where T : CXDImageView {
     
     /// Executes an asynchronous download by the url and other parameters.
-    @discardableResult public func download(
+    public func download(
         url: String,
-        to targetDirectory: String? = nil,
-        customFileName: String? = nil,
-        progress: @escaping (_ progress: Int) -> Void,
-        success: @escaping CXDownloader.SuccessClosure,
-        failure: @escaping CXDownloader.FailureClosure) -> CXDownloader?
+        toDirectory directory: String? = nil,
+        fileName: String? = nil,
+        progress: @escaping (CXDownloadModel) -> Void,
+        success: @escaping (CXDownloadModel) -> Void,
+        failure: @escaping (CXDownloadModel) -> Void)
     {
-        return CXDownloadManager.shared.asyncDownload(url: url, customDirectory: targetDirectory, customFileName: customFileName, progress: { _progress in
-            progress(Int(_progress * 100))
-        }, success: { filePath in
-            success(filePath)
-        }) { error in
-            failure(error)
-        }
+        return CXDownloadManager.shared.download(
+            url: url,
+            toDirectory: directory,
+            fileName: fileName,
+            progress: progress,
+            success: success,
+            failure: failure)
     }
     
 }
