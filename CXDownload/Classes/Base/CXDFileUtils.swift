@@ -87,7 +87,7 @@ import Foundation
     }
     
     /// Returns a destination file path by the remote url, directory, custom file name.
-    public class func filePath(withURL url: URL, at directory: String? = nil, using customFileName: String? = nil) -> String {
+    public class func filePath(withURL url: URL, atDirectory directory: String? = nil, fileName: String? = nil) -> String {
         var cachePath: URL?
         if let dir = directory, !dir.isEmpty {
             cachePath = self.cachePath(withPathComponent: dir)
@@ -95,12 +95,10 @@ import Foundation
             cachePath = self.cachePath()
         }
         var filePathURL: URL?
-        if let cFileName = customFileName, !cFileName.isEmpty {
-            filePathURL = cachePath?.appendingPathComponent(cFileName)
+        if let fn = fileName, !fn.isEmpty {
+            filePathURL = cachePath?.appendingPathComponent(fn)
         } else {
-            let fileName = self.fileName(url)
-            let fileExt = self.pathExtension(url)
-            let file = (fileName.cxd_sha2 ?? fileName) + "." + fileExt
+            let file = self.lastPathComponent(url)
             filePathURL = cachePath?.appendingPathComponent(file)
         }
         return filePathURL?.cxd_path ?? ""
