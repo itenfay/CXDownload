@@ -27,7 +27,7 @@ public typealias CXDImageView = NSImageView
     public static let maxConcurrentCountChangeNotification = Notification.Name("CXDownloadMaxConcurrentCountChangeNotification")
     /// Allows cellular access change notification.
     public static let allowsCellularAccessChangeNotification = Notification.Name("CXDownloadAllowsCellularAccessChangeNotification")
-    /// Networking reachability change notification.
+    /// Networking reachability change notification. Please sends the specified string("Reachable", "NotReachable", "ReachableViaWWAN" or "ReachableViaWiFi") by notification.object.
     public static let networkingReachabilityDidChangeNotification = Notification.Name("CXNetworkingReachabilityDidChangeNotification")
     /// Max concurrent count key.
     public static let maxConcurrentCountKey = "CXDownloadMaxConcurrentCountKey"
@@ -53,8 +53,8 @@ public typealias CXDImageView = NSImageView
     }
     
     /// Gets intervals between a timestamp and the current time.
-    public static func getIntervalsWithTimestamp(_ ts: TimeInterval) -> Int {
-        return Int(Date().timeIntervalSince(getDateWithTimestamp(ts)))
+    public static func getIntervalsWithTimestamp(_ ts: TimeInterval) -> Int64 {
+        return Int64(Date().timeIntervalSince(getDateWithTimestamp(ts)))
     }
     
 }
