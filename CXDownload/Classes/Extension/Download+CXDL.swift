@@ -40,6 +40,6 @@ public extension CXDownloadBaseCompatible {
 }
 
 #if os(iOS) || os(tvOS) || os(macOS)
-/// The UIView follows this `CXDownloadBaseCompatible` protocol.
+/// The view conforms the `CXDownloadBaseCompatible` protocol.
 extension CXDView: CXDownloadBaseCompatible {}
 #endif
