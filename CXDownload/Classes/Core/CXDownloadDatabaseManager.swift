@@ -34,7 +34,7 @@ struct CXDBUpdateOption: OptionSet {
     /// Update the progress data(tmpFileSize、totalFileSize、progress、intervalFileSize、lastSpeedTime).
     static let progressData = CXDBUpdateOption(rawValue: 1 << 2)
     /// Update all data.
-    static let allParam = CXDBUpdateOption(rawValue: 1 << 3)
+    static let allParams = CXDBUpdateOption(rawValue: 1 << 3)
 }
 
 public class CXDownloadDatabaseManager: NSObject {
@@ -43,22 +43,27 @@ public class CXDownloadDatabaseManager: NSObject {
     
     private var dbQueue: FMDatabaseQueue!
     /// Represents the table is created.
-    private var tableCreated: Bool = false
+    public private(set) var tableCreated: Bool = false
     
     private override init() {
         super.init()
         self.createTable()
     }
     
+    @objc public func recreateTable() {
+        if tableCreated { return }
+        createTable()
+    }
+    
     /// Create a table.
     func createTable() {
-        let path = CXDFileUtils.cachePath(withPathComponent: "cxDLDB")?.cxd_appendingPathComponent("cxDLFileCaches.db").cxd_path
+        let path = CXDFileUtils.cachePath(withPathComponent: "cx.download.db")?.cxd_appendingPathComponent("CXDLFileCaches.db").cxd_path
         
         // Create db queue using path.
         dbQueue = FMDatabaseQueue(path: path)
         
         dbQueue.inDatabase { db in
-            let sql = "CREATE TABLE IF NOT EXISTS t_fileCaches (id integer PRIMARY KEY AUTOINCREMENT, fid text, fileName text, url text, totalFileSize integer, tmpFileSize integer, state integer, progress float, lastSpeedTime double, intervalFileSize integer, lastStateTime integer);"
+            let sql = "CREATE TABLE IF NOT EXISTS t_fileCaches (id integer PRIMARY KEY AUTOINCREMENT, fid text, fileName text, url text, totalFileSize integer, tmpFileSize integer, state integer, progress float, speed integer, lastSpeedTime double, intervalFileSize integer, lastStateTime integer);"
             do {
                 try db.executeUpdate(sql, values: nil)
                 tableCreated = true
@@ -73,9 +78,9 @@ public class CXDownloadDatabaseManager: NSObject {
     func insertModel(_ model: CXDownloadModel) {
         guard tableCreated else { return }
         dbQueue.inDatabase { db in
-            let sql = "INSERT INTO t_fileCaches (fid, fileName, url, totalFileSize, tmpFileSize, state, progress, lastSpeedTime, intervalFileSize, lastStateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+            let sql = "INSERT INTO t_fileCaches (fid, fileName, url, totalFileSize, tmpFileSize, state, progress, speed, lastSpeedTime, intervalFileSize, lastStateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
             do {
-                try db.executeUpdate(sql, values: [model.fid ?? "", model.fileName ?? "", model.url ?? "", model.totalFileSize, model.tmpFileSize, model.state.rawValue, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
+                try db.executeUpdate(sql, values: [model.fid ?? "", model.fileName ?? "", model.url ?? "", model.totalFileSize, model.tmpFileSize, model.state.rawValue, model.progress, model.speed, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
                 CXDLogger.log(message: "Inserting data is successful.", level: .info)
             } catch {
                 CXDLogger.log(message: "Insert data: \(error.localizedDescription)", level: .error)
@@ -185,19 +190,23 @@ public class CXDownloadDatabaseManager: NSObject {
             guard let url = model.url else {
                 return
             }
-            if option.contains(.state) {
-                self?.postStateChangeNotification(with: db, model: model)
-                try? db.executeUpdate("UPDATE t_fileCaches SET state = ? WHERE url = ?;", values: [model.state.rawValue, url])
-            }
-            if option.contains(.lastStateTime) {
-                try? db.executeUpdate("UPDATE t_fileCaches SET lastStateTime = ? WHERE url = ?;", values: [0, url])
-            }
-            if option.contains(.progressData) {
-                try? db.executeUpdate("UPDATE t_fileCaches SET totalFileSize = ?, tmpFileSize = ?, progress = ?, lastSpeedTime = ?, intervalFileSize = ? WHERE url = ?;", values: [model.totalFileSize, model.tmpFileSize, model.progress, model.lastSpeedTime, model.intervalFileSize, url])
-            }
-            if option.contains(.allParam) {
-                self?.postStateChangeNotification(with: db, model: model)
-                try? db.executeUpdate("UPDATE t_fileCaches SET totalFileSize = ?, tmpFileSize = ?, progress = ?, state = ?, lastSpeedTime = ?, intervalFileSize = ?, lastStateTime = ? WHERE url = ?;", values: [model.totalFileSize, model.tmpFileSize, model.progress, model.state, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime, url])
+            do {
+                if option.contains(.state) {
+                    self?.postStateChangeNotification(with: db, model: model)
+                    try db.executeUpdate("UPDATE t_fileCaches SET state = ? WHERE url = ?;", values: [model.state.rawValue, url])
+                }
+                if option.contains(.lastStateTime) {
+                    try db.executeUpdate("UPDATE t_fileCaches SET lastStateTime = ? WHERE url = ?;", values: [model.lastStateTime, url])
+                }
+                if option.contains(.progressData) {
+                    try db.executeUpdate("UPDATE t_fileCaches SET totalFileSize = ?, tmpFileSize = ?, progress = ?, speed = ?, lastSpeedTime = ?, intervalFileSize = ? WHERE url = ?;", values: [model.totalFileSize, model.tmpFileSize, model.progress, model.speed, model.lastSpeedTime, model.intervalFileSize, url])
+                }
+                if option.contains(.allParams) {
+                    self?.postStateChangeNotification(with: db, model: model)
+                    try db.executeUpdate("UPDATE t_fileCaches SET totalFileSize = ?, tmpFileSize = ?, progress = ?, speed = ?, state = ?, lastSpeedTime = ?, intervalFileSize = ?, lastStateTime = ? WHERE url = ?;", values: [model.totalFileSize, model.tmpFileSize, model.progress, model.speed, model.state, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime, url])
+                }
+            } catch let error {
+                CXDLogger.log(message: "Updating data occurs error: \(error.localizedDescription)", level: .error)
             }
         }
     }
