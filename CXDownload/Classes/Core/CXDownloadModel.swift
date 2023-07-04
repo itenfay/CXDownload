@@ -28,10 +28,10 @@ import FMDB
     public var totalFileSize: Int64 = 0
     /// The resumed size of file.
     public var tmpFileSize: Int64 = 0
-    /// The progress of downloading.
+    /// The progress of downloading, The value is 0..1.
     public var progress: Float = 0
     /// The speed of downloading.
-    public var speed: Int = 0
+    public var speed: Int64 = 0
     /// The state for the download.
     public var state: CXDownloadState = .waiting
     /// The state information for the download.
@@ -39,9 +39,9 @@ import FMDB
     /// The last timestamp for calculating speed.
     public var lastSpeedTime: TimeInterval = 0
     /// The file size of speed time.
-    public var intervalFileSize: Int =  0
+    public var intervalFileSize: Int64 =  0
     /// Records the time when the task is ready to download (Click, Pause and Failed), which is used to calculate the sequence of starting and stopping the task.
-    public var lastStateTime: Int = 0
+    public var lastStateTime: Int64 = 0
     
     public override init() {
         super.init()
@@ -55,10 +55,11 @@ import FMDB
         self.totalFileSize = resultSet.longLongInt(forColumn: "totalFileSize")
         self.tmpFileSize = resultSet.longLongInt(forColumn: "tmpFileSize")
         self.progress = Float(resultSet.double(forColumn: "progress"))
+        self.speed = resultSet.longLongInt(forColumn: "speed")
         self.state = CXDownloadState(rawValue: resultSet.long(forColumn: "state")) ?? .waiting
         self.lastSpeedTime = resultSet.double(forColumn: "lastSpeedTime")
-        self.intervalFileSize = resultSet.long(forColumn: "intervalFileSize")
-        self.lastStateTime = resultSet.long(forColumn: "lastStateTime")
+        self.intervalFileSize = resultSet.longLongInt(forColumn: "intervalFileSize")
+        self.lastStateTime = resultSet.longLongInt(forColumn: "lastStateTime")
     }
     #endif
 }
