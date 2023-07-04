@@ -25,10 +25,10 @@ pod 'CXDownload'
 ## 说明
 
 - CXDownloadManager.swift: **下载网络请求队列管理类**
-- CXDownloader.swift: **下载网络收发**
+- CXDownloadTaskProcessor.swift: **下载网络收发**
 - CXDFileUtils.swift: **断点续传文件工具类**
 - CXDLogger.swift: **日志输出类**
-- String+CXDL.swift: **String扩展cxd_md5、cxd_sha2属性**
+- StringEx.swift: **String扩展cxd_md5、cxd_sha2属性**
 
 ## 使用
 
