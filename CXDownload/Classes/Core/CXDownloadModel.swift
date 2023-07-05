@@ -55,7 +55,6 @@ import FMDB
         self.totalFileSize = resultSet.longLongInt(forColumn: "totalFileSize")
         self.tmpFileSize = resultSet.longLongInt(forColumn: "tmpFileSize")
         self.progress = Float(resultSet.double(forColumn: "progress"))
-        self.speed = resultSet.longLongInt(forColumn: "speed")
         self.state = CXDownloadState(rawValue: resultSet.long(forColumn: "state")) ?? .waiting
         self.lastSpeedTime = resultSet.double(forColumn: "lastSpeedTime")
         self.intervalFileSize = resultSet.longLongInt(forColumn: "intervalFileSize")
