@@ -184,7 +184,7 @@ public class CXDownloadManager: NSObject {
         }
         
         // Download (given a waiting time, ensure that currentCount is updated)
-        Thread.sleep(forTimeInterval: 0.1)
+        //Thread.sleep(forTimeInterval: 0.1)
         if (currentCount < maxConcurrentCount) && networkingAllowsDownloadTask() {
             downloadWithModel(downloadModel!)
         }
@@ -202,19 +202,18 @@ public class CXDownloadManager: NSObject {
     
     /// Pauses a download task through a specified url.
     @objc public func pauseWithURLString(_ url: String) {
-        if let taskProcessor = downloadTaskDict[url],
-           taskProcessor.state == .downloading {
-            updateCurrentCount(byAscending: false)
-            startDownloadingWaitingTask()
-            taskProcessor.pauseTask()
+        if let taskProcessor = downloadTaskDict[url] {
+            if taskProcessor.pauseTask() {
+                updateCurrentCount(byAscending: false)
+                startDownloadingWaitingTask()
+            }
         }
     }
     
     /// Cancels a download task through a specified url.
     @objc public func cancelWithURLString(_ url: String) {
-        if let taskProcessor = downloadTaskDict[url] {
-            updateCurrentCount(byAscending: false)
-            startDownloadingWaitingTask()
+        if let taskProcessor = downloadTaskDict[url],
+           taskProcessor.state == .downloading {
             taskProcessor.cancelTask()
         }
     }
