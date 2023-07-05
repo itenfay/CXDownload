@@ -27,7 +27,7 @@ public typealias CXDImageView = NSImageView
     public static let maxConcurrentCountChangeNotification = Notification.Name("CXDownloadMaxConcurrentCountChangeNotification")
     /// Allows cellular access change notification.
     public static let allowsCellularAccessChangeNotification = Notification.Name("CXDownloadAllowsCellularAccessChangeNotification")
-    /// Networking reachability change notification. Please sends the specified string("Reachable", "NotReachable", "ReachableViaWWAN" or "ReachableViaWiFi") by notification.object.
+    /// Networking reachability change notification. Please send the specified string(**"Reachable", "NotReachable", "ReachableViaWWAN" or "ReachableViaWiFi"**) by notification.object.
     public static let networkingReachabilityDidChangeNotification = Notification.Name("CXNetworkingReachabilityDidChangeNotification")
     /// Max concurrent count key.
     public static let maxConcurrentCountKey = "CXDownloadMaxConcurrentCountKey"
