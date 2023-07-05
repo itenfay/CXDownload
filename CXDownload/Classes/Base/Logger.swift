@@ -1,5 +1,5 @@
 //
-//  CXDLogger.swift
+//  Logger.swift
 //  CXDownload
 //
 //  Created by chenxing on 2022/8/10.

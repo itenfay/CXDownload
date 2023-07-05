@@ -32,14 +32,14 @@
 		797760BC2A4BE139000684F0 /* FMDB in Frameworks */ = {isa = PBXBuildFile; fileRef = A3A80BA70CFB7F75C5391BEBBBA8C9DA /* FMDB */; };
 		7FC8ADF759D465DCD354901C52AE5162 /* URLEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15FA60CFD89E05064A43E8000778AB1 /* URLEx.swift */; };
 		8246D862087C7890593899AEA5898697 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = D8F518F5CE26E4D5B0AF64A54ADA4187 /* FMResultSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8D4AD353F950B32D364F9832B43466A1 /* CXDDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878458C15B659ACCB681A64AB1283A1 /* CXDDefinitions.swift */; };
+		8D4AD353F950B32D364F9832B43466A1 /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878458C15B659ACCB681A64AB1283A1 /* Definitions.swift */; };
 		8FC5684C4684961A4B867842E66D7798 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1624A2329DA3B81C85654CF04AFAE6DE /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		9E1FC3877F80303A90262BA133493DE9 /* CXDFileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BC54ACA6EC87BDCB67F51DF71B7F1A /* CXDFileUtils.swift */; };
+		9E1FC3877F80303A90262BA133493DE9 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BC54ACA6EC87BDCB67F51DF71B7F1A /* FileUtils.swift */; };
 		AD471783641540A6FA093332946EDB89 /* CXDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511777C112398161ECCF67EEF3237E5 /* CXDownloadManager.swift */; };
 		AF0BCAC300586453FDCB79918DB9E70D /* View+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D22A58CBE5BC878B811842B81E9051 /* View+CXDL.swift */; };
 		B0B23F9EF7DBB3ACED910B05FB2FA11F /* ImageView+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE41F6620F22D147C4ABECB761479AEE /* ImageView+CXDL.swift */; };
 		B8E9D06DC51EC50FD682E9678F8AE43D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		C7F01118E1D834EA7D37541373D9C2AC /* CXDLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C389713D438B783F61E39552BB97FA /* CXDLogger.swift */; };
+		C7F01118E1D834EA7D37541373D9C2AC /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C389713D438B783F61E39552BB97FA /* Logger.swift */; };
 		CC10DB1009BE923C3068F31C5800DA14 /* Button+CXDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D45C7AB7326CA59D96B5C4436652516 /* Button+CXDL.swift */; };
 		E7ACDD9E79A60795B216CEC395CF4049 /* CXDownload-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AED6F19CB957103D6B29720F1FFC6E4D /* CXDownload-dummy.m */; };
 		EBF8392D6A0AF857E6ADCA8F29D92388 /* StringEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BBC23D6F3BDCF210B140A29515FABB /* StringEx.swift */; };
@@ -74,9 +74,9 @@
 /* Begin PBXFileReference section */
 		023E09838F690567A9F86BC3FD6CBE15 /* Pods-CXDownload_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CXDownload_Tests-Info.plist"; sourceTree = "<group>"; };
 		04D22A58CBE5BC878B811842B81E9051 /* View+CXDL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "View+CXDL.swift"; path = "CXDownload/Classes/Extension/View+CXDL.swift"; sourceTree = "<group>"; };
-		0878458C15B659ACCB681A64AB1283A1 /* CXDDefinitions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CXDDefinitions.swift; path = CXDownload/Classes/Base/CXDDefinitions.swift; sourceTree = "<group>"; };
+		0878458C15B659ACCB681A64AB1283A1 /* Definitions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Definitions.swift; path = CXDownload/Classes/Base/Definitions.swift; sourceTree = "<group>"; };
 		112BF9B0E9D5194B4B45E92061BFA948 /* Pods-CXDownload_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CXDownload_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		13C389713D438B783F61E39552BB97FA /* CXDLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CXDLogger.swift; path = CXDownload/Classes/Base/CXDLogger.swift; sourceTree = "<group>"; };
+		13C389713D438B783F61E39552BB97FA /* Logger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = CXDownload/Classes/Base/Logger.swift; sourceTree = "<group>"; };
 		1449C460D6900BFF41E4C65E2E9FA808 /* Pods-CXDownload_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CXDownload_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		156E36C7292CE3F7FB7429C8BC43974A /* FMDB-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "FMDB-Info.plist"; sourceTree = "<group>"; };
 		1624A2329DA3B81C85654CF04AFAE6DE /* FMResultSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = src/fmdb/FMResultSet.m; sourceTree = "<group>"; };
@@ -128,7 +128,7 @@
 		DFADDA2B7A0A413E2234057A047C81D7 /* CXDownload-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CXDownload-umbrella.h"; sourceTree = "<group>"; };
 		DFC7FCB163982668F35644CC9927F08C /* FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FMDB-dummy.m"; sourceTree = "<group>"; };
 		E15FA60CFD89E05064A43E8000778AB1 /* URLEx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = URLEx.swift; path = CXDownload/Classes/Base/URLEx.swift; sourceTree = "<group>"; };
-		E5BC54ACA6EC87BDCB67F51DF71B7F1A /* CXDFileUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CXDFileUtils.swift; path = CXDownload/Classes/Base/CXDFileUtils.swift; sourceTree = "<group>"; };
+		E5BC54ACA6EC87BDCB67F51DF71B7F1A /* FileUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileUtils.swift; path = CXDownload/Classes/Base/FileUtils.swift; sourceTree = "<group>"; };
 		E737D3D09F29CC810C7EA592E370006E /* Label+CXDL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Label+CXDL.swift"; path = "CXDownload/Classes/Extension/Label+CXDL.swift"; sourceTree = "<group>"; };
 		E8918ECB8DF3CEC9C9EAE7403A00EF20 /* CXDownload.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CXDownload.modulemap; sourceTree = "<group>"; };
 		E8BBC23D6F3BDCF210B140A29515FABB /* StringEx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StringEx.swift; path = CXDownload/Classes/Base/StringEx.swift; sourceTree = "<group>"; };
@@ -271,9 +271,9 @@
 		9B72C459188CF66AA9BA8AD04C4022FA /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				0878458C15B659ACCB681A64AB1283A1 /* CXDDefinitions.swift */,
-				E5BC54ACA6EC87BDCB67F51DF71B7F1A /* CXDFileUtils.swift */,
-				13C389713D438B783F61E39552BB97FA /* CXDLogger.swift */,
+				0878458C15B659ACCB681A64AB1283A1 /* Definitions.swift */,
+				E5BC54ACA6EC87BDCB67F51DF71B7F1A /* FileUtils.swift */,
+				13C389713D438B783F61E39552BB97FA /* Logger.swift */,
 				E8BBC23D6F3BDCF210B140A29515FABB /* StringEx.swift */,
 				E15FA60CFD89E05064A43E8000778AB1 /* URLEx.swift */,
 			);
@@ -587,11 +587,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC10DB1009BE923C3068F31C5800DA14 /* Button+CXDL.swift in Sources */,
-				9E1FC3877F80303A90262BA133493DE9 /* CXDFileUtils.swift in Sources */,
-				C7F01118E1D834EA7D37541373D9C2AC /* CXDLogger.swift in Sources */,
+				9E1FC3877F80303A90262BA133493DE9 /* FileUtils.swift in Sources */,
+				C7F01118E1D834EA7D37541373D9C2AC /* Logger.swift in Sources */,
 				E7ACDD9E79A60795B216CEC395CF4049 /* CXDownload-dummy.m in Sources */,
 				AD471783641540A6FA093332946EDB89 /* CXDownloadManager.swift in Sources */,
-				8D4AD353F950B32D364F9832B43466A1 /* CXDDefinitions.swift in Sources */,
+				8D4AD353F950B32D364F9832B43466A1 /* Definitions.swift in Sources */,
 				6011E4D66F10BFF8D11D40D96C599134 /* Download+CXDL.swift in Sources */,
 				B0B23F9EF7DBB3ACED910B05FB2FA11F /* ImageView+CXDL.swift in Sources */,
 				7959EA932A4D1202007F3FC9 /* CXDownloadTaskProcessor.swift in Sources */,

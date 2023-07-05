@@ -82,38 +82,49 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
     }
     
     /// Resumes the current data task.
-    func resumeTask() {
+    @discardableResult
+    func resumeTask() -> Bool {
         if dataTask != nil && state == .paused {
             // The state that represents the task is downloading.
             state = .downloading
             CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             // Resumes the data task.
             dataTask?.resume()
+            return true
         }
+        return false
     }
     
     /// Pauses the current data task.
-    func pauseTask() {
+    @discardableResult
+    func pauseTask() -> Bool {
         if dataTask != nil && state == .downloading {
             state = .paused
             CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             dataTask?.suspend()
+            return true
         }
+        return false
     }
     
     /// Cancels the current data task.
-    func cancelTask() {
+    @discardableResult
+    func cancelTask() -> Bool {
         if dataTask != nil {
             autoCancelled = false
             state = .cancelled
             CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             dataTask?.cancel()
+            return true
         }
+        return false
     }
     
-    func autoCancel() {
+    @discardableResult
+    func autoCancel() -> Bool {
         autoCancelled = true
         dataTask?.cancel()
+        return true
     }
     
     private func finishTask() {
@@ -122,20 +133,20 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
     
     private func getRequestURL() -> URL? {
         // This has been verified before invoking download's API.
-        //guard let urlString = model.url, let url = URL(string: urlString) else {
-        //    CXDLogger.log(message: "The url is invalid.", level: .info)
-        //    state = .error
-        //    let stateInfo = CXDownloadStateInfo()
-        //    stateInfo.code = -2000
-        //    stateInfo.message = "The url is invalid"
-        //    model.stateInfo = stateInfo
-        //    CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
-        //    runOnMainThread {
-        //        self.failureCallback?(self.model)
-        //    }
-        //    finishTask()
-        //    return
-        //}
+        /*guard let urlString = model.url, let url = URL(string: urlString) else {
+            CXDLogger.log(message: "The url is invalid.", level: .info)
+            state = .error
+            let stateInfo = CXDownloadStateInfo()
+            stateInfo.code = -2000
+            stateInfo.message = "The url is invalid"
+            model.stateInfo = stateInfo
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+            runOnMainThread {
+                self.failureCallback?(self.model)
+            }
+            finishTask()
+            return nil
+        }*/
         return URL(string: model.url!)
     }
     
@@ -303,12 +314,12 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         model.tmpFileSize = receivedBytes
         
         let dataLength = data.count
-        // Calculate the size of the downloaded file within the speed time.
+        // Calculates the size of the downloaded file within the speed time.
         model.intervalFileSize += Int64(dataLength)
         
         let intervals = CXDToolbox.getIntervalsWithTimestamp(model.lastSpeedTime)
         if intervals > 1 {
-            // Calc speed
+            // Calculates speed
             model.speed = model.intervalFileSize / intervals
             
             model.lastSpeedTime = CXDToolbox.getTimestampWithDate(Date())
