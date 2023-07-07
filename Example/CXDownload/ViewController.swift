@@ -131,8 +131,7 @@ class ViewController: UIViewController {
                 //CXDownloadManager.shared.pauseWithURLString(urlStr1)
                 pauseButton1.dl.pauseDownloadTask(urlStr1)
             } else {
-                //CXDownloadManager.shared.resumeWithURLString(urlStr1)
-                pauseButton1.dl.resumeDownloadTask(urlStr1)
+                onDownloadAction(downloadButton1)
             }
         }
         else if button == pauseButton2 {
@@ -140,8 +139,7 @@ class ViewController: UIViewController {
                 //CXDownloadManager.shared.pauseWithURLString(urlStr2)
                 pauseButton2.dl.pauseDownloadTask(urlStr2)
             } else {
-                //CXDownloadManager.shared.resumeWithURLString(urlStr2)
-                pauseButton2.dl.resumeDownloadTask(urlStr2)
+                onDownloadAction(downloadButton2)
             }
         }
     }

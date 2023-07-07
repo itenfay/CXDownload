@@ -1,5 +1,5 @@
 //
-//  BaseView.swift
+//  BaseViewController.swift
 //  CXDownload_Example
 //
 //  Created by chenxing on 2023/7/7.
@@ -8,6 +8,10 @@
 
 import UIKit
 
-class BaseView: UIView {
+class BaseViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     
 }
