@@ -33,7 +33,7 @@ import FMDB
     /// The speed of downloading.
     public var speed: Int64 = 0
     /// The state for the download.
-    public var state: CXDownloadState = .waiting
+    public var state: CXDownloadState = .default
     /// The state information for the download.
     public var stateInfo: CXDownloadStateInfo?
     /// The last timestamp for calculating speed.
@@ -52,10 +52,10 @@ import FMDB
         self.fid = resultSet.string(forColumn: "fid")
         self.fileName = resultSet.string(forColumn: "fileName")
         self.url = resultSet.string(forColumn: "url")
+        self.state = CXDownloadState(rawValue: resultSet.long(forColumn: "state")) ?? .default
         self.totalFileSize = resultSet.longLongInt(forColumn: "totalFileSize")
         self.tmpFileSize = resultSet.longLongInt(forColumn: "tmpFileSize")
         self.progress = Float(resultSet.double(forColumn: "progress"))
-        self.state = CXDownloadState(rawValue: resultSet.long(forColumn: "state")) ?? .waiting
         self.lastSpeedTime = resultSet.double(forColumn: "lastSpeedTime")
         self.intervalFileSize = resultSet.longLongInt(forColumn: "intervalFileSize")
         self.lastStateTime = resultSet.longLongInt(forColumn: "lastStateTime")
