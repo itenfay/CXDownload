@@ -16,11 +16,6 @@ import AppKit
 extension CXDownloadBase where T : CXDView {
     
     /// Pauses the download task through a specified url.
-    public func resumeDownloadTask(_ url: String) {
-        CXDownloadManager.shared.resumeWithURLString(url)
-    }
-    
-    /// Pauses the download task through a specified url.
     public func pauseDownloadTask(_ url: String) {
         CXDownloadManager.shared.pauseWithURLString(url)
     }
