@@ -63,7 +63,7 @@ public class CXDownloadDatabaseManager: NSObject {
         dbQueue = FMDatabaseQueue(path: path)
         
         dbQueue.inDatabase { db in
-            let sql = "CREATE TABLE IF NOT EXISTS t_fileCaches (id integer PRIMARY KEY AUTOINCREMENT, fid text, fileName text, url text, totalFileSize integer, tmpFileSize integer, state integer, progress float, lastSpeedTime double, intervalFileSize integer, lastStateTime integer);"
+            let sql = "CREATE TABLE IF NOT EXISTS t_fileCaches (id integer PRIMARY KEY AUTOINCREMENT, fid text, fileName text, url text, state integer, totalFileSize integer, tmpFileSize integer, progress float, lastSpeedTime double, intervalFileSize integer, lastStateTime integer);"
             do {
                 try db.executeUpdate(sql, values: nil)
                 tableCreated = true
@@ -78,9 +78,9 @@ public class CXDownloadDatabaseManager: NSObject {
     func insertModel(_ model: CXDownloadModel) {
         guard tableCreated else { return }
         dbQueue.inDatabase { db in
-            let sql = "INSERT INTO t_fileCaches (fid, fileName, url, totalFileSize, tmpFileSize, state, progress, lastSpeedTime, intervalFileSize, lastStateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+            let sql = "INSERT INTO t_fileCaches (fid, fileName, url, state, totalFileSize, tmpFileSize, progress, lastSpeedTime, intervalFileSize, lastStateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
             do {
-                try db.executeUpdate(sql, values: [model.fid ?? "", model.fileName ?? "", model.url ?? "", model.totalFileSize, model.tmpFileSize, model.state.rawValue, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
+                try db.executeUpdate(sql, values: [model.fid ?? "", model.fileName ?? "", model.url ?? "", model.state.rawValue, model.totalFileSize, model.tmpFileSize, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
                 CXDLogger.log(message: "Inserting data is successful.", level: .info)
             } catch {
                 CXDLogger.log(message: "Insert data: \(error.localizedDescription)", level: .error)
@@ -89,7 +89,7 @@ public class CXDownloadDatabaseManager: NSObject {
     }
     
     func getModel(by url: String) -> CXDownloadModel? {
-        return getModel(with: CXDBGetDataType.modelByUrl, url: url)
+        return getModel(with: .modelByUrl, url: url)
     }
     
     func getModel(with dataType: CXDBGetDataType, url: String) -> CXDownloadModel? {
@@ -203,7 +203,7 @@ public class CXDownloadDatabaseManager: NSObject {
                 }
                 if option.contains(.allParams) {
                     self?.postStateChangeNotification(with: db, model: model)
-                    try db.executeUpdate("UPDATE t_fileCaches SET totalFileSize = ?, tmpFileSize = ?, progress = ?, state = ?, lastSpeedTime = ?, intervalFileSize = ?, lastStateTime = ? WHERE url = ?;", values: [model.totalFileSize, model.tmpFileSize, model.progress, model.state, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime, url])
+                    try db.executeUpdate("UPDATE t_fileCaches SET state = ?, totalFileSize = ?, tmpFileSize = ?, progress = ?, lastSpeedTime = ?, intervalFileSize = ?, lastStateTime = ? WHERE url = ?;", values: [model.state, model.totalFileSize, model.tmpFileSize, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime, url])
                 }
             } catch let error {
                 CXDLogger.log(message: "Updating data occurs error: \(error.localizedDescription)", level: .error)
@@ -212,7 +212,7 @@ public class CXDownloadDatabaseManager: NSObject {
     }
     
     private func postStateChangeNotification(with db: FMDatabase, model: CXDownloadModel) {
-        guard let url  = model.url else { return }
+        guard let url = model.url else { return }
         guard let rs = try? db.executeQuery("SELECT state FROM t_fileCaches WHERE url = ?;", values: [url]) else {
             return
         }
