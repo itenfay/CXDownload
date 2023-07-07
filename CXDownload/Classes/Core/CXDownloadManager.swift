@@ -9,11 +9,12 @@ import Foundation
 
 /// The state for the download.
 @objc public enum CXDownloadState: Int, CustomStringConvertible {
-    // Represents download state.
-    case downloading, waiting, paused, cancelled, finish, error
+    // Represents the download state.
+    case `default`, downloading, waiting, paused, cancelled, finish, error
     
     public var description: String {
         switch self {
+        case .`default`: return "Default"
         case .downloading: return "Downloading"
         case .waiting: return "Waiting"
         case .paused: return "Paused"
@@ -53,13 +54,13 @@ public class CXDownloadManager: NSObject {
     private var downloadDateDict: [String : Date] = [:]
     
     /// The count of downloads currently in progress.
-    public var currentCount: Int = 0
+    public var currentCount: Int!
     /// The max concurrent count for the download.
-    public var maxConcurrentCount: Int = 1
+    public var maxConcurrentCount: Int!
     /// Whether to allow cellular network download.
-    public var allowsCellularAccess: Bool = false
+    public var allowsCellularAccess: Bool!
     
-    private lazy var lock = NSLock()
+    private var lock: NSLock!
     
     /// Sends the specified string("Reachable", "NotReachable", "ReachableViaWWAN" or "ReachableViaWiFi") by notification.object.
     private var networkReachabilityStatus: String = "Reachable"
@@ -78,6 +79,8 @@ public class CXDownloadManager: NSObject {
         let tmaxConcurrentCount = ud.integer(forKey: CXDownloadConfig.maxConcurrentCountKey)
         maxConcurrentCount = tmaxConcurrentCount > 0 ? tmaxConcurrentCount : 1
         allowsCellularAccess = ud.bool(forKey: CXDownloadConfig.allowsCellularAccessKey)
+        
+        lock = NSLock()
         
         // Single-threaded proxy queue.
         queue = OperationQueue()
@@ -149,9 +152,9 @@ public class CXDownloadManager: NSObject {
         var downloadModel = CXDownloadDatabaseManager.shared.getModel(by: url)
         if downloadModel == nil {
             downloadModel = CXDownloadModel()
-            downloadModel?.url = url
-            downloadModel?.fid = url.cxd_sha2
-            downloadModel?.fileName = CXDFileUtils.lastPathComponent(aURL)
+            downloadModel!.url = url
+            downloadModel!.fid = url.cxd_sha2
+            downloadModel!.fileName = CXDFileUtils.lastPathComponent(aURL)
             CXDownloadDatabaseManager.shared.insertModel(downloadModel!)
         }
         
@@ -171,50 +174,40 @@ public class CXDownloadManager: NSObject {
                 s.updateCurrentCount(byAscending: false)
                 s.downloadTaskDict.removeValue(forKey: key)
                 s.downloadDateDict.removeValue(forKey: key)
-                // Cancels the task actively or Occurs an error.
-                // Comment: Next call to reset state because of removing download task.
-                //if model.state == .cancelled || model.state == .error {
-                //    CXDownloadDatabaseManager.shared.deleteModel(by: key)
-                //}
                 s.startDownloadingWaitingTask()
             }
-            taskProcessor?.updateStateAsWaiting()
-            taskProcessor?.urlSession = session
+            taskProcessor!.urlSession = session
             downloadTaskDict[url] = taskProcessor
         }
+        taskProcessor!.updateModelStateAndTime(downloadModel!)
         
-        // Download (given a waiting time, ensure that currentCount is updated)
-        //Thread.sleep(forTimeInterval: 0.1)
-        if (currentCount < maxConcurrentCount) && networkingAllowsDownloadTask() {
+        if currentCount < maxConcurrentCount && networkingAllowsDownloadTask() {
             downloadWithModel(downloadModel!)
-        }
-    }
-    
-    /// Resumes a download task through a specified url.
-    @objc public func resumeWithURLString(_ url: String) {
-        if let taskProcessor = downloadTaskDict[url],
-           taskProcessor.state == .paused {
-            if currentCount < maxConcurrentCount {
-                taskProcessor.resumeTask()
-            }
         }
     }
     
     /// Pauses a download task through a specified url.
     @objc public func pauseWithURLString(_ url: String) {
-        if let taskProcessor = downloadTaskDict[url] {
-            if taskProcessor.pauseTask() {
-                updateCurrentCount(byAscending: false)
-                startDownloadingWaitingTask()
-            }
+        // Select the state of model that is incorrect.
+        if let downloadModel = CXDownloadDatabaseManager.shared.getModel(by: url),
+           let taskProcessor = downloadTaskDict[url] {
+            downloadModel.state = taskProcessor.state
+            cancelTaskWithModel(downloadModel, removed: false)
+            
+            downloadModel.state = .paused
+            CXDownloadDatabaseManager.shared.updateModel(downloadModel, option: .state)
         }
     }
     
     /// Cancels a download task through a specified url.
     @objc public func cancelWithURLString(_ url: String) {
-        if let taskProcessor = downloadTaskDict[url],
-           taskProcessor.state == .downloading {
-            taskProcessor.cancelTask()
+        if let downloadModel = CXDownloadDatabaseManager.shared.getModel(by: url),
+           let taskProcessor = downloadTaskDict[url] {
+            downloadModel.state = taskProcessor.state
+            cancelTaskWithModel(downloadModel, removed: true)
+            
+            downloadModel.state = .cancelled
+            CXDownloadDatabaseManager.shared.updateModel(downloadModel, option: .state)
         }
     }
     
@@ -226,7 +219,7 @@ public class CXDownloadManager: NSObject {
     /// Deletes the task, cache, target file through the specified url, target directory and custom filename.
     @objc public func deleteTaskAndCache(url: String, atDirectory directory: String?, fileName: String?) {
         if let model = CXDownloadDatabaseManager.shared.getModel(by: url) {
-            cancelTaskWithModel(model, isDeleted: true)
+            cancelTaskWithModel(model, removed: true)
         }
         DispatchQueue.global().async {
             if let aURL = URL.init(string: url) {
@@ -248,19 +241,15 @@ public class CXDownloadManager: NSObject {
     //}
     
     private func downloadWithModel(_ model: CXDownloadModel) {
-        if let url = model.url, let taskProcessor = downloadTaskDict[url] {
-            if taskProcessor.state == .waiting ||
-                taskProcessor.state == .paused ||
-                taskProcessor.state == .cancelled ||
-                taskProcessor.state == .error {
-                updateCurrentCount(byAscending: true)
-                taskProcessor.process()
-            }
+        if let key = model.url,
+           let taskProcessor = downloadTaskDict[key] {
+            updateCurrentCount(byAscending: true)
+            taskProcessor.process()
         }
     }
     
     private func startDownloadingWaitingTask() {
-        if (currentCount < maxConcurrentCount) && networkingAllowsDownloadTask() {
+        if currentCount < maxConcurrentCount && networkingAllowsDownloadTask() {
             guard let model = CXDownloadDatabaseManager.shared.getWaitingModel() else {
                 return
             }
@@ -277,7 +266,7 @@ public class CXDownloadManager: NSObject {
         for i in 0..<count {
             // Cancel task.
             let model = downloadingDataArray[i]
-            cancelTaskWithModel(model, isDeleted: false)
+            cancelTaskWithModel(model, removed: false)
             
             // Update state as waiting.
             model.state = .waiting
@@ -285,18 +274,19 @@ public class CXDownloadManager: NSObject {
         }
     }
     
-    private func cancelTaskWithModel(_ model: CXDownloadModel, isDeleted: Bool) {
+    private func cancelTaskWithModel(_ model: CXDownloadModel, removed: Bool) {
         if model.state == .downloading, let key = model.url {
             if let taskProcessor = downloadTaskDict[key] {
-                taskProcessor.autoCancel()
+                taskProcessor.cancelTask()
                 
-                // Updates the downloaded count currently.
+                // Update the downloaded count currently.
                 updateCurrentCount(byAscending: false)
                 
                 startDownloadingWaitingTask()
             }
             
-            if isDeleted {
+            // Remove the object stored in the dictionary.
+            if removed {
                 downloadTaskDict.removeValue(forKey: key)
                 downloadDateDict.removeValue(forKey: key)
             }
@@ -350,10 +340,12 @@ extension CXDownloadManager: URLSessionDataDelegate {
     }
     
     public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        CXDLogger.log(message: "The URL session did become invalid.", level: .info)
         if let err = error {
-            CXDLogger.log(message: "error=\(err)", level: .error)
-        } else {
-            CXDLogger.log(message: "The URL session did become invalid.", level: .info)
+            CXDLogger.log(message: "error=\(err)", level: .info)
+        }
+        downloadTaskDict.forEach {
+            $0.value.processSessionBecomeInvalid(with: error)
         }
     }
     
