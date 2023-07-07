@@ -29,8 +29,7 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
     private(set) var atDirectory: String?
     private(set) var fileName: String?
     
-    private var autoCancelled: Bool = false
-    private let model: CXDownloadModel
+    private var model: CXDownloadModel
     private var outputStream: OutputStream?
     private var dataTask: URLSessionDataTask?
     
@@ -75,56 +74,36 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         self.fileName = fileName
     }
     
-    func updateStateAsWaiting() {
-        state = .waiting
-        model.lastStateTime = Int64(CXDToolbox.getTimestampWithDate(Date()))
+    func updateModelStateAndTime(_ downloadModel: CXDownloadModel) {
+        downloadModel.state = .waiting
+        downloadModel.lastStateTime = Int64(CXDToolbox.getTimestampWithDate(Date()))
+        model = downloadModel
         CXDownloadDatabaseManager.shared.updateModel(model, option: [.state, .lastStateTime])
     }
     
     /// Resumes the current data task.
-    @discardableResult
-    func resumeTask() -> Bool {
+    private func resumeTask() {
         if dataTask != nil && state == .paused {
             // The state that represents the task is downloading.
             state = .downloading
             CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             // Resumes the data task.
             dataTask?.resume()
-            return true
         }
-        return false
     }
     
     /// Pauses the current data task.
-    @discardableResult
-    func pauseTask() -> Bool {
+    private func pauseTask() {
         if dataTask != nil && state == .downloading {
             state = .paused
             CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             dataTask?.suspend()
-            return true
         }
-        return false
     }
     
     /// Cancels the current data task.
-    @discardableResult
-    func cancelTask() -> Bool {
-        if dataTask != nil {
-            autoCancelled = false
-            state = .cancelled
-            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
-            dataTask?.cancel()
-            return true
-        }
-        return false
-    }
-    
-    @discardableResult
-    func autoCancel() -> Bool {
-        autoCancelled = true
+    func cancelTask() {
         dataTask?.cancel()
-        return true
     }
     
     private func finishTask() {
@@ -133,7 +112,7 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
     
     private func getRequestURL() -> URL? {
         // This has been verified before invoking download's API.
-        /*guard let urlString = model.url, let url = URL(string: urlString) else {
+        /* guard let urlString = model.url, let url = URL(string: urlString) else {
             CXDLogger.log(message: "The url is invalid.", level: .info)
             state = .error
             let stateInfo = CXDownloadStateInfo()
@@ -347,16 +326,17 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         }
     }
     
-    func processSessionError(_ error: Error?) {
-        guard let error = error as? NSError else {
-            // if error is nil, the url session become invalid.
-            finishTask()
-            return
-        }
+    func processSessionBecomeInvalid(with error: Error?) {
+        // if error is nil, the url session become invalid.
         state = .error
         let stateInfo = CXDownloadStateInfo()
-        stateInfo.code = error.code
-        stateInfo.message = error.localizedDescription
+        if let err = error as? NSError {
+            stateInfo.code = err.code
+            stateInfo.message = err.localizedDescription
+        } else {
+            stateInfo.code = -2002
+            stateInfo.message = "The URL session become invalid"
+        }
         model.stateInfo = stateInfo
         CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
         runOnMainThread {
@@ -381,10 +361,8 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         }
         // Cancels the data task.
         if error.code == NSURLErrorCancelled {
+            dataTask = nil
             CXDLogger.log(message: "Code: \(error.code), message: \(error.localizedDescription)", level: .info)
-            if !autoCancelled {
-                finishTask()
-            }
         } else {
             // Occurs an error, etc.
             state = .error
