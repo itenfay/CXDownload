@@ -96,7 +96,8 @@ import Foundation
         }
         var filePathURL: URL?
         if let fn = fileName, !fn.isEmpty {
-            filePathURL = cachePath?.appendingPathComponent(fn)
+            let ext = self.pathExtension(url)
+            filePathURL = cachePath?.appendingPathComponent(ext.isEmpty ? fn : fn + "." + ext)
         } else {
             let file = self.lastPathComponent(url)
             filePathURL = cachePath?.appendingPathComponent(file)
