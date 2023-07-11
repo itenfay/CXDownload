@@ -13,14 +13,38 @@ import CXDownload
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        window = UIWindow(frame: UIScreen.main.bounds)
+        presentInWindow(window!)
+        
+        // Inject code only once.
+        injectCodeOnlyOnce()
+        
+        // Initialized
+        _ = CXDownloadManager.shared
         
         return true
     }
-
+    
+    func presentInWindow(_ window: UIWindow) {
+        let tabBarController = TabBarController()
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
+    }
+    
+    func injectCodeOnlyOnce() {
+        let ud = UserDefaults.standard
+        let onceKey = "InjectCodeOnlyOnceKey"
+        if !ud.bool(forKey: onceKey) {
+            ud.set(1, forKey: CXDownloadConfig.maxConcurrentCountKey)
+            ud.set(false, forKey: CXDownloadConfig.allowsCellularAccessKey)
+            ud.set(true, forKey: onceKey)
+            ud.synchronize()
+        }
+    }
+    
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         CXDownloadManager.shared.setDidFinishEventsForBackgroundURLSession(completionHandler: completionHandler)
     }

@@ -8,6 +8,51 @@
 
 import UIKit
 
-class HomeView: BaseView {
+protocol HomeViewable: AnyObject {
+    func refreshView()
+    func reloadRows(atIndex index: Int)
+}
 
+class HomeView: BaseView {
+    
+    private var tableView: UITableView!
+    
+    override var frame: CGRect {
+        didSet {
+            tableView?.frame = CGRect(origin: CGPoint(x: 0, y: kNavigaH),
+                                      size: CGSize(width: frame.width, height: frame.height - kNavigaH - kTabBarH))
+        }
+    }
+    
+    override func setup() {
+        buildView()
+    }
+    
+    func buildView() {
+        tableView = UITableView(frame: .zero)
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 50
+        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        tableView.showsVerticalScrollIndicator = false
+        tableView.contentInsetAdjustmentBehavior = .never
+        addSubview(tableView)
+    }
+    
+    func setTableDelegate(_ delegate: (UITableViewDelegate & UITableViewDataSource)?) {
+        tableView.delegate = delegate
+        tableView.dataSource = delegate
+    }
+    
+    func reload() {
+        tableView.reloadData()
+    }
+    
+    func reloadRows(atIndex index: Int) {
+        DispatchQueue.main.async {
+            self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+        }
+    }
+    
 }

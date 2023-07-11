@@ -1,5 +1,5 @@
 //
-//  BasePresenter.swift
+//  MineModel.swift
 //  CXDownload_Example
 //
 //  Created by chenxing on 2023/7/7.
@@ -8,12 +8,6 @@
 
 import Foundation
 
-protocol Presenter: AnyObject {
-    func loadData()
-}
-
-class BasePresenter: NSObject, Presenter {
-    
-    func loadData() {}
+class MineModel: BaseModel {
     
 }
