@@ -1,5 +1,5 @@
 //
-//  HomeConfigurator.swift
+//  MineConfigurator.swift
 //  CXDownload_Example
 //
 //  Created by chenxing on 2023/7/7.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class HomeConfigurator: Configurator {
+class MineConfigurator: Configurator {
     
-    typealias C = HomeViewController
+    typealias C = MineViewController
     
-    func configure(controller: HomeViewController) {
+    func configure(controller: MineViewController) {
         let apiClient = DLApiClient(urlSession: DefaultURLSession())
         
-        let presenter = HomePresenter(view: controller, apiClient: apiClient)
+        let presenter = MinePresenter(view: controller, apiClient: apiClient)
         controller.presenter = presenter
     }
     

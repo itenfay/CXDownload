@@ -18,9 +18,18 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0gO-Vb-8ft">
-                        <rect key="frame" x="15" y="15" width="366" height="20"/>
+                        <rect key="frame" x="15" y="15" width="346" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="1TY-uU-Wb3"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="speed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnl-5V-hEo">
+                        <rect key="frame" x="14.999999999999996" y="50" width="44.666666666666657" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="IgM-Pf-NAc"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="16"/>
                         <nil key="textColor"/>
@@ -44,21 +53,12 @@
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal" image="com_download_default"/>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="speed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnl-5V-hEo">
-                        <rect key="frame" x="14.999999999999996" y="50" width="44.666666666666657" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="20" id="IgM-Pf-NAc"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="16"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="0gO-Vb-8ft" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="5v1-BZ-ChI"/>
                     <constraint firstItem="0gO-Vb-8ft" firstAttribute="leading" secondItem="cnl-5V-hEo" secondAttribute="leading" id="COZ-OV-0ZY"/>
                     <constraint firstItem="59p-eO-d8C" firstAttribute="leading" secondItem="cnl-5V-hEo" secondAttribute="trailing" constant="20" id="KSz-Ic-sft"/>
-                    <constraint firstAttribute="trailing" secondItem="0gO-Vb-8ft" secondAttribute="trailing" constant="60" id="RqX-nd-p5n"/>
+                    <constraint firstAttribute="trailing" secondItem="0gO-Vb-8ft" secondAttribute="trailing" constant="80" id="RqX-nd-p5n"/>
                     <constraint firstAttribute="bottom" secondItem="cnl-5V-hEo" secondAttribute="bottom" constant="15" id="avq-QR-tO6"/>
                     <constraint firstItem="59p-eO-d8C" firstAttribute="centerY" secondItem="cnl-5V-hEo" secondAttribute="centerY" id="cRI-J7-SAI"/>
                     <constraint firstItem="dfz-Wc-HrI" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="kKT-0L-ufU"/>
@@ -70,7 +70,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="downloadButton" destination="dfz-Wc-HrI" id="DME-tY-Tpt"/>
-                <outlet property="nameLabel" destination="cnl-5V-hEo" id="qHc-6k-k0a"/>
+                <outlet property="nameLabel" destination="0gO-Vb-8ft" id="U7V-Rm-6fa"/>
                 <outlet property="progressLabel" destination="59p-eO-d8C" id="vvD-ZQ-y1V"/>
                 <outlet property="speedLabel" destination="cnl-5V-hEo" id="hHl-kk-XA2"/>
             </connections>

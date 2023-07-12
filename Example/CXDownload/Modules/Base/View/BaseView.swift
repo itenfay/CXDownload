@@ -71,16 +71,38 @@ class BaseTableViewCell: UITableViewCell, IBaseView {
         addActions()
     }
     
-    func setup() {
-        
+    func setup() {}
+    
+    func layoutUI() {}
+    
+    func addActions() {}
+    
+}
+
+class BaseCollectionViewCell: UICollectionViewCell, IBaseView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+        layoutUI()
+        addActions()
     }
     
-    func layoutUI() {
-        
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
     
-    func addActions() {
-        
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setup()
+        layoutUI()
+        addActions()
     }
+    
+    func setup() {}
+    
+    func layoutUI() {}
+    
+    func addActions() {}
     
 }

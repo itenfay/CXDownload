@@ -11,9 +11,9 @@ import CXDownload
 
 class HomePresenter: BasePresenter {
     
-    private var view: HomeViewable
+    private unowned let view: HomeViewable
     private var dataSource: [DataModel] = []
-    let apiClient: ApiClient
+    private let apiClient: ApiClient
     
     init(view: HomeViewable, apiClient: ApiClient) {
         self.view = view
@@ -56,7 +56,7 @@ class HomePresenter: BasePresenter {
                     let newModel = DataModel()
                     newModel.vid = model.vid
                     newModel.url = model.url
-                    newModel.fileName = m.fileName ?? ""
+                    newModel.fileName = model.fileName
                     newModel.state = m.state
                     dataSource[i] = newModel
                 }

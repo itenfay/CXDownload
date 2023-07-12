@@ -1,5 +1,5 @@
 //
-//  HomeConfigurator.swift
+//  SettingsConfigurator.swift
 //  CXDownload_Example
 //
 //  Created by chenxing on 2023/7/7.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class HomeConfigurator: Configurator {
+class SettingsConfigurator: Configurator {
     
-    typealias C = HomeViewController
+    typealias C = SettingsViewController
     
-    func configure(controller: HomeViewController) {
+    func configure(controller: SettingsViewController) {
         let apiClient = DLApiClient(urlSession: DefaultURLSession())
         
-        let presenter = HomePresenter(view: controller, apiClient: apiClient)
+        let presenter = SettingsPresenter(view: controller, apiClient: apiClient)
         controller.presenter = presenter
     }
     

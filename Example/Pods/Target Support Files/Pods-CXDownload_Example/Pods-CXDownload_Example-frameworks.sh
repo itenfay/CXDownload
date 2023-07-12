@@ -176,10 +176,12 @@ code_sign_if_enabled() {
 }
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CXDownload/CXDownload.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CXDownload/CXDownload.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
 fi

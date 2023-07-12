@@ -35,7 +35,7 @@ class HomeTableViewCell: BaseTableViewCell {
     private var fileName: String = ""
     
     override func setup() {
-        
+        downloadButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .medium)
     }
     
     override func layoutUI() {
@@ -52,6 +52,7 @@ class HomeTableViewCell: BaseTableViewCell {
         fileName = model.fileName
         nameLabel.text = model.fileName
         speedLabel.text = ""
+        progressLabel.text = ""
         updateDownloadState(model.state)
     }
     
@@ -64,15 +65,22 @@ class HomeTableViewCell: BaseTableViewCell {
         switch state {
         case .`default`:
             image = UIImage(named: "com_download_default")
-        case .downloading: break
+            downloadButton.setTitle("", for: .normal)
+        case .downloading:
+            image = nil
+            downloadButton.setTitle("下载中", for: .normal)
         case .waiting:
             image = UIImage(named: "com_download_waiting")
+            downloadButton.setTitle("", for: .normal)
         case .paused:
             image = UIImage(named: "com_download_pause")
+            downloadButton.setTitle("", for: .normal)
         case .finish:
             image = UIImage(named: "com_download_finish")
+            downloadButton.setTitle("", for: .normal)
         case .cancelled, .error:
             image = UIImage(named: "com_download_error")
+            downloadButton.setTitle("", for: .normal)
         }
         downloadButton.setImage(image, for: .normal)
     }

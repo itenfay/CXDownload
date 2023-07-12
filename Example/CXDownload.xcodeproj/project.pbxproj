@@ -21,6 +21,12 @@
 		7906737A2A5CF9A1006E0916 /* URLSessionStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790673792A5CF9A1006E0916 /* URLSessionStub.swift */; };
 		7906737C2A5D09E9006E0916 /* DefaultURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7906737B2A5D09E9006E0916 /* DefaultURLSession.swift */; };
 		7906737E2A5D2D2C006E0916 /* MineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7906737D2A5D2D2C006E0916 /* MineModel.swift */; };
+		790673802A5D3395006E0916 /* MineConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7906737F2A5D3395006E0916 /* MineConfigurator.swift */; };
+		7906738B2A5D565A006E0916 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790673832A5D5659006E0916 /* SettingsView.swift */; };
+		7906738C2A5D565A006E0916 /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790673852A5D5659006E0916 /* SettingsPresenter.swift */; };
+		7906738D2A5D565A006E0916 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790673872A5D5659006E0916 /* SettingsViewController.swift */; };
+		7906738E2A5D565A006E0916 /* SettingsConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790673882A5D5659006E0916 /* SettingsConfigurator.swift */; };
+		7906738F2A5D565A006E0916 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7906738A2A5D565A006E0916 /* SettingsModel.swift */; };
 		79640D6D2A57D4980016EC44 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79640D6C2A57D4980016EC44 /* BaseViewController.swift */; };
 		79640D732A57D4C60016EC44 /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79640D722A57D4C60016EC44 /* BaseModel.swift */; };
 		79640D752A57D4D70016EC44 /* BasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79640D742A57D4D70016EC44 /* BasePresenter.swift */; };
@@ -39,6 +45,7 @@
 		798EFCE02A5BF40700ECAE57 /* HomeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 798EFCDE2A5BF40700ECAE57 /* HomeTableViewCell.xib */; };
 		798EFCE32A5BF81E00ECAE57 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798EFCE22A5BF81E00ECAE57 /* ApiClient.swift */; };
 		79B4EA6B2A5417BE00C22E29 /* testData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79B4EA6A2A5417BE00C22E29 /* testData.plist */; };
+		79B882C72A5E761300B9C26F /* DLNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 79B882C62A5E761300B9C26F /* DLNetworkReachabilityManager.m */; };
 		C122728356DBF26A2179F22E /* Pods_CXDownload_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D34E68B9B6D214A4DB21D8 /* Pods_CXDownload_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +80,12 @@
 		790673792A5CF9A1006E0916 /* URLSessionStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionStub.swift; sourceTree = "<group>"; };
 		7906737B2A5D09E9006E0916 /* DefaultURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultURLSession.swift; sourceTree = "<group>"; };
 		7906737D2A5D2D2C006E0916 /* MineModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineModel.swift; sourceTree = "<group>"; };
+		7906737F2A5D3395006E0916 /* MineConfigurator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineConfigurator.swift; sourceTree = "<group>"; };
+		790673832A5D5659006E0916 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		790673852A5D5659006E0916 /* SettingsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
+		790673872A5D5659006E0916 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		790673882A5D5659006E0916 /* SettingsConfigurator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsConfigurator.swift; sourceTree = "<group>"; };
+		7906738A2A5D565A006E0916 /* SettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		79640D6C2A57D4980016EC44 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		79640D722A57D4C60016EC44 /* BaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 		79640D742A57D4D70016EC44 /* BasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePresenter.swift; sourceTree = "<group>"; };
@@ -91,6 +104,9 @@
 		798EFCDE2A5BF40700ECAE57 /* HomeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewCell.xib; sourceTree = "<group>"; };
 		798EFCE22A5BF81E00ECAE57 /* ApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		79B4EA6A2A5417BE00C22E29 /* testData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testData.plist; sourceTree = "<group>"; };
+		79B882C42A5E761300B9C26F /* DLNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		79B882C52A5E761300B9C26F /* CXDownload_Example-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CXDownload_Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		79B882C62A5E761300B9C26F /* DLNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLNetworkReachabilityManager.m; sourceTree = "<group>"; };
 		B1D34E68B9B6D214A4DB21D8 /* Pods_CXDownload_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CXDownload_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE66E9FA249E20DFB5C8D82F /* CXDownload.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CXDownload.podspec; path = ../CXDownload.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C09F599F40D911B084FE0FFD /* Pods-CXDownload_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CXDownload_Example.release.xcconfig"; path = "Target Support Files/Pods-CXDownload_Example/Pods-CXDownload_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -202,6 +218,50 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		790673812A5D413B006E0916 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				790673862A5D5659006E0916 /* Controller */,
+				790673892A5D565A006E0916 /* Model */,
+				790673842A5D5659006E0916 /* Presenter */,
+				790673882A5D5659006E0916 /* SettingsConfigurator.swift */,
+				790673822A5D5659006E0916 /* View */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		790673822A5D5659006E0916 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				790673832A5D5659006E0916 /* SettingsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		790673842A5D5659006E0916 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				790673852A5D5659006E0916 /* SettingsPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		790673862A5D5659006E0916 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				790673872A5D5659006E0916 /* SettingsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		790673892A5D565A006E0916 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7906738A2A5D565A006E0916 /* SettingsModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		79640D5E2A57A3190016EC44 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +269,7 @@
 				798EFCE12A5BF64100ECAE57 /* Common */,
 				79640D5F2A57A3190016EC44 /* Home */,
 				79640D602A57A3190016EC44 /* Me */,
+				790673812A5D413B006E0916 /* Settings */,
 				798EFCD52A5BB28700ECAE57 /* TabBar */,
 			);
 			path = Modules;
@@ -230,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				79640D712A57D49F0016EC44 /* Controller */,
+				7906737F2A5D3395006E0916 /* MineConfigurator.swift */,
 				79640D6F2A57D49F0016EC44 /* Model */,
 				79640D702A57D49F0016EC44 /* Presenter */,
 				79640D6E2A57D49F0016EC44 /* View */,
@@ -371,6 +433,7 @@
 				790673722A5CF02B006E0916 /* AppCommon.swift */,
 				7906737B2A5D09E9006E0916 /* DefaultURLSession.swift */,
 				790673732A5CF02B006E0916 /* JSON.swift */,
+				79B882C32A5E761300B9C26F /* Objc */,
 				790673772A5CF3E9006E0916 /* Result.swift */,
 				790673792A5CF9A1006E0916 /* URLSessionStub.swift */,
 			);
@@ -383,6 +446,16 @@
 				79B4EA6A2A5417BE00C22E29 /* testData.plist */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		79B882C32A5E761300B9C26F /* Objc */ = {
+			isa = PBXGroup;
+			children = (
+				79B882C52A5E761300B9C26F /* CXDownload_Example-Bridging-Header.h */,
+				79B882C42A5E761300B9C26F /* DLNetworkReachabilityManager.h */,
+				79B882C62A5E761300B9C26F /* DLNetworkReachabilityManager.m */,
+			);
+			path = Objc;
 			sourceTree = "<group>";
 		};
 		8DCE4377C33A49C7A343F274 /* Frameworks */ = {
@@ -550,11 +623,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CXDownload_Example/Pods-CXDownload_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/CXDownload/CXDownload.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CXDownload.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 			);
@@ -571,18 +646,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				7906738D2A5D565A006E0916 /* SettingsViewController.swift in Sources */,
 				79640D852A57D67F0016EC44 /* MineViewController.swift in Sources */,
 				79640D752A57D4D70016EC44 /* BasePresenter.swift in Sources */,
 				7906737A2A5CF9A1006E0916 /* URLSessionStub.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				798EFCE32A5BF81E00ECAE57 /* ApiClient.swift in Sources */,
+				7906738F2A5D565A006E0916 /* SettingsModel.swift in Sources */,
 				7906737C2A5D09E9006E0916 /* DefaultURLSession.swift in Sources */,
+				7906738C2A5D565A006E0916 /* SettingsPresenter.swift in Sources */,
 				79640D812A57D6330016EC44 /* MineView.swift in Sources */,
 				79640D7F2A57D6140016EC44 /* HomeView.swift in Sources */,
+				7906738E2A5D565A006E0916 /* SettingsConfigurator.swift in Sources */,
 				79640D772A57D4E50016EC44 /* BaseView.swift in Sources */,
+				7906738B2A5D565A006E0916 /* SettingsView.swift in Sources */,
 				79640D732A57D4C60016EC44 /* BaseModel.swift in Sources */,
 				79640D7B2A57D5B00016EC44 /* DataModel.swift in Sources */,
 				790673782A5CF3E9006E0916 /* Result.swift in Sources */,
+				790673802A5D3395006E0916 /* MineConfigurator.swift in Sources */,
 				790673742A5CF02B006E0916 /* ApiResponse.swift in Sources */,
 				79640D7D2A57D5D50016EC44 /* HomePresenter.swift in Sources */,
 				790673752A5CF02B006E0916 /* AppCommon.swift in Sources */,
@@ -595,6 +676,7 @@
 				79640D6D2A57D4980016EC44 /* BaseViewController.swift in Sources */,
 				798EFCDF2A5BF40700ECAE57 /* HomeTableViewCell.swift in Sources */,
 				79640D832A57D6540016EC44 /* MinePresenter.swift in Sources */,
+				79B882C72A5E761300B9C26F /* DLNetworkReachabilityManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -750,7 +832,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "CXDownload/Modules/Common/Objc/CXDownload_Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
@@ -771,7 +853,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "CXDownload/Modules/Common/Objc/CXDownload_Example-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 			};
