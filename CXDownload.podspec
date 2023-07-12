@@ -45,6 +45,7 @@ Pod::Spec.new do |s|
         core.source_files = 'CXDownload/Classes/Core/*.{swift}'
         core.dependency 'CXDownload/Base'
         core.requires_arc = true
+        core.dependency 'FMDB'
     end
     
     s.subspec "Extension" do |ex|
