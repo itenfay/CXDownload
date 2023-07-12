@@ -24,6 +24,7 @@ class HomePresenter: BasePresenter {
     
     func addNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(downloadStateChange(_:)), name: CXDownloadConfig.stateChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(downloadProgressChange(_:)), name: CXDownloadConfig.progressNotification, object: nil)
     }
     
     override func loadData() {
@@ -68,10 +69,21 @@ class HomePresenter: BasePresenter {
         guard let model = noti.object as? CXDownloadModel else {
             return
         }
+        updateSourceModel(model)
+    }
+    
+    @objc func downloadProgressChange(_ noti: Notification) {
+        guard let model = noti.object as? CXDownloadModel else {
+            return
+        }
+        updateSourceModel(model)
+    }
+    
+    private func updateSourceModel(_ model: CXDownloadModel) {
         for (i, source) in dataSource.enumerated() {
             if source.url == model.url {
+                // Update model.
                 dataSource[i] = model.toDataModel(with: source.vid)
-                view.reloadRows(atIndex: i)
                 break
             }
         }
@@ -86,6 +98,7 @@ class HomePresenter: BasePresenter {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: CXDownloadConfig.stateChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: CXDownloadConfig.progressNotification, object: nil)
     }
     
 }
@@ -106,7 +119,14 @@ extension HomePresenter: UITableViewDelegate, UITableViewDataSource {
             cell = HomeTableViewCell(style: .default, reuseIdentifier: "HomeTableViewCell")
         }
         cell!.selectionStyle = .none
+        
+        //cell!.backgroundColor = .white
+        //let backgroundView = UIView(frame: cell!.frame)
+        //backgroundView.backgroundColor = UIColor(red: 0, green: 198/255, blue: 198/255, alpha: 1)
+        //cell!.backgroundView = backgroundView
+        
         configure(cell: cell as! HomeTableViewCell, for: indexPath)
+        
         return cell!
     }
     

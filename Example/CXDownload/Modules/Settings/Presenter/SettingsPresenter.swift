@@ -56,7 +56,7 @@ class SettingsPresenter: BasePresenter, SettingsPresenterDelegate {
             guard let url = model.url else {
                 continue
             }
-            CXDownloadManager.shared.deleteTaskAndCache(url: url)
+            CXDownloadManager.shared.deleteTaskAndCache(url: url, atDirectory: nil, fileName: model.fileName)
         }
     }
     

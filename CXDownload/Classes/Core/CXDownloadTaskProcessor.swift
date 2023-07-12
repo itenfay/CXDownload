@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol ICXDownloadTaskProcessor {
+protocol DownloadTaskProcessor {
     var urlSession: URLSession? { get set }
     var url: String? { get }
     var state: CXDownloadState { get set }
 }
 
-class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
+class CXDownloadTaskProcessor: DownloadTaskProcessor {
     
     private var progressCallback: CXDownloadCallback?
     private var successCallback: CXDownloadCallback?

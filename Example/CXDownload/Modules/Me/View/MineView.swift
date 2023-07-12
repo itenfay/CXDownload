@@ -26,12 +26,13 @@ class MineView: BaseView {
         let paddingY: CGFloat = 50
         
         let cacheButton = UIButton(type: .custom)
-        cacheButton.frame = CGRect(x: paddingX, y: paddingY, width: kScreenW - 2*paddingX, height: 50)
+        cacheButton.frame = CGRect(x: paddingX, y: -paddingY, width: kScreenW - 2*paddingX, height: 50)
         cacheButton.backgroundColor = .lightGray
         cacheButton.setTitle("我的缓存", for: .normal)
         cacheButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         cacheButton.addTarget(self, action: #selector(onCacheBtnClick), for: .touchUpInside)
         cacheButton.layer.cornerRadius = 10
+        cacheButton.isHidden = true
         addSubview(cacheButton)
         
         let settingsButton = UIButton(type: .custom)

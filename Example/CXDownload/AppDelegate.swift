@@ -27,6 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         DLNetworkReachabilityManager.shared().monitorNetworkStatus()
         
+        CXDownloadManager.shared.showPromptForCellularAccessNotAllowed {
+            CXDLogger.log(message: "当前为蜂窝网络，已停止下载任务，可在设置中开启", level: .warning)
+        }
+        
         return true
     }
     

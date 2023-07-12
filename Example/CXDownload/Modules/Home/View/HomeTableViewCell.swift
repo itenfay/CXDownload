@@ -13,6 +13,7 @@ class HomeTableViewCell: BaseTableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var speedLabel: UILabel!
+    @IBOutlet weak var totolLabel: UILabel!
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var downloadButton: UIButton!
     
@@ -26,16 +27,19 @@ class HomeTableViewCell: BaseTableViewCell {
     
     private var state: CXDownloadState = .default {
         didSet {
-            changeImageForDownloadButton(by: state)
+            changeDownloadButtonStyle(by: state)
         }
     }
     
     private var url: String?
     private var vid: String = ""
     private var fileName: String = ""
+    private var progress: Float = 0
     
     override func setup() {
-        downloadButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        progressLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        progressLabel.textColor = .orange
+        progressLabel.isUserInteractionEnabled = true
     }
     
     override func layoutUI() {
@@ -53,6 +57,8 @@ class HomeTableViewCell: BaseTableViewCell {
         nameLabel.text = model.fileName
         speedLabel.text = ""
         progressLabel.text = ""
+        totolLabel.text = ""
+        progress = model.progress
         updateDownloadState(model.state)
     }
     
@@ -60,40 +66,47 @@ class HomeTableViewCell: BaseTableViewCell {
         self.state = state
     }
     
-    func changeImageForDownloadButton(by state: CXDownloadState) {
+    func changeDownloadButtonStyle(by state: CXDownloadState) {
         var image: UIImage?
         switch state {
         case .`default`:
             image = UIImage(named: "com_download_default")
-            downloadButton.setTitle("", for: .normal)
-        case .downloading:
-            image = nil
-            downloadButton.setTitle("下载中", for: .normal)
+        case .downloading: break
         case .waiting:
             image = UIImage(named: "com_download_waiting")
-            downloadButton.setTitle("", for: .normal)
         case .paused:
             image = UIImage(named: "com_download_pause")
-            downloadButton.setTitle("", for: .normal)
         case .finish:
             image = UIImage(named: "com_download_finish")
-            downloadButton.setTitle("", for: .normal)
         case .cancelled, .error:
             image = UIImage(named: "com_download_error")
-            downloadButton.setTitle("", for: .normal)
         }
         downloadButton.setImage(image, for: .normal)
+        if state == .downloading {
+            progressLabel.text = "\(Int(progress * 100))%"
+            downloadButton.layer.cornerRadius = 30
+            downloadButton.layer.borderWidth = 1
+            downloadButton.layer.borderColor = UIColor.orange.cgColor
+        } else {
+            progressLabel.text = ""
+            downloadButton.layer.cornerRadius = 0
+            downloadButton.layer.borderWidth = 0
+        }
     }
     
     func reloadLabelWithModel(_ model: DataModel) {
-        changeImageForDownloadButton(by: model.state)
+        // Resolve reusable cell.
+        if model.url != url { return }
+        
+        progress = model.progress
+        updateDownloadState(model.state)
         
         let totalSize = CXDToolbox.string(fromByteCount: model.totalFileSize)
         let tmpSize = CXDToolbox.string(fromByteCount: model.tmpFileSize)
         if model.state == .finish {
-            progressLabel.text = totalSize + " | \(Int(model.progress * 100))%"
+            totolLabel.text = totalSize
         } else {
-            progressLabel.text = "\(tmpSize) / \(totalSize)" + " | \(Int(model.progress * 100))%"
+            totolLabel.text = "\(tmpSize) / \(totalSize)"
         }
         
         if model.speed > 0 {

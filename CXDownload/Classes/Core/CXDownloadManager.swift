@@ -8,21 +8,9 @@
 import Foundation
 
 /// The state for the download.
-@objc public enum CXDownloadState: Int, CustomStringConvertible {
+@objc public enum CXDownloadState: Int {
     // Represents the download state.
     case `default`, downloading, waiting, paused, cancelled, finish, error
-    
-    public var description: String {
-        switch self {
-        case .`default`: return "Default"
-        case .downloading: return "Downloading"
-        case .waiting: return "Waiting"
-        case .paused: return "Paused"
-        case .cancelled: return "Cancelled"
-        case .finish: return "Finish"
-        case .error: return "Error"
-        }
-    }
 }
 
 /// Schedules a block asynchronously for execution on main thread.
@@ -191,34 +179,34 @@ public class CXDownloadManager: NSObject {
     
     /// Pauses a download task through a specified url.
     @objc public func pauseWithURLString(_ url: String) {
-        update(state: .paused, removed: false, for: url)
+        update(toState: .paused, removed: false, for: url)
     }
     
     /// Cancels a download task through a specified url.
     @objc public func cancelWithURLString(_ url: String) {
-        update(state: .cancelled, removed: true, for: url)
+        update(toState: .cancelled, removed: true, for: url)
     }
     
     /// For pausing or cancelling.
-    private func update(state: CXDownloadState, removed: Bool, for url: String) {
+    private func update(toState state: CXDownloadState, removed: Bool, for url: String) {
         guard let taskProcessor = downloadTaskDict[url] else {
             return
         }
-        if taskProcessor.state != .downloading || taskProcessor.state != .waiting {
-            return
+        if taskProcessor.state == .waiting || taskProcessor.state == .downloading {
+            // Select the state of model that is incorrect.
+            let downloadModel = CXDownloadDatabaseManager.shared.getModel(by: url)!
+            if taskProcessor.state == .downloading {
+                downloadModel.state = .downloading
+                cancelTaskWithModel(downloadModel, removed: removed)
+            }
+            
+            taskProcessor.state = state
+            // If the state is waiting, assign value of state to the download model.
+            downloadModel.state = state
+            CXDownloadDatabaseManager.shared.updateModel(downloadModel, option: .state)
+            
+            startDownloadingWaitingTask()
         }
-        // Select the state of model that is incorrect.
-        let downloadModel = CXDownloadDatabaseManager.shared.getModel(by: url)!
-        if taskProcessor.state == .downloading {
-            downloadModel.state = .downloading
-            cancelTaskWithModel(downloadModel, removed: removed)
-        }
-        
-        // If the state is waiting, assign value to the download model.
-        downloadModel.state = state
-        CXDownloadDatabaseManager.shared.updateModel(downloadModel, option: .state)
-        
-        startDownloadingWaitingTask()
     }
     
     /// Deletes the task, cache, target file through the specified url.
@@ -274,7 +262,6 @@ public class CXDownloadManager: NSObject {
         let downloadingDataArray = CXDownloadDatabaseManager.shared.getAllDownloadingData()
         let count = all ? downloadingDataArray.count : downloadingDataArray.count - maxConcurrentCount
         guard count > 0 else {
-            if !all { startDownloadingWaitingTask() }
             return
         }
         for i in 0..<count {
