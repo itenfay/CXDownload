@@ -83,7 +83,7 @@ public class CXDownloadDatabaseManager: NSObject {
                 try db.executeUpdate(sql, values: [model.fid ?? "", model.fileName ?? "", model.url ?? "", model.state.rawValue, model.totalFileSize, model.tmpFileSize, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
                 CXDLogger.log(message: "Inserting data is successful.", level: .info)
             } catch {
-                CXDLogger.log(message: "Insert data: \(error.localizedDescription)", level: .error)
+                CXDLogger.log(message: "Inserting data: \(error.localizedDescription)", level: .error)
             }
         }
     }
