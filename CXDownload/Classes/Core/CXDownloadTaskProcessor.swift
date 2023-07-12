@@ -119,10 +119,10 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
             stateInfo.code = -2000
             stateInfo.message = "The url is invalid"
             model.stateInfo = stateInfo
-            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             runOnMainThread {
                 self.failureCallback?(self.model)
             }
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             finishTask()
             return nil
         }*/
@@ -160,11 +160,11 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
             state = .finish
             model.progress = 1.0
             model.localPath = dstPath
-            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
             runOnMainThread {
                 self.progressCallback?(self.model)
                 self.successCallback?(self.model)
             }
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
             finishTask()
             return
         }
@@ -214,10 +214,10 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
             stateInfo.code = -2001
             stateInfo.message = "Fail to convert URLResponse to HTTPURLResponse"
             model.stateInfo = stateInfo
-            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             runOnMainThread {
                 self.failureCallback?(self.model)
             }
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             finishTask()
             return
         }
@@ -239,11 +239,11 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
             state = .finish
             model.progress = 1.0
             model.localPath = dstPath
-            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
             runOnMainThread {
                 self.progressCallback?(self.model)
                 self.successCallback?(self.model)
             }
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
             finishTask()
             return
         }
@@ -261,10 +261,10 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
             state = .downloading
             let progress = Float(resumedFileSize) / Float(totalSize)
             model.progress = progress
-            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
             runOnMainThread {
                 self.progressCallback?(self.model)
             }
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
             outputStream = OutputStream.init(toFileAtPath: tmpPath, append: true)
             outputStream?.open()
             completionHandler(.allow)
@@ -278,10 +278,10 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         stateInfo.code = resp.statusCode
         stateInfo.message = "An error occurs"
         model.stateInfo = stateInfo
-        CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
         runOnMainThread {
             self.failureCallback?(self.model)
         }
+        CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
         finishTask()
         completionHandler(.cancel)
     }
@@ -308,12 +308,13 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
         //CXDLogger.log(message: "progress: \(progress)", level: .info)
         model.progress = progress
         
-        // Update the specified model in database.
-        CXDownloadDatabaseManager.shared.updateModel(model, option: .progressData)
-        
         runOnMainThread {
             self.progressCallback?(self.model)
         }
+        
+        // Update the specified model in database.
+        CXDownloadDatabaseManager.shared.updateModel(model, option: .progressData)
+        NotificationCenter.default.post(name: CXDownloadConfig.progressNotification, object: model)
         
         // Reset it.
         model.intervalFileSize = 0
@@ -338,10 +339,10 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
             stateInfo.message = "The URL session become invalid"
         }
         model.stateInfo = stateInfo
-        CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
         runOnMainThread {
             self.failureCallback?(self.model)
         }
+        CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
         finishTask()
     }
     
@@ -352,10 +353,10 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
             CXDFileUtils.moveFile(from: tmpPath, to: dstPath)
             state = .finish
             model.localPath = dstPath
-            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             runOnMainThread {
                 self.successCallback?(self.model)
             }
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             finishTask()
             return
         }
@@ -370,10 +371,10 @@ class CXDownloadTaskProcessor: ICXDownloadTaskProcessor {
             stateInfo.code = error.code
             stateInfo.message = error.localizedDescription
             model.stateInfo = stateInfo
-            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             runOnMainThread {
                 self.failureCallback?(self.model)
             }
+            CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
             finishTask()
         }
     }
