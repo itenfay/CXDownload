@@ -7,6 +7,7 @@ target 'CXDownload_Example' do
   
   pod 'CXDownload', :path => '../'
   pod 'FMDB'
+  pod 'AFNetworking'
   
   target 'CXDownload_Tests' do
     inherit! :search_paths
