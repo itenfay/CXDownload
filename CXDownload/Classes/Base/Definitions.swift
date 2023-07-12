@@ -23,6 +23,8 @@ public typealias CXDImageView = NSImageView
 @objcMembers public class CXDownloadConfig: NSObject {
     /// State change notification.
     public static let stateChangeNotification = Notification.Name("CXDownloadStateChangeNotification")
+    /// Progress notification.
+    public static let progressNotification = Notification.Name("CXDownloadProgressNotification")
     /// Max concurrent count change notification.
     public static let maxConcurrentCountChangeNotification = Notification.Name("CXDownloadMaxConcurrentCountChangeNotification")
     /// Allows cellular access change notification.
