@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialized
         _ = CXDownloadManager.shared
         
+        DLNetworkReachabilityManager.shared().monitorNetworkStatus()
+        
         return true
     }
     
