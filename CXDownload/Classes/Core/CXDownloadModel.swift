@@ -19,6 +19,8 @@ import FMDB
     /// The identifier of file.
     public var fid: String?
     /// The name of file.
+    public var atDirectory: String?
+    /// The name of file.
     public var fileName: String?
     /// The url of file.
     public var url: String?
@@ -50,6 +52,7 @@ import FMDB
     #if canImport(FMDB)
     public init(resultSet: FMResultSet) {
         self.fid = resultSet.string(forColumn: "fid")
+        self.atDirectory = resultSet.string(forColumn: "atDirectory")
         self.fileName = resultSet.string(forColumn: "fileName")
         self.url = resultSet.string(forColumn: "url")
         self.state = CXDownloadState(rawValue: resultSet.long(forColumn: "state")) ?? .default
