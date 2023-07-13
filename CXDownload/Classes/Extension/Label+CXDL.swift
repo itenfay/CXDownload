@@ -16,15 +16,15 @@ extension CXDownloadBase where T : UILabel {
         url: String,
         toDirectory directory: String? = nil,
         fileName: String? = nil,
-        progress: @escaping (CXDownloadModel) -> Void,
-        success: @escaping (CXDownloadModel) -> Void,
-        failure: @escaping (CXDownloadModel) -> Void)
+        progress: ((CXDownloadModel) -> Void)?,
+        success: ((CXDownloadModel) -> Void)?,
+        failure: ((CXDownloadModel) -> Void)?)
     {
         /*
         return CXDownloadManager.shared.download(url: url, toDirectory: directory, fileName: fileName, progress: { [weak _base = self.base] model in
             let progressValue = Int(model.progress * 100)
             _base?.text = "\(progressValue)%"
-            progress(model)
+            progress?(model)
         }, success: success, failure: failure)
         */
         return CXDownloadManager.shared.download(
