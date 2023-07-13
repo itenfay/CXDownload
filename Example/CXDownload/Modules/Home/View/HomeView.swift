@@ -11,6 +11,7 @@ import UIKit
 protocol HomeViewable: AnyObject {
     func refreshView()
     func reloadRows(atIndex index: Int)
+    func updateView(model: DataModel, atIndex index: Int)
 }
 
 class HomeView: BaseView {
@@ -49,10 +50,18 @@ class HomeView: BaseView {
         tableView.reloadData()
     }
     
-    func reloadRows(atIndex index: Int) {
+    func reloadRows(at index: Int) {
         DispatchQueue.main.async {
             self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
         }
+    }
+    
+    func getCell(at index: Int) -> UITableViewCell? {
+        var cell: UITableViewCell?
+        DispatchQueue.main.async {
+            cell = self.tableView.cellForRow(at: IndexPath(item: index, section: 0))
+        }
+        return cell
     }
     
 }

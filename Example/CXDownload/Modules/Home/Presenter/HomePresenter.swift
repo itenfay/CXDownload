@@ -25,6 +25,7 @@ class HomePresenter: BasePresenter {
     func addNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(downloadStateChange(_:)), name: CXDownloadConfig.stateChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(downloadProgressChange(_:)), name: CXDownloadConfig.progressNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(clearAllCaches(_:)), name: NSNotification.Name("ClearAllCachesNotification"), object: nil)
     }
     
     override func loadData() {
@@ -83,10 +84,28 @@ class HomePresenter: BasePresenter {
         for (i, source) in dataSource.enumerated() {
             if source.url == model.url {
                 // Update model.
-                dataSource[i] = model.toDataModel(with: source.vid)
+                let dataModel = model.toDataModel(with: source.vid)
+                dataSource[i] = dataModel
+                updateView(model: dataModel, at: i)
                 break
             }
         }
+    }
+    
+    private func updateView(model: DataModel, at index: Int) {
+        if !CXDownloadManager.shared.canCallback(url: model.url) {
+            view.updateView(model: model, atIndex: index)
+        }
+    }
+    
+    func updateCell(_ cell: UITableViewCell?, with model: DataModel) {
+        guard let homeCell = cell as? HomeTableViewCell else {
+            if model.state == .finish {
+                view.refreshView()
+            }
+            return
+        }
+        homeCell.reloadLabelWithModel(model)
     }
     
     private func configure(cell: HomeTableViewCell, for indexPath: IndexPath) {
@@ -96,9 +115,14 @@ class HomePresenter: BasePresenter {
         }
     }
     
+    @objc func clearAllCaches(_ noti: Notification) {
+        view.refreshView()
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: CXDownloadConfig.stateChangeNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: CXDownloadConfig.progressNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("ClearAllCachesNotification"), object: nil)
     }
     
 }

@@ -48,6 +48,7 @@ class HomeTableViewCell: BaseTableViewCell {
     
     override func addActions() {
         downloadButton.addTarget(self, action: #selector(onDownloadClick(_:)), for: .touchUpInside)
+        progressLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(progressLabelDidTap)))
     }
     
     func bind(to model: DataModel) {
@@ -116,6 +117,10 @@ class HomeTableViewCell: BaseTableViewCell {
         speedLabel.isHidden = !(model.state == .downloading && model.totalFileSize > 0)
     }
     
+    @objc func progressLabelDidTap() {
+        onDownloadClick(downloadButton)
+    }
+    
     @objc func onDownloadClick(_ sender: UIButton) {
         guard let url = url else { return }
         if state == .default || state == .cancelled || state == .paused || state == .error {
@@ -127,7 +132,7 @@ class HomeTableViewCell: BaseTableViewCell {
                 self?.reloadLabelWithModel(model.toDataModel(with: self?.vid ?? ""))
             }
         } else if state == .downloading || state == .waiting {
-            CXDownloadManager.shared.pauseWithURLString(url)
+            CXDownloadManager.shared.pause(url: url)
         }
     }
     

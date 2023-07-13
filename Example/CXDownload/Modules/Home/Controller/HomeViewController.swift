@@ -36,7 +36,15 @@ class HomeViewController: BaseViewController, HomeViewable {
     }
     
     func reloadRows(atIndex index: Int) {
-        homeView.reloadRows(atIndex: index)
+        homeView.reloadRows(at: index)
+    }
+    
+    func updateView(model: DataModel, atIndex index: Int) {
+        guard let homePresenter = presenter as? HomePresenter else {
+            return
+        }
+        let cell = homeView.getCell(at: index)
+        homePresenter.updateCell(cell, with: model)
     }
     
 }
