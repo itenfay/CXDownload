@@ -38,10 +38,10 @@ public typealias CXDImageView = NSImageView
 }
 
 @objc public class CXNetworkReachabilityStatus: NSObject {
-    @objc static public var notReachable = "NotReachable"
-    @objc static public var reachable = "Reachable"
-    @objc static public var reachableViaWWAN = "ReachableViaWWAN"
-    @objc static public var reachableViaWiFi = "ReachableViaWiFi"
+    @objc static public let notReachable = "NotReachable"
+    @objc static public let reachable = "Reachable"
+    @objc static public let reachableViaWWAN = "ReachableViaWWAN"
+    @objc static public let reachableViaWiFi = "ReachableViaWiFi"
 }
 
 @objcMembers public class CXDToolbox: NSObject {
