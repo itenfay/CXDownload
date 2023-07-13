@@ -128,16 +128,16 @@ class ViewController: UIViewController {
         button.isSelected = !button.isSelected
         if button == pauseButton1 {
             if button.isSelected {
-                //CXDownloadManager.shared.pauseWithURLString(urlStr1)
-                pauseButton1.dl.pauseDownloadTask(urlStr1)
+                //CXDownloadManager.shared.pause(url: urlStr1)
+                pauseButton1.dl.pauseTask(url: urlStr1)
             } else {
                 onDownloadAction(downloadButton1)
             }
         }
         else if button == pauseButton2 {
             if button.isSelected {
-                //CXDownloadManager.shared.pauseWithURLString(urlStr2)
-                pauseButton2.dl.pauseDownloadTask(urlStr2)
+                //CXDownloadManager.shared.pause(url: urlStr2)
+                pauseButton2.dl.pauseTask(url: urlStr2)
             } else {
                 onDownloadAction(downloadButton2)
             }
@@ -147,15 +147,15 @@ class ViewController: UIViewController {
     @IBAction func onCancelAction(_ sender: Any) {
         let button = sender as! UIButton
         if button == cancelButton1 {
-            //CXDownloadManager.shared.cancelWithURLString(urlStr1)
-            cancelButton1.dl.cancelDownloadTask(urlStr1)
+            //CXDownloadManager.shared.cancel(url: urlStr1)
+            cancelButton1.dl.cancelTask(url: urlStr1)
             downloadButton1.setTitle("下载", for: .normal)
             progressLabel1.text = "0%"
             pauseButton1.isSelected = false
         }
         else if button == cancelButton2 {
-            //CXDownloadManager.shared.cancelWithURLString(urlStr2)
-            cancelButton2.dl.cancelDownloadTask(urlStr2)
+            //CXDownloadManager.shared.cancel(url: urlStr2)
+            cancelButton2.dl.cancelTask(url: urlStr2)
             downloadButton2.setTitle("下载", for: .normal)
             progressLabel2.text = "0%"
             pauseButton2.isSelected = false
