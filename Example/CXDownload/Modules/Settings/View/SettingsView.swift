@@ -80,6 +80,7 @@ class SettingsView: BaseView {
             let filtered = textField.text!.components(separatedBy: characterSet).joined(separator: "")
             print(":: filtered=\(filtered)")
             if filtered != textField.text {
+                textField.text = "1"
                 delegate?.warnToInputMaxConcurrentCount()
             }
         }
