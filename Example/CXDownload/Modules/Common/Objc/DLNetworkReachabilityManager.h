@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Monitors the network status.
 - (void)monitorNetworkStatus;
 
+/// Stop monitoring the network status.
+- (void)stopMonitoring;
+
 @end
 
 NS_ASSUME_NONNULL_END

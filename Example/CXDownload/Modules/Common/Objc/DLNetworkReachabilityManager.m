@@ -35,28 +35,27 @@
     AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
     
     [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        /// Networking reachability change notification. Please send the specified string(**"Reachable", "NotReachable", "ReachableViaWWAN" or "ReachableViaWiFi"**) by notification.object.
-        NSString *statusString = @"Reachable";
+        NSString *statusString = CXNetworkReachabilityStatus.reachable;
         switch (status) {
             case AFNetworkReachabilityStatusUnknown:
                 // 未知网络
                 NSLog(@"当前网络：未知网络");
-                statusString = @"Reachable";
+                statusString = CXNetworkReachabilityStatus.reachable;
                 break;
             case AFNetworkReachabilityStatusNotReachable:
                 // 无网络
                 NSLog(@"当前网络：无网络");
-                statusString = @"NotReachable";
+                statusString = CXNetworkReachabilityStatus.notReachable;
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
                 // 蜂窝数据
                 NSLog(@"当前网络：蜂窝数据");
-                statusString = @"ReachableViaWWAN";
+                statusString = CXNetworkReachabilityStatus.reachableViaWWAN;
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
                 // 无线网络
                 NSLog(@"当前网络：无线网络");
-                statusString = @"ReachableViaWiFi";
+                statusString = CXNetworkReachabilityStatus.reachableViaWiFi;
                 break;
             default:
                 break;
@@ -70,6 +69,12 @@
     
     // 开始监听
     [manager startMonitoring];
+}
+
+- (void)stopMonitoring
+{
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    [manager stopMonitoring];
 }
 
 @end
