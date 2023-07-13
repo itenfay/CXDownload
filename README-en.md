@@ -22,13 +22,13 @@ pod 'CXDownload'
 
 ## Explanation
 
-- CXDownloadManager.swift: **Download network request queue management class.**
-- CXDownloadTaskProcessor.swift: **Download network sending and receiving class.**
-- CXDownloadModel.swift: **Download model class.**
-- CXDownloadDatabaseManager.swift: **Download database manager class.**
-- FileUtils.swift: **Breakpoint continuation file tool class.**
+- CXDownloadManager.swift: **The Download network request queue management class.**
+- CXDownloadTaskProcessor.swift: **The Download network sending and receiving class.**
+- CXDownloadModel.swift: **The Download model class.**
+- CXDownloadDatabaseManager.swift: **The Download database manager class.**
+- FileUtils.swift: **The file tool class.**
 - Logger.swift: **This class outputs the log to the console.**
-- String+Cx.swift: **This extends the `cx_md5` property for the `String` class.**
+- String+Cx.swift: **This extends the `cx_md5`, `cxd_sha2` properties for the `String` class.**
 
 ## Usage
 

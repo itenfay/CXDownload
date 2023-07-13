@@ -28,7 +28,7 @@ pod 'CXDownload'
 - CXDownloadTaskProcessor.swift: **下载任务处理类**
 - CXDownloadModel.swift: **下载模型类**
 - CXDownloadDatabaseManager.swift: **下载数据库管理类**
-- FileUtils.swift: **断点续传文件工具类**
+- FileUtils.swift: **文件工具类**
 - Logger.swift: **日志输出类**
 - StringEx.swift: **String扩展cxd_md5、cxd_sha2属性**
 
