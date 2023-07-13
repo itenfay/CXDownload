@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CXDownload
 
 class MineViewController: BaseViewController, MineViewable {
     
@@ -33,7 +34,8 @@ class MineViewController: BaseViewController, MineViewable {
     }
     
     func gotoCacheView() {
-        
+        //let downloadedDataArray = CXDownloadDatabaseManager.shared.getAllDownloadedData()
+        //let unDownloadedDataArray = CXDownloadDatabaseManager.shared.getAllUnDownloadedData()
     }
     
     func gotoSettingsView() {
