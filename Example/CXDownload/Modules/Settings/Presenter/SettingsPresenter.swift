@@ -56,8 +56,9 @@ class SettingsPresenter: BasePresenter, SettingsPresenterDelegate {
             guard let url = model.url else {
                 continue
             }
-            CXDownloadManager.shared.deleteTaskAndCache(url: url, atDirectory: nil, fileName: model.fileName)
+            CXDownloadManager.shared.deleteTaskAndCache(url: url, atDirectory: model.atDirectory, fileName: model.fileName)
         }
+        NotificationCenter.default.post(name: NSNotification.Name("ClearAllCachesNotification"), object: nil)
     }
     
 }
