@@ -20,9 +20,9 @@ extension CXDownloadBase where T : CXDImageView {
         url: String,
         toDirectory directory: String? = nil,
         fileName: String? = nil,
-        progress: @escaping (CXDownloadModel) -> Void,
-        success: @escaping (CXDownloadModel) -> Void,
-        failure: @escaping (CXDownloadModel) -> Void)
+        progress: ((CXDownloadModel) -> Void)?,
+        success: ((CXDownloadModel) -> Void)?,
+        failure: ((CXDownloadModel) -> Void)?)
     {
         return CXDownloadManager.shared.download(
             url: url,
