@@ -20,9 +20,9 @@ extension CXDownloadBase where T : CXDButton {
         url: String,
         toDirectory directory: String? = nil,
         fileName: String? = nil,
-        progress: @escaping (CXDownloadModel) -> Void,
-        success: @escaping (CXDownloadModel) -> Void,
-        failure: @escaping (CXDownloadModel) -> Void)
+        progress: ((CXDownloadModel) -> Void)?,
+        success: ((CXDownloadModel) -> Void)?,
+        failure: ((CXDownloadModel) -> Void)?)
     {
         /*
         return CXDownloadManager.shared.download(url: url, toDirectory: directory, fileName: fileName, progress: { [weak _base = self.base] model in
@@ -31,7 +31,7 @@ extension CXDownloadBase where T : CXDButton {
             _base?.isSelected = false
             _base?.setTitle("\(progressValue)%", for: .normal)
             #endif
-            progress(model)
+            progress?(model)
         }, success: success, failure: failure)
         */
         return CXDownloadManager.shared.download(
