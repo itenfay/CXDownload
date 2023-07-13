@@ -36,7 +36,7 @@ class MineView: BaseView {
         addSubview(cacheButton)
         
         let settingsButton = UIButton(type: .custom)
-        settingsButton.frame = CGRect(x: paddingX, y: 3*paddingY, width: kScreenW - 2*paddingX, height: 50)
+        settingsButton.frame = CGRect(x: paddingX, y: cacheButton.frame.maxY + paddingY, width: kScreenW - 2*paddingX, height: 50)
         settingsButton.backgroundColor = .lightGray
         settingsButton.setTitle("设置", for: .normal)
         settingsButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
