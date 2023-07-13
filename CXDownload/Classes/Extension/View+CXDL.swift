@@ -16,13 +16,13 @@ import AppKit
 extension CXDownloadBase where T : CXDView {
     
     /// Pauses the download task through a specified url.
-    public func pauseDownloadTask(_ url: String) {
-        CXDownloadManager.shared.pauseWithURLString(url)
+    public func pauseTask(url: String) {
+        CXDownloadManager.shared.pause(url: url)
     }
     
     /// Cancels the download task through a specified url.
-    public func cancelDownloadTask(_ url: String) {
-        CXDownloadManager.shared.cancelWithURLString(url)
+    public func cancelTask(url: String) {
+        CXDownloadManager.shared.cancel(url: url)
     }
     
     /// Deletes the task, cache, target file through the specified url, target directory and custom filename..
