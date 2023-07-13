@@ -37,6 +37,13 @@ public typealias CXDImageView = NSImageView
     public static let allowsCellularAccessKey = "CXDownloadAllowsCellularAccessKey"
 }
 
+@objc public class CXNetworkReachabilityStatus: NSObject {
+    @objc static public var notReachable = "NotReachable"
+    @objc static public var reachable = "Reachable"
+    @objc static public var reachableViaWWAN = "ReachableViaWWAN"
+    @objc static public var reachableViaWiFi = "ReachableViaWiFi"
+}
+
 @objcMembers public class CXDToolbox: NSObject {
     
     /// Converts a byte count into the specified string format without creating an NSNumber object.
