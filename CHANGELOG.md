@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.0.0 (07/15/2023)
+
+- Add the download database manager.
+- Add the download model.
+- Add the download task processor.
+- Observe the changes of the max concurrent count and the network reachability status.
+- Add the new samples and user interface.
+
 ### 1.0.3 (06/02/2023)
 
 - Add subspecs and improve compatibility.
