@@ -1,6 +1,0 @@
-framework module Pods_CXDownload_Tests {
-  umbrella header "Pods-CXDownload_Tests-umbrella.h"
-
-  export *
-  module * { export * }
-}
