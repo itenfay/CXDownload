@@ -44,7 +44,7 @@ class HomeViewController: BaseViewController, HomeViewable {
             return
         }
         let cell = homeView.getCell(at: index)
-        homePresenter.updateCell(cell, with: model)
+        homePresenter.update(cell: cell, with: model)
     }
     
 }

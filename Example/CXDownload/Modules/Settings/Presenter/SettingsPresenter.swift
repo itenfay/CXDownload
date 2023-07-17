@@ -9,14 +9,14 @@
 import UIKit
 import CXDownload
 
-protocol SettingsPresenterDelegate: AnyObject {
-    func clearButtonDidClick()
+protocol ISettingsPresenter: AnyObject {
+    func clearButtonPressed()
     func warnToInputMaxConcurrentCount()
     func updateMaxConcurrentCount(_ count: Int)
     func allowsCellularAccess(_ isOn: Bool)
 }
 
-class SettingsPresenter: BasePresenter, SettingsPresenterDelegate {
+class SettingsPresenter: BasePresenter, ISettingsPresenter {
     
     private unowned let view: SettingsViewable
     private let apiClient: ApiClient
@@ -26,7 +26,7 @@ class SettingsPresenter: BasePresenter, SettingsPresenterDelegate {
         self.apiClient = apiClient
     }
     
-    func clearButtonDidClick() {
+    func clearButtonPressed() {
         guard let vc = view as? SettingsViewController else { return }
         showAlert(in: vc, title: "是否清空所有缓存？", message: nil, sureTitle: "确定", cancelTitle: "取消", sureHandler: { action in
             self.clearLocalCaches()
@@ -50,7 +50,7 @@ class SettingsPresenter: BasePresenter, SettingsPresenterDelegate {
         NotificationCenter.default.post(name: CXDownloadConfig.allowsCellularAccessChangeNotification, object: NSNumber(value: isOn))
     }
     
-    func clearLocalCaches() {
+    private func clearLocalCaches() {
         let allCaches = CXDownloadDatabaseManager.shared.getAllCacheData()
         for model in allCaches {
             guard let url = model.url else {

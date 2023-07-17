@@ -87,19 +87,15 @@ class HomePresenter: BasePresenter {
                 // Update model.
                 let dataModel = model.toDataModel(with: source.vid)
                 dataSource[index] = dataModel
-                updateView(model: dataModel, at: index)
+                if !CXDownloadManager.shared.hasClosured(url: dataModel.url) {
+                    view.updateView(model: dataModel, atIndex: index)
+                }
                 break
             }
         }
     }
     
-    private func updateView(model: DataModel, at index: Int) {
-        if !CXDownloadManager.shared.hasClosured(url: model.url) {
-            view.updateView(model: model, atIndex: index)
-        }
-    }
-    
-    func updateCell(_ cell: UITableViewCell?, with model: DataModel) {
+    func update(cell: UITableViewCell?, with model: DataModel) {
         guard let homeCell = cell as? HomeTableViewCell else {
             if model.state == .finish {
                 view.refreshView()

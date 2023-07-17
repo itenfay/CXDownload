@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import CXDownload
 
-protocol MinePresenterDelegate: AnyObject {
-    func cacheButtonDidClick()
-    func settingsButtonDidClick()
+protocol IMinePresenter: AnyObject {
+    func cacheButtonPressed()
+    func settingsButtonPressed()
 }
 
-class MinePresenter: BasePresenter, MinePresenterDelegate {
+class MinePresenter: BasePresenter, IMinePresenter {
     
     private unowned let view: MineViewable
     private let apiClient: ApiClient
@@ -23,12 +24,26 @@ class MinePresenter: BasePresenter, MinePresenterDelegate {
         self.apiClient = apiClient
     }
     
-    func cacheButtonDidClick() {
-        view.gotoCacheView()
+    func cacheButtonPressed() {
+        gotoCacheScene()
     }
     
-    func settingsButtonDidClick() {
-        view.gotoSettingsView()
+    func settingsButtonPressed() {
+        gotoSettingsScene()
+    }
+    
+    func gotoCacheScene() {
+        //let downloadedDataArray = CXDownloadDatabaseManager.shared.getAllDownloadedData()
+        //let unDownloadedDataArray = CXDownloadDatabaseManager.shared.getAllUnDownloadedData()
+    }
+    
+    func gotoSettingsScene() {
+        guard let mineVC = view as? MineViewController else {
+            return
+        }
+        let settingsVC = SettingsViewController()
+        settingsVC.hidesBottomBarWhenPushed = true
+        mineVC.navigationController?.pushViewController(settingsVC, animated: true)
     }
     
 }

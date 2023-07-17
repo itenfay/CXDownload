@@ -15,7 +15,10 @@ protocol SettingsViewable: AnyObject {
 
 class SettingsView: BaseView {
     
-    weak var delegate: SettingsPresenterDelegate?
+    var maxConcurrentCountWarningAction: (() -> Void)?
+    var maxConcurrentCountUpdatingAction: ((Int) -> Void)?
+    var cellularAccessAllowingAction: ((Bool) -> Void)?
+    var clearButtonAction: (() -> Void)?
     
     override func setup() {
         buildView()
@@ -81,7 +84,7 @@ class SettingsView: BaseView {
             print(":: filtered=\(filtered)")
             if filtered != textField.text {
                 textField.text = "1"
-                delegate?.warnToInputMaxConcurrentCount()
+                maxConcurrentCountWarningAction?()
             }
         }
     }
@@ -101,16 +104,16 @@ class SettingsView: BaseView {
         let newCount: Int = Int(textField.text ?? "1") ?? 0
         
         if oldCount != newCount {
-            delegate?.updateMaxConcurrentCount(newCount)
+            maxConcurrentCountUpdatingAction?(newCount)
         }
     }
     
     @objc func cellularAccessSwitchOnClick(_ aSwitch: UISwitch) {
-        delegate?.allowsCellularAccess(aSwitch.isOn)
+        cellularAccessAllowingAction?(aSwitch.isOn)
     }
     
     @objc func clearButtonOnClick() {
-        delegate?.clearButtonDidClick()
+        clearButtonAction?()
     }
     
 }

@@ -23,13 +23,29 @@ class SettingsViewController: BaseViewController, SettingsViewable {
         self.configurator = configurator
     }
     
+    private func asSettingsPresenter() -> SettingsPresenter? {
+        return presenter as? SettingsPresenter
+    }
+    
     override func makeUI() {
         settingsView = SettingsView(frame: CGRect.init(x: 0,
                                                        y: kNavigaH,
                                                        width: view.bounds.width,
                                                        height: view.bounds.height - kNavigaH - kTabBarH))
-        settingsView.delegate = presenter as? SettingsPresenter
         view.addSubview(settingsView)
+        
+        settingsView.maxConcurrentCountWarningAction = { [weak self] in
+            self?.asSettingsPresenter()?.warnToInputMaxConcurrentCount()
+        }
+        settingsView.maxConcurrentCountUpdatingAction = { [weak self] count in
+            self?.asSettingsPresenter()?.updateMaxConcurrentCount(count)
+        }
+        settingsView.cellularAccessAllowingAction = { [weak self] isOn in
+            self?.asSettingsPresenter()?.allowsCellularAccess(isOn)
+        }
+        settingsView.clearButtonAction = { [weak self] in
+            self?.asSettingsPresenter()?.clearButtonPressed()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -9,13 +9,13 @@
 import UIKit
 
 protocol MineViewable: AnyObject {
-    func gotoCacheView()
-    func gotoSettingsView()
+    
 }
 
 class MineView: BaseView {
     
-    weak var delegate: MinePresenterDelegate?
+    var cacheButtonOnClick: ((UIButton) -> Void)?
+    var settingsButtonOnClick: ((UIButton) -> Void)?
     
     override func setup() {
         buildView()
@@ -30,7 +30,7 @@ class MineView: BaseView {
         cacheButton.backgroundColor = .lightGray
         cacheButton.setTitle("我的缓存", for: .normal)
         cacheButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        cacheButton.addTarget(self, action: #selector(onCacheBtnClick), for: .touchUpInside)
+        cacheButton.addTarget(self, action: #selector(onCacheBtnClick(_:)), for: .touchUpInside)
         cacheButton.layer.cornerRadius = 10
         cacheButton.isHidden = true
         addSubview(cacheButton)
@@ -40,17 +40,17 @@ class MineView: BaseView {
         settingsButton.backgroundColor = .lightGray
         settingsButton.setTitle("设置", for: .normal)
         settingsButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        settingsButton.addTarget(self, action: #selector(onSettingsBtnClick), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(onSettingsBtnClick(_:)), for: .touchUpInside)
         settingsButton.layer.cornerRadius = 10
         addSubview(settingsButton)
     }
     
-    @objc func onCacheBtnClick() {
-        delegate?.cacheButtonDidClick()
+    @objc func onCacheBtnClick(_ sender: UIButton) {
+        cacheButtonOnClick?(sender)
     }
     
-    @objc func onSettingsBtnClick() {
-        delegate?.settingsButtonDidClick()
+    @objc func onSettingsBtnClick(_ sender: UIButton) {
+        settingsButtonOnClick?(sender)
     }
     
 }

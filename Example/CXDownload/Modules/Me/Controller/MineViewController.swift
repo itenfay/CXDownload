@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CXDownload
 
 class MineViewController: BaseViewController, MineViewable {
     
@@ -29,19 +28,16 @@ class MineViewController: BaseViewController, MineViewable {
                                                y: kNavigaH,
                                                width: view.bounds.width,
                                                height: view.bounds.height - kNavigaH - kTabBarH))
-        mineView.delegate = presenter as? MinePresenter
         view.addSubview(mineView)
-    }
-    
-    func gotoCacheView() {
-        //let downloadedDataArray = CXDownloadDatabaseManager.shared.getAllDownloadedData()
-        //let unDownloadedDataArray = CXDownloadDatabaseManager.shared.getAllUnDownloadedData()
-    }
-    
-    func gotoSettingsView() {
-        let vc = SettingsViewController()
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        mineView.cacheButtonOnClick = { [weak self] sender in
+            let pt = self?.presenter as? MinePresenter
+            pt?.cacheButtonPressed()
+        }
+        mineView.settingsButtonOnClick = { [weak self] sender in
+            let pt = self?.presenter as? MinePresenter
+            pt?.settingsButtonPressed()
+        }
     }
     
 }
