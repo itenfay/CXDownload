@@ -44,6 +44,7 @@
 		798EFCDF2A5BF40700ECAE57 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798EFCDD2A5BF40700ECAE57 /* HomeTableViewCell.swift */; };
 		798EFCE02A5BF40700ECAE57 /* HomeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 798EFCDE2A5BF40700ECAE57 /* HomeTableViewCell.xib */; };
 		798EFCE32A5BF81E00ECAE57 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798EFCE22A5BF81E00ECAE57 /* ApiClient.swift */; };
+		79B031502A653A3400FC85C8 /* VPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B0314F2A653A3400FC85C8 /* VPlayerController.swift */; };
 		79B4EA6B2A5417BE00C22E29 /* testData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79B4EA6A2A5417BE00C22E29 /* testData.plist */; };
 		79B882C72A5E761300B9C26F /* DLNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 79B882C62A5E761300B9C26F /* DLNetworkReachabilityManager.m */; };
 		C122728356DBF26A2179F22E /* Pods_CXDownload_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D34E68B9B6D214A4DB21D8 /* Pods_CXDownload_Tests.framework */; };
@@ -103,6 +104,7 @@
 		798EFCDD2A5BF40700ECAE57 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		798EFCDE2A5BF40700ECAE57 /* HomeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewCell.xib; sourceTree = "<group>"; };
 		798EFCE22A5BF81E00ECAE57 /* ApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		79B0314F2A653A3400FC85C8 /* VPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPlayerController.swift; sourceTree = "<group>"; };
 		79B4EA6A2A5417BE00C22E29 /* testData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testData.plist; sourceTree = "<group>"; };
 		79B882C42A5E761300B9C26F /* DLNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLNetworkReachabilityManager.h; sourceTree = "<group>"; };
 		79B882C52A5E761300B9C26F /* CXDownload_Example-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CXDownload_Example-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				79640D662A57D4910016EC44 /* Model */,
 				79640D652A57D4910016EC44 /* Presenter */,
 				79640D672A57D4910016EC44 /* View */,
+				79B0314E2A653A0300FC85C8 /* VPlayer */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -439,6 +442,15 @@
 			);
 			path = Common;
 			sourceTree = "<group>";
+		};
+		79B0314E2A653A0300FC85C8 /* VPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				79B0314F2A653A3400FC85C8 /* VPlayerController.swift */,
+			);
+			name = VPlayer;
+			path = CXDownload/Modules/VPlayer;
+			sourceTree = SOURCE_ROOT;
 		};
 		79B4EA692A5417BE00C22E29 /* Data */ = {
 			isa = PBXGroup;
@@ -654,6 +666,7 @@
 				79640D752A57D4D70016EC44 /* BasePresenter.swift in Sources */,
 				7906737A2A5CF9A1006E0916 /* URLSessionStub.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				79B031502A653A3400FC85C8 /* VPlayerController.swift in Sources */,
 				798EFCE32A5BF81E00ECAE57 /* ApiClient.swift in Sources */,
 				7906738F2A5D565A006E0916 /* SettingsModel.swift in Sources */,
 				7906737C2A5D09E9006E0916 /* DefaultURLSession.swift in Sources */,

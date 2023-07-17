@@ -11,8 +11,10 @@ import CXDownload
 
 class DataModel: BaseModel {
     var vid: String = ""
-    var fileName: String = ""
     var url: String = ""
+    var fileName: String = ""
+    var directory: String = ""
+    var localPath: String = ""
     var state: CXDownloadState = .default
     var speed: Int64 = 0
     var totalFileSize: Int64 = 0
@@ -25,8 +27,10 @@ extension CXDownloadModel {
     func toDataModel(with vid: String) -> DataModel {
         let model = DataModel()
         model.vid = vid
-        model.fileName = fileName ?? ""
         model.url = url ?? ""
+        model.fileName = fileName ?? ""
+        model.directory = directory ?? ""
+        model.localPath = localPath ?? ""
         model.state = state
         model.speed = speed
         model.totalFileSize = totalFileSize

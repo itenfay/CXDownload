@@ -81,11 +81,11 @@ class HomePresenter: BasePresenter {
         updateSourceModel(model)
     }
     
-    private func updateSourceModel(_ model: CXDownloadModel) {
-        for (index, source) in dataSource.enumerated() {
-            if source.url == model.url {
+    private func updateSourceModel(_ downloadModel: CXDownloadModel) {
+        for (index, model) in dataSource.enumerated() {
+            if model.url == downloadModel.url {
                 // Update model.
-                let dataModel = model.toDataModel(with: source.vid)
+                let dataModel = downloadModel.toDataModel(with: model.vid)
                 dataSource[index] = dataModel
                 if !CXDownloadManager.shared.hasClosured(url: dataModel.url) {
                     view.updateView(model: dataModel, atIndex: index)
@@ -152,7 +152,17 @@ extension HomePresenter: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        guard let homeVC = view as? HomeViewController else {
+            return
+        }
+        if indexPath.item < dataSource.count {
+            let model = dataSource[indexPath.item]
+            if model.state == .finish {
+                let playerVC = VPlayerController()
+                playerVC.hidesBottomBarWhenPushed = true
+                homeVC.navigationController?.pushViewController(playerVC, animated: true)
+            }
+        }
     }
     
 }
