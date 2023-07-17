@@ -65,7 +65,7 @@ public class CXDownloadDatabaseManager: NSObject {
         dbQueue = FMDatabaseQueue(path: path)
         
         dbQueue.inDatabase { db in
-            let sql = "CREATE TABLE IF NOT EXISTS t_fileCaches (id integer PRIMARY KEY AUTOINCREMENT, fid text, atDirectory text, fileName text, url text, state integer, totalFileSize integer, tmpFileSize integer, progress float, lastSpeedTime double, intervalFileSize integer, lastStateTime integer);"
+            let sql = "CREATE TABLE IF NOT EXISTS t_fileCaches (id integer PRIMARY KEY AUTOINCREMENT, fsha2 text, directory text, fileName text, url text, state integer, totalFileSize integer, tmpFileSize integer, progress float, lastSpeedTime double, intervalFileSize integer, lastStateTime integer);"
             do {
                 try db.executeUpdate(sql, values: nil)
                 tableCreated = true
@@ -82,9 +82,9 @@ public class CXDownloadDatabaseManager: NSObject {
         guard tableCreated else { return }
         #if canImport(FMDB)
         dbQueue.inDatabase { db in
-            let sql = "INSERT INTO t_fileCaches (fid, atDirectory, fileName, url, state, totalFileSize, tmpFileSize, progress, lastSpeedTime, intervalFileSize, lastStateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+            let sql = "INSERT INTO t_fileCaches (fsha2, directory, fileName, url, state, totalFileSize, tmpFileSize, progress, lastSpeedTime, intervalFileSize, lastStateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
             do {
-                try db.executeUpdate(sql, values: [model.fid ?? "", model.atDirectory ?? "", model.fileName ?? "", model.url ?? "", model.state.rawValue, model.totalFileSize, model.tmpFileSize, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
+                try db.executeUpdate(sql, values: [model.fsha2 ?? "", model.directory ?? "", model.fileName ?? "", model.url ?? "", model.state.rawValue, model.totalFileSize, model.tmpFileSize, model.progress, model.lastSpeedTime, model.intervalFileSize, model.lastStateTime])
                 CXDLogger.log(message: "Inserting data is successful.", level: .info)
             } catch {
                 CXDLogger.log(message: "Inserting data: \(error.localizedDescription)", level: .error)
