@@ -250,12 +250,12 @@ public class CXDownloadManager: NSObject {
     
     /// Invalidates the session, allowing any outstanding tasks to finish.
     //@objc public func finishTasksAndInvalidateSession() {
-    //    urlSession?.finishTasksAndInvalidate()
+    //    session.finishTasksAndInvalidate()
     //}
     
     /// Cancels all outstanding tasks and then invalidates the session.
     //@objc public func invalidateSessionAndCancelTasks() {
-    //    urlSession?.invalidateAndCancel()
+    //    session.invalidateAndCancel()
     //}
     
     private func downloadWithModel(_ model: CXDownloadModel) {
