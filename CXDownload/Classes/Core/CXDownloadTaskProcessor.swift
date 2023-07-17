@@ -20,13 +20,15 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
     private var failureCallback: CXDownloadCallback?
     private var finishCallback: CXDownloadCallback?
     
+    private let notificationCenter = NotificationCenter.default
+    
     private var resumedFileSize: Int64 = 0
     /// The destination file path.
     private var dstPath: String = ""
     /// The temp file path.
     private var tmpPath: String = ""
     
-    private(set) var atDirectory: String?
+    private(set) var directory: String?
     private(set) var fileName: String?
     
     private var model: CXDownloadModel
@@ -60,7 +62,7 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
     
     /// Initializes the model, target directory, custom file name and some other required parameters.
     convenience init(model: CXDownloadModel,
-                     atDirectory: String?,
+                     directory: String?,
                      fileName: String?,
                      progess: CXDownloadCallback?,
                      success: CXDownloadCallback?,
@@ -68,7 +70,7 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
                      finish: CXDownloadCallback?)
     {
         self.init(model: model, progess: progess, success: success, failure: failure, finish: finish)
-        self.atDirectory = atDirectory
+        self.directory = directory
         self.fileName = fileName
     }
     
@@ -165,7 +167,7 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
     
     private func prepareToDownload(_ url: URL) {
         // The dest file exists, this that indicates the download was completed.
-        dstPath = CXDFileUtils.filePath(withURL: url, atDirectory: atDirectory, fileName: fileName)
+        dstPath = CXDFileUtils.filePath(withURL: url, atDirectory: directory, fileName: fileName)
         CXDLogger.log(message: "DstPath: \(dstPath)", level: .info)
         if CXDFileUtils.fileExists(atPath: dstPath) {
             state = .finish
@@ -176,6 +178,7 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
                 self.successCallback?(self.model)
             }
             CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
+            notificationCenter.post(name: CXDownloadConfig.progressNotification, object: model)
             finishDownloadTask()
             return
         }
@@ -265,6 +268,7 @@ extension CXDownloadTaskProcessor {
                 self.successCallback?(self.model)
             }
             CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
+            notificationCenter.post(name: CXDownloadConfig.progressNotification, object: model)
             finishDownloadTask()
             return
         }
@@ -284,6 +288,7 @@ extension CXDownloadTaskProcessor {
             model.progress = progress
             runOnMainThread { self.progressCallback?(self.model) }
             CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
+            notificationCenter.post(name: CXDownloadConfig.progressNotification, object: model)
             outputStream = OutputStream.init(toFileAtPath: tmpPath, append: true)
             outputStream?.open()
             completionHandler(.allow)
@@ -324,7 +329,7 @@ extension CXDownloadTaskProcessor {
         
         // Update the specified model in database.
         CXDownloadDatabaseManager.shared.updateModel(model, option: .progressData)
-        NotificationCenter.default.post(name: CXDownloadConfig.progressNotification, object: model)
+        notificationCenter.post(name: CXDownloadConfig.progressNotification, object: model)
         
         // Reset it.
         model.intervalFileSize = 0
@@ -361,10 +366,10 @@ extension CXDownloadTaskProcessor {
             finishDownloadTask()
             return
         }
+        CXDLogger.log(message: "code: \(error.code), message: \(error.localizedDescription)", level: .error)
         
         // Cancels the data task.
         if error.code == NSURLErrorCancelled {
-            CXDLogger.log(message: "code: \(error.code), message: \(error.localizedDescription)", level: .info)
             state = .cancelled
         } else {
             // Occurs an error, etc.
