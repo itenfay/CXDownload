@@ -40,8 +40,8 @@ class TabBarController: UITabBarController {
         if #available(iOS 13.0, *) {
             let appearance = UITabBarAppearance()
             appearance.backgroundColor = bgColor
-            appearance.backgroundEffect = nil
-            appearance.shadowColor = nil
+            //appearance.backgroundEffect = nil
+            //appearance.shadowColor = nil
             tabBar.standardAppearance = appearance
         } else {
             tabBar.backgroundColor = bgColor
