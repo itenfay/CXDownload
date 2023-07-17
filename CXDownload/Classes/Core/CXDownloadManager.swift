@@ -116,14 +116,7 @@ public class CXDownloadManager: NSObject {
                                failure: ((CXDownloadModel) -> Void)?)
     {
         guard let aURL = URL(string: url) else {
-            CXDLogger.log(message: "The url is invalid.", level: .error)
-            let model = CXDownloadModel()
-            model.state = .error
-            let stateInfo = CXDownloadStateInfo()
-            stateInfo.code = -2000
-            stateInfo.message = "The url is invalid"
-            model.stateInfo = stateInfo
-            runOnMainThread { failure?(model) }
+            callbackError(failure)
             return
         }
         
@@ -162,6 +155,17 @@ public class CXDownloadManager: NSObject {
         }
     }
     
+    private func callbackError(_ failure: ((CXDownloadModel) -> Void)?) {
+        CXDLogger.log(message: "The url is invalid.", level: .error)
+        let model = CXDownloadModel()
+        model.state = .error
+        let stateInfo = CXDownloadStateInfo()
+        stateInfo.code = -2000
+        stateInfo.message = "The url is invalid"
+        model.stateInfo = stateInfo
+        runOnMainThread { failure?(model) }
+    }
+    
     private func createTaskProcessor(
         model: CXDownloadModel,
         toDirectory directory: String?,
@@ -171,7 +175,7 @@ public class CXDownloadManager: NSObject {
         failure: ((CXDownloadModel) -> Void)?) -> CXDownloadTaskProcessor
     {
         let taskProcessor = CXDownloadTaskProcessor(model: model,
-                                                    atDirectory: directory,
+                                                    directory: directory,
                                                     fileName: fileName,
                                                     progess: progress,
                                                     success: success,
