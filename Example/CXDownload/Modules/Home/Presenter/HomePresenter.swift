@@ -82,19 +82,19 @@ class HomePresenter: BasePresenter {
     }
     
     private func updateSourceModel(_ model: CXDownloadModel) {
-        for (i, source) in dataSource.enumerated() {
+        for (index, source) in dataSource.enumerated() {
             if source.url == model.url {
                 // Update model.
                 let dataModel = model.toDataModel(with: source.vid)
-                dataSource[i] = dataModel
-                updateView(model: dataModel, at: i)
+                dataSource[index] = dataModel
+                updateView(model: dataModel, at: index)
                 break
             }
         }
     }
     
     private func updateView(model: DataModel, at index: Int) {
-        if !CXDownloadManager.shared.canCallback(url: model.url) {
+        if !CXDownloadManager.shared.hasClosured(url: model.url) {
             view.updateView(model: model, atIndex: index)
         }
     }
