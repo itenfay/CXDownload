@@ -33,6 +33,7 @@ class HomePresenter: BasePresenter {
               let array = NSArray(contentsOfFile: dataPath) else {
             return
         }
+        dataSource.removeAll()
         
         for e in array {
             if e is Dictionary<String, String> {
@@ -116,7 +117,7 @@ class HomePresenter: BasePresenter {
     }
     
     @objc func clearAllCaches(_ noti: Notification) {
-        view.refreshView()
+        loadData()
     }
     
     deinit {
