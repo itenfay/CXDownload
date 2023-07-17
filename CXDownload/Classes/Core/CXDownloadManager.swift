@@ -100,9 +100,9 @@ public class CXDownloadManager: NSObject {
     
     /// Executes an asynchronous download with the url and some callback closures.
     @objc public func download(url: String,
-                               progress: ((CXDownloadModel) -> Void)?,
-                               success: ((CXDownloadModel) -> Void)?,
-                               failure: ((CXDownloadModel) -> Void)?)
+                               progress: @escaping (CXDownloadModel) -> Void,
+                               success: @escaping (CXDownloadModel) -> Void,
+                               failure: @escaping (CXDownloadModel) -> Void)
     {
         download(url: url, toDirectory: nil, fileName: nil, progress: progress, success: success, failure: failure)
     }
@@ -111,9 +111,9 @@ public class CXDownloadManager: NSObject {
     @objc public func download(url: String,
                                toDirectory directory: String?,
                                fileName: String?,
-                               progress: ((CXDownloadModel) -> Void)?,
-                               success: ((CXDownloadModel) -> Void)?,
-                               failure: ((CXDownloadModel) -> Void)?)
+                               progress: @escaping (CXDownloadModel) -> Void,
+                               success: @escaping (CXDownloadModel) -> Void,
+                               failure: @escaping (CXDownloadModel) -> Void)
     {
         guard let aURL = URL(string: url) else {
             callbackError(failure)
@@ -133,8 +133,9 @@ public class CXDownloadManager: NSObject {
         if downloadModel == nil {
             downloadModel = CXDownloadModel()
             downloadModel!.url = url
-            downloadModel!.fid = url.cxd_sha2
+            downloadModel!.fsha2 = url.cxd_sha2
             downloadModel!.fileName = fname
+            downloadModel!.directory = directory
             CXDownloadDatabaseManager.shared.insertModel(downloadModel!)
         }
         
@@ -194,7 +195,7 @@ public class CXDownloadManager: NSObject {
         return taskProcessor
     }
     
-    @objc public func canCallback(url: String) -> Bool {
+    @objc public func hasClosured(url: String) -> Bool {
         guard let taskProcessor = downloadTaskDict[url] else {
             return false
         }
@@ -203,16 +204,16 @@ public class CXDownloadManager: NSObject {
     
     /// Pauses a download task through a specified url.
     @objc public func pause(url: String) {
-        update(toState: .paused, for: url)
+        updateState(to: .paused, for: url)
     }
     
     /// Cancels a download task through a specified url.
     @objc public func cancel(url: String) {
-        update(toState: .cancelled, for: url)
+        updateState(to: .cancelled, for: url)
     }
     
     /// For pausing or cancelling.
-    private func update(toState state: CXDownloadState, for url: String) {
+    private func updateState(to state: CXDownloadState, for url: String) {
         guard let taskProcessor = downloadTaskDict[url] else {
             return
         }
@@ -262,10 +263,15 @@ public class CXDownloadManager: NSObject {
         updateCurrentCount(byAscending: true)
         if let taskProcessor = downloadTaskDict[key] {
             taskProcessor.process()
-        } else {
-            let taskProcessor = createTaskProcessor(model: model, toDirectory: model.atDirectory, fileName: model.fileName, progress: nil, success: nil, failure: nil)
-            taskProcessor.process()
+        } else if model.state == .waiting {
+            let taskProcessor = createTaskProcessor(model: model,
+                                                    toDirectory: model.directory,
+                                                    fileName: model.fileName,
+                                                    progress: nil,
+                                                    success: nil,
+                                                    failure: nil)
             downloadTaskDict[key] = taskProcessor
+            taskProcessor.process()
         }
     }
     
@@ -422,7 +428,6 @@ extension CXDownloadManager {
             pauseDownloadingTaskWithAll(true)
         } else {
             if networkingAllowsDownloadTask() {
-                pauseDownloadingTaskWithAll(true)
                 // Start the waiting task.
                 startDownloadingWaitingTask()
             } else {
