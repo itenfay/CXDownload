@@ -16,10 +16,10 @@ import FMDB
 }
 
 @objcMembers public class CXDownloadModel: NSObject {
-    /// The identifier of file.
-    public var fid: String?
-    /// The name of file.
-    public var atDirectory: String?
+    /// The sha2 value of file.
+    public var fsha2: String?
+    /// The directory where the file is located.
+    public var directory: String?
     /// The name of file.
     public var fileName: String?
     /// The url of file.
@@ -51,8 +51,8 @@ import FMDB
     
     #if canImport(FMDB)
     public init(resultSet: FMResultSet) {
-        self.fid = resultSet.string(forColumn: "fid")
-        self.atDirectory = resultSet.string(forColumn: "atDirectory")
+        self.fsha2 = resultSet.string(forColumn: "fsha2")
+        self.directory = resultSet.string(forColumn: "directory")
         self.fileName = resultSet.string(forColumn: "fileName")
         self.url = resultSet.string(forColumn: "url")
         self.state = CXDownloadState(rawValue: resultSet.long(forColumn: "state")) ?? .default
