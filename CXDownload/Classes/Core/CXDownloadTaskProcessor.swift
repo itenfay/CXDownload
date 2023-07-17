@@ -83,7 +83,7 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
     }
     
     func canCallback() -> Bool {
-        return progressCallback != nil && failureCallback != nil
+        return progressCallback != nil && successCallback != nil && failureCallback != nil
     }
     
     /// Resumes the current data task.
@@ -296,7 +296,7 @@ extension CXDownloadTaskProcessor {
         }
         
         // 403, no permission access, ....
-        CXDLogger.log(message: "An error occurs, the code is \(resp.statusCode).", level: .info)
+        CXDLogger.log(message: "An error occurs, the code is \(resp.statusCode).", level: .error)
         state = .error
         processError(withCode: resp.statusCode, message: "An error occurs")
         
