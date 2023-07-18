@@ -52,7 +52,9 @@ public class CXDownloadDatabaseManager: NSObject {
     }
     
     @objc public func recreateTable() {
-        if tableCreated { return }
+        if tableCreated {
+            return
+        }
         createTable()
     }
     
