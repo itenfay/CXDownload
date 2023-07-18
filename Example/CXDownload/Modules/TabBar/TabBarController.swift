@@ -43,6 +43,9 @@ class TabBarController: UITabBarController {
             //appearance.backgroundEffect = nil
             //appearance.shadowColor = nil
             tabBar.standardAppearance = appearance
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = appearance
+            }
         } else {
             tabBar.backgroundColor = bgColor
             tabBar.shadowImage = nil
