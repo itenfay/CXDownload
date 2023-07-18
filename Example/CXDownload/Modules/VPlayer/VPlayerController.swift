@@ -27,7 +27,7 @@ class VPlayerController: BaseViewController {
             return
         }
         
-        let slider = UISlider(frame: CGRect(x: 30, y: kNavigaH + kFitScale(AT: 400), width: kScreenW - 60, height: 50))
+        let slider = UISlider(frame: CGRect(x: 30, y: kNavigaH + kAdapt(400), width: kScreenW - 60, height: 50))
         slider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
         view.addSubview(slider)
         
