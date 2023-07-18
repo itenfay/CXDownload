@@ -14,13 +14,15 @@ public let kScreen  = UIScreen.main.bounds
 public let kScreenW = UIScreen.main.bounds.size.width
 public let kScreenH = UIScreen.main.bounds.size.height
 
-public let kMargin = kFitScale(AT: 10)
-public let kLineMargin = kFitScale(AT: 1)
+public let kMargin = kAdapt(10)
+public let kLineMargin = kAdapt(1)
 
 public let isIphoneX = { () -> Bool in
     var isX = false
     if #available(iOS 11.0, *) {
-        isX = (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0) > CGFloat(0.0)
+        let app = UIApplication.shared
+        let window = app.delegate?.window ?? app.activeKeyWindow
+        isX = (window?.safeAreaInsets.bottom ?? 0) > CGFloat(0.0)
     }
     return isX
 }
@@ -28,7 +30,9 @@ public let isIphoneX = { () -> Bool in
 public let kSafeAreaInset = { () -> UIEdgeInsets in
     var insets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     if #available(iOS 11.0, *) {
-        insets = UIApplication.shared.windows.first?.safeAreaInsets ?? insets
+        let app = UIApplication.shared
+        let window = app.delegate?.window ?? app.activeKeyWindow
+        insets = window?.safeAreaInsets ?? insets
     }
     return insets
 }
@@ -40,8 +44,14 @@ public let kNavigaH = 44 + kStatusH
 public let kTabBarH = 49 + kSafeAreaBottom
 
 // 6s's dimension
-public func kFitScale(AT: CGFloat) -> CGFloat {
-    return (kScreenW / 375) * AT
+public func kAdapt(_ value: CGFloat) -> CGFloat
+{
+    return (kScreenW / 375) * value
+}
+
+public func kLoadImage(named: String) -> UIImage
+{
+    return UIImage(named: named) ?? UIImage()
 }
 
 public func showAlert(in controller: UIViewController,
