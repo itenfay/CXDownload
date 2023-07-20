@@ -10,8 +10,8 @@ import UIKit
 
 protocol HomeViewable: AnyObject {
     func refreshView()
-    func reloadRows(atIndex index: Int)
-    func updateView(model: DataModel, atIndex index: Int)
+    func reloadRow(atIndex index: Int)
+    func updateViewCell(atIndex index: Int)
 }
 
 class HomeView: BaseView {
@@ -50,18 +50,12 @@ class HomeView: BaseView {
         tableView.reloadData()
     }
     
-    func reloadRows(at index: Int) {
-        DispatchQueue.main.async {
-            self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
-        }
+    func reloadRow(at index: Int) {
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
     }
     
-    func getCell(at index: Int) -> UITableViewCell? {
-        var cell: UITableViewCell?
-        DispatchQueue.main.async {
-            cell = self.tableView.cellForRow(at: IndexPath(item: index, section: 0))
-        }
-        return cell
+    func getTableViewCell(forRow item: Int) -> UITableViewCell? {
+        return tableView.cellForRow(at: IndexPath(item: item, section: 0))
     }
     
 }
