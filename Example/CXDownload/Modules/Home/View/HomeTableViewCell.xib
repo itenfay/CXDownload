@@ -85,7 +85,7 @@
                 <outlet property="nameLabel" destination="0gO-Vb-8ft" id="U7V-Rm-6fa"/>
                 <outlet property="progressLabel" destination="hNv-gb-AlF" id="iXT-rs-M47"/>
                 <outlet property="speedLabel" destination="cnl-5V-hEo" id="hHl-kk-XA2"/>
-                <outlet property="totolLabel" destination="59p-eO-d8C" id="YMj-Pa-bCf"/>
+                <outlet property="totalLabel" destination="59p-eO-d8C" id="2u0-9c-ebW"/>
             </connections>
             <point key="canvasLocation" x="223.66412213740458" y="3.1690140845070425"/>
         </tableViewCell>
