@@ -51,11 +51,11 @@ public class CXDownloadManager: NSObject {
     private var lock: NSLock!
     
     /// Sends the specified string("Reachable", "NotReachable", "ReachableViaWWAN" or "ReachableViaWiFi") by notification.object.
-    private var networkReachabilityStatus: String = CXNetworkReachabilityStatus.reachable
+    private var networkReachabilityStatus: String = CXDNetworkReachabilityStatus.reachable
     private var queue: OperationQueue!
     private var session: URLSession!
     
-    private var cellularAccessNotAllowedPromptHandler: (() -> Void)?
+    private var promptCellularAccessNotAllowedHandler: (() -> Void)?
     private var didFinishEventsForBackgroundURLSessionHandler: (() -> Void)?
     
     private func setup() {
@@ -89,42 +89,38 @@ public class CXDownloadManager: NSObject {
     }
     
     /// Displays a prompt that cellular networks are not allowed.
-    @objc public func showPromptForCellularAccessNotAllowed(handler: (() -> Void)?) {
-        cellularAccessNotAllowedPromptHandler = handler
+    @objc public func displayPromptThatCellularAccessNotAllowed(handler: @escaping () -> Void)
+    {
+        promptCellularAccessNotAllowedHandler = handler
     }
     
     /// Sets a block to be executed once all messages enqueued for a session have been delivered.
-    @objc public func setDidFinishEventsForBackgroundURLSession(completionHandler: (() -> Void)?) {
+    @objc public func setDidFinishEventsForBackgroundURLSession(completionHandler: (() -> Void)?)
+    {
         didFinishEventsForBackgroundURLSessionHandler = completionHandler
     }
     
     /// Executes an asynchronous download with the url and some callback closures.
-    @objc public func download(url: String,
-                               progress: @escaping (CXDownloadModel) -> Void,
-                               success: @escaping (CXDownloadModel) -> Void,
-                               failure: @escaping (CXDownloadModel) -> Void)
+    @objc public func download(url: String)
     {
-        download(url: url, toDirectory: nil, fileName: nil, progress: progress, success: success, failure: failure)
+        download(url: url, toDirectory: nil, fileName: nil)
     }
     
     /// Executes an asynchronous download with the url and some callback closures.
     @objc public func download(url: String,
                                toDirectory directory: String?,
-                               fileName: String?,
-                               progress: @escaping (CXDownloadModel) -> Void,
-                               success: @escaping (CXDownloadModel) -> Void,
-                               failure: @escaping (CXDownloadModel) -> Void)
+                               fileName: String?)
     {
-        guard let aURL = URL(string: url) else {
-            callbackError(failure)
-            return
-        }
-        
         // It is forbidden to call the same task repeatedly within 1.0s.
         if let date = downloadDateDict[url], Date().timeIntervalSince(date) < 1.0 {
             return
         }
         downloadDateDict[url] = Date()
+        
+        guard let aURL = URL(string: url) else {
+            callbackError(with: url, directory: directory, fileName: fileName)
+            return
+        }
         
         let fname = fileName ?? CXDFileUtils.fileName(aURL)
         CXDLogger.log(message: "fileName=\(fname)", level: .info)
@@ -143,10 +139,7 @@ public class CXDownloadManager: NSObject {
         if taskProcessor == nil {
             taskProcessor = createTaskProcessor(model: downloadModel!,
                                                 toDirectory: directory,
-                                                fileName: fname,
-                                                progress: progress,
-                                                success: success,
-                                                failure: failure)
+                                                fileName: fname)
             downloadTaskDict[url] = taskProcessor
         }
         taskProcessor?.updateModelStateAndTime(downloadModel!)
@@ -156,31 +149,31 @@ public class CXDownloadManager: NSObject {
         }
     }
     
-    private func callbackError(_ failure: ((CXDownloadModel) -> Void)?) {
+    private func callbackError(with url: String, directory: String?, fileName: String?)
+    {
         CXDLogger.log(message: "The url is invalid.", level: .error)
         let model = CXDownloadModel()
+        model.url = url
+        model.directory = directory
+        model.fileName = fileName
         model.state = .error
         let stateInfo = CXDownloadStateInfo()
         stateInfo.code = -2000
         stateInfo.message = "The url is invalid"
         model.stateInfo = stateInfo
-        runOnMainThread { failure?(model) }
+        runOnMainThread {
+            NotificationCenter.default.post(name: CXDownloadConfig.stateChangeNotification, object: model)
+        }
     }
     
     private func createTaskProcessor(
         model: CXDownloadModel,
         toDirectory directory: String?,
-        fileName: String?,
-        progress: ((CXDownloadModel) -> Void)?,
-        success: ((CXDownloadModel) -> Void)?,
-        failure: ((CXDownloadModel) -> Void)?) -> CXDownloadTaskProcessor
+        fileName: String?) -> CXDownloadTaskProcessor
     {
         let taskProcessor = CXDownloadTaskProcessor(model: model,
                                                     directory: directory,
-                                                    fileName: fileName,
-                                                    progess: progress,
-                                                    success: success,
-                                                    failure: failure) { [weak self] model in
+                                                    fileName: fileName) { [weak self] model in
             guard let s = self else { return }
             guard let key = model.url else {
                 s.startDownloadingWaitingTask()
@@ -193,13 +186,6 @@ public class CXDownloadManager: NSObject {
         }
         taskProcessor.urlSession = session
         return taskProcessor
-    }
-    
-    @objc public func hasClosured(url: String) -> Bool {
-        guard let taskProcessor = downloadTaskDict[url] else {
-            return false
-        }
-        return taskProcessor.canCallback()
     }
     
     /// Pauses a download task through a specified url.
@@ -266,10 +252,7 @@ public class CXDownloadManager: NSObject {
         } else if model.state == .waiting {
             let taskProcessor = createTaskProcessor(model: model,
                                                     toDirectory: model.directory,
-                                                    fileName: model.fileName,
-                                                    progress: nil,
-                                                    success: nil,
-                                                    failure: nil)
+                                                    fileName: model.fileName)
             downloadTaskDict[key] = taskProcessor
             taskProcessor.process()
         }
@@ -290,9 +273,7 @@ public class CXDownloadManager: NSObject {
     private func pauseDownloadingTaskWithAll(_ all: Bool) {
         let downloadingDataArray = CXDownloadDatabaseManager.shared.getAllDownloadingData()
         let count = all ? downloadingDataArray.count : downloadingDataArray.count - maxConcurrentCount
-        guard count > 0 else {
-            return
-        }
+        guard count > 0 else { return }
         for i in 0..<count {
             let model = downloadingDataArray[i]
             CXDLogger.log(message: "[url=\(model.url ?? "")]: state=\(model.state.rawValue)", level: .info)
@@ -417,24 +398,24 @@ extension CXDownloadManager {
     @objc private func networkingReachabilityOnChange(_ notification: Notification) {
         networkReachabilityStatus = (notification.object as? String) ?? ""
         CXDLogger.log(message: "networkReachabilityStatus=\(networkReachabilityStatus)", level: .info)
-        
         allowsCellularAccessOrNetworkingReachabilityDidChangeAction()
     }
     
     /// Whether to allow cellular network download or network state change events.
     private func allowsCellularAccessOrNetworkingReachabilityDidChangeAction() {
-        if networkReachabilityStatus == CXNetworkReachabilityStatus.notReachable {
+        if networkReachabilityStatus == CXDNetworkReachabilityStatus.notReachable {
             // No network, pause downloading task.
             pauseDownloadingTaskWithAll(true)
         } else {
             if networkingAllowsDownloadTask() {
+                pauseDownloadingTaskWithAll(true)
                 // Start the waiting task.
                 startDownloadingWaitingTask()
             } else {
                 // Maybe show prompt in here.
                 let model = CXDownloadDatabaseManager.shared.getLastDownloadingModel()
                 if model != nil {
-                    cellularAccessNotAllowedPromptHandler?()
+                    promptCellularAccessNotAllowedHandler?()
                 }
                 // At present, it is a cellular network, and downloading is not allowed. Pausing the all downloading task.
                 pauseDownloadingTaskWithAll(true)
@@ -443,7 +424,7 @@ extension CXDownloadManager {
     }
     
     private func networkingAllowsDownloadTask() -> Bool {
-        if networkReachabilityStatus == CXNetworkReachabilityStatus.notReachable || (networkReachabilityStatus == CXNetworkReachabilityStatus.reachableViaWWAN && !allowsCellularAccess) {
+        if networkReachabilityStatus == CXDNetworkReachabilityStatus.notReachable || (networkReachabilityStatus == CXDNetworkReachabilityStatus.reachableViaWWAN && !allowsCellularAccess) {
             return false
         }
         return true
