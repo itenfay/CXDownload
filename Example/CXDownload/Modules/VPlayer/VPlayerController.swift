@@ -15,7 +15,13 @@ class VPlayerController: BaseViewController {
     private var player: AVPlayer!
     private var playerLayer: AVPlayerLayer!
     
-    var path: String?
+    private(set) var path: String?
+    private var sliderDragging: Bool = false
+    
+    convenience init(path: String?) {
+        self.init(nibName: nil, bundle: nil)
+        self.path = path
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +29,7 @@ class VPlayerController: BaseViewController {
     
     override func makeUI() {
         guard let localPath = path else {
-            print("Warning: the path can not be nil.")
+            print("[Warning]: the path can not be nil.")
             return
         }
         
@@ -33,7 +39,8 @@ class VPlayerController: BaseViewController {
         
         player = AVPlayer(url: URL(fileAtPath: localPath))
         playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = CGRect(x: 0, y: kNavigaH, width: kScreenW, height: 400)
+        playerLayer.frame = CGRect(x: 0, y: kNavigaH + kAdapt(20), width: kScreenW, height: kScreenW * 9 / 16)
+        playerLayer.backgroundColor = UIColor.black.cgColor
         view.layer.addSublayer(playerLayer)
         
         player.play()
@@ -42,16 +49,29 @@ class VPlayerController: BaseViewController {
             guard let s = self, let item = s.player.currentItem else {
                 return
             }
+            if s.sliderDragging {
+                return
+            }
             slider.value = Float(CMTimeGetSeconds(time) / CMTimeGetSeconds(item.duration))
         }
     }
     
     @objc func sliderValueChanged(_ slider: UISlider) {
+        sliderDragging = true
         guard let item = player.currentItem else {
+            sliderDragging = false
             return
         }
         let time = slider.value * Float(CMTimeGetSeconds(item.duration))
-        player.seek(to: CMTime(value: CMTimeValue(time), timescale: 1), toleranceBefore: .zero, toleranceAfter: .zero)
+        if time.isNaN || time.isInfinite {
+            sliderDragging = false
+            return
+        }
+        player.seek(to: CMTime(value: CMTimeValue(time), timescale: 1), toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] finished in
+            if !finished { return }
+            self?.sliderDragging = false
+            self?.player.play()
+        }
     }
     
 }
