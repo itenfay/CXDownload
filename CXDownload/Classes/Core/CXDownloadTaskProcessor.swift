@@ -15,12 +15,7 @@ protocol DownloadTaskProcessor {
 
 class CXDownloadTaskProcessor: DownloadTaskProcessor {
     
-    private var progressCallback: CXDownloadCallback?
-    private var successCallback: CXDownloadCallback?
-    private var failureCallback: CXDownloadCallback?
     private var finishCallback: CXDownloadCallback?
-    
-    private let notificationCenter = NotificationCenter.default
     
     private var resumedFileSize: Int64 = 0
     /// The destination file path.
@@ -48,15 +43,9 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
     
     /// Initializes the some required parameters.
     init(model: CXDownloadModel,
-         progess: CXDownloadCallback?,
-         success: CXDownloadCallback?,
-         failure: CXDownloadCallback?,
          finish: CXDownloadCallback?)
     {
         self.model = model
-        self.progressCallback = progess
-        self.successCallback = success
-        self.failureCallback = failure
         self.finishCallback = finish
     }
     
@@ -64,12 +53,9 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
     convenience init(model: CXDownloadModel,
                      directory: String?,
                      fileName: String?,
-                     progess: CXDownloadCallback?,
-                     success: CXDownloadCallback?,
-                     failure: CXDownloadCallback?,
                      finish: CXDownloadCallback?)
     {
-        self.init(model: model, progess: progess, success: success, failure: failure, finish: finish)
+        self.init(model: model, finish: finish)
         self.directory = directory
         self.fileName = fileName
     }
@@ -78,12 +64,7 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
         downloadModel.state = .waiting
         downloadModel.lastStateTime = Int64(CXDToolbox.getTimestampWithDate(Date()))
         model = downloadModel
-        runOnMainThread { self.progressCallback?(self.model) }
         CXDownloadDatabaseManager.shared.updateModel(model, option: [.state, .lastStateTime])
-    }
-    
-    func canCallback() -> Bool {
-        return progressCallback != nil && successCallback != nil && failureCallback != nil
     }
     
     /// Resumes the current data task.
@@ -101,7 +82,6 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
     func pauseTask() {
         dataTask?.suspend()
         state = .paused
-        runOnMainThread { self.progressCallback?(self.model) }
         CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
     }
     
@@ -119,7 +99,6 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
         dataTask?.suspend()
         // Update state as waiting.
         state = .waiting
-        runOnMainThread { self.progressCallback?(self.model) }
         CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
     }
     
@@ -173,12 +152,8 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
             state = .finish
             model.progress = 1.0
             model.localPath = dstPath
-            runOnMainThread {
-                self.progressCallback?(self.model)
-                self.successCallback?(self.model)
-            }
             CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
-            notificationCenter.post(name: CXDownloadConfig.progressNotification, object: model)
+            postProgressNotification()
             finishDownloadTask()
             return
         }
@@ -224,9 +199,14 @@ class CXDownloadTaskProcessor: DownloadTaskProcessor {
         stateInfo.code = code
         stateInfo.message = message
         model.stateInfo = stateInfo
-        runOnMainThread { self.failureCallback?(self.model) }
         CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
         finishDownloadTask()
+    }
+    
+    private func postProgressNotification() {
+        runOnMainThread {
+            NotificationCenter.default.post(name: CXDownloadConfig.progressNotification, object: self.model)
+        }
     }
     
     deinit {
@@ -263,12 +243,8 @@ extension CXDownloadTaskProcessor {
             state = .finish
             model.progress = 1.0
             model.localPath = dstPath
-            runOnMainThread {
-                self.progressCallback?(self.model)
-                self.successCallback?(self.model)
-            }
             CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
-            notificationCenter.post(name: CXDownloadConfig.progressNotification, object: model)
+            postProgressNotification()
             finishDownloadTask()
             return
         }
@@ -284,11 +260,11 @@ extension CXDownloadTaskProcessor {
         // No point break resume, code is 200, point break resume, code is 206
         if resp.statusCode == 200 || resp.statusCode == 206 {
             state = .downloading
+            model.totalFileSize = totalSize
+            model.tmpFileSize = resumedFileSize
             let progress = Float(resumedFileSize) / Float(totalSize)
             model.progress = progress
-            runOnMainThread { self.progressCallback?(self.model) }
             CXDownloadDatabaseManager.shared.updateModel(model, option: .allParams)
-            notificationCenter.post(name: CXDownloadConfig.progressNotification, object: model)
             outputStream = OutputStream.init(toFileAtPath: tmpPath, append: true)
             outputStream?.open()
             completionHandler(.allow)
@@ -325,12 +301,9 @@ extension CXDownloadTaskProcessor {
         //CXDLogger.log(message: "progress: \(progress)", level: .info)
         model.progress = progress
         
-        runOnMainThread { self.progressCallback?(self.model) }
-        
         // Update the specified model in database.
         CXDownloadDatabaseManager.shared.updateModel(model, option: .progressData)
-        notificationCenter.post(name: CXDownloadConfig.progressNotification, object: model)
-        
+        postProgressNotification()
         // Reset it.
         model.intervalFileSize = 0
         
@@ -361,8 +334,8 @@ extension CXDownloadTaskProcessor {
             CXDFileUtils.moveFile(from: tmpPath, to: dstPath)
             state = .finish
             model.localPath = dstPath
-            runOnMainThread { self.successCallback?(self.model) }
             CXDownloadDatabaseManager.shared.updateModel(model, option: .state)
+            postProgressNotification()
             finishDownloadTask()
             return
         }
