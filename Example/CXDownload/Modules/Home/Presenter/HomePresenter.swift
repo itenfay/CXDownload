@@ -68,44 +68,40 @@ class HomePresenter: BasePresenter {
     }
     
     @objc func downloadStateChange(_ noti: Notification) {
-        guard let model = noti.object as? CXDownloadModel else {
+        guard let downloadModel = noti.object as? CXDownloadModel else {
             return
         }
-        updateSourceModel(model)
-    }
-    
-    @objc func downloadProgressChange(_ noti: Notification) {
-        guard let model = noti.object as? CXDownloadModel else {
-            return
-        }
-        updateSourceModel(model)
-    }
-    
-    private func updateSourceModel(_ downloadModel: CXDownloadModel) {
         for (index, model) in dataSource.enumerated() {
-            if model.url == downloadModel.url {
-                // Update model.
-                let dataModel = downloadModel.toDataModel(with: model.vid)
-                dataSource[index] = dataModel
-                if !CXDownloadManager.shared.hasClosured(url: dataModel.url) {
-                    view.updateView(model: dataModel, atIndex: index)
-                }
+            if downloadModel.url == model.url {
+                dataSource[index] = downloadModel.toDataModel(with: model.vid)
+                view.reloadRow(atIndex: index)
                 break
             }
         }
     }
     
-    func update(cell: UITableViewCell?, with model: DataModel) {
-        guard let homeCell = cell as? HomeTableViewCell else {
-            if model.state == .finish {
-                view.refreshView()
-            }
+    @objc func downloadProgressChange(_ noti: Notification) {
+        guard let downloadModel = noti.object as? CXDownloadModel else {
             return
         }
-        homeCell.reloadLabelWithModel(model)
+        for (index, model) in dataSource.enumerated() {
+            if downloadModel.url == model.url {
+                dataSource[index] = downloadModel.toDataModel(with: model.vid)
+                view.updateViewCell(atIndex: index)
+                break
+            }
+        }
     }
     
-    private func configure(cell: HomeTableViewCell, for indexPath: IndexPath) {
+    func update(cell: UITableViewCell?, at index: Int) {
+        guard let homeCell = cell as? HomeTableViewCell else {
+            return
+        }
+        guard index < dataSource.count else { return }
+        homeCell.bind(to: dataSource[index])
+    }
+    
+    private func configure(cell: HomeTableViewCell, at indexPath: IndexPath) {
         let index = indexPath.item
         if index < dataSource.count {
             cell.bind(to: dataSource[index])
@@ -113,7 +109,9 @@ class HomePresenter: BasePresenter {
     }
     
     @objc func clearAllCaches(_ noti: Notification) {
-        loadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.loadData()
+        }
     }
     
     deinit {
@@ -146,7 +144,7 @@ extension HomePresenter: UITableViewDelegate, UITableViewDataSource {
         //backgroundView.backgroundColor = UIColor(red: 0, green: 198/255, blue: 198/255, alpha: 1)
         //cell!.backgroundView = backgroundView
         
-        configure(cell: cell as! HomeTableViewCell, for: indexPath)
+        configure(cell: cell as! HomeTableViewCell, at: indexPath)
         
         return cell!
     }
@@ -158,7 +156,8 @@ extension HomePresenter: UITableViewDelegate, UITableViewDataSource {
         if indexPath.item < dataSource.count {
             let model = dataSource[indexPath.item]
             if model.state == .finish {
-                let playerVC = VPlayerController()
+                let filePath = CXDFileUtils.filePath(withURL: URL(string: model.url)!, atDirectory: model.directory, fileName: model.fileName)
+                let playerVC = VPlayerController(path: filePath)
                 playerVC.hidesBottomBarWhenPushed = true
                 homeVC.navigationController?.pushViewController(playerVC, animated: true)
             }
