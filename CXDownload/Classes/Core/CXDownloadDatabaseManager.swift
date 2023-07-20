@@ -234,8 +234,10 @@ public class CXDownloadDatabaseManager: NSObject {
         while rs.next() {
             oldState = CXDownloadState(rawValue: rs.long(forColumn: "state"))
         }
-        if let oState = oldState, oldState != model.state, oState != .finish {
-            NotificationCenter.default.post(name: CXDownloadConfig.stateChangeNotification, object: model)
+        if let oState = oldState, oState != model.state, oState != .finish {
+            runOnMainThread {
+                NotificationCenter.default.post(name: CXDownloadConfig.stateChangeNotification, object: model)
+            }
         }
         #endif
     }
