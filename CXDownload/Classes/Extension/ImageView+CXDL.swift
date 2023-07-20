@@ -16,21 +16,8 @@ import AppKit
 extension CXDownloadBase where T : CXDImageView {
     
     /// Executes an asynchronous download by the url and other parameters.
-    public func download(
-        url: String,
-        toDirectory directory: String? = nil,
-        fileName: String? = nil,
-        progress: @escaping (CXDownloadModel) -> Void,
-        success: @escaping (CXDownloadModel) -> Void,
-        failure: @escaping (CXDownloadModel) -> Void)
-    {
-        return CXDownloadManager.shared.download(
-            url: url,
-            toDirectory: directory,
-            fileName: fileName,
-            progress: progress,
-            success: success,
-            failure: failure)
+    public func download(url: String, toDirectory directory: String? = nil, fileName: String? = nil) {
+        return CXDownloadManager.shared.download(url: url, toDirectory: directory, fileName: fileName)
     }
     
 }
