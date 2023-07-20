@@ -1,8 +1,7 @@
 # CXDownload
 
-实现Swift断点续传下载。
+实现Swift断点续传下载，支持Objective-C。
 
-[![CI Status](https://img.shields.io/travis/chenxing640/CXDownload.svg?style=flat)](https://travis-ci.org/chenxing640/CXDownload)
 [![Version](https://img.shields.io/cocoapods/v/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![License](https://img.shields.io/cocoapods/l/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![Platform](https://img.shields.io/cocoapods/p/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
@@ -24,19 +23,20 @@ pod 'CXDownload'
 
 ## 说明
 
-- CXDownloadManager.swift: **下载网络请求队列管理类**
-- CXDownloadTaskProcessor.swift: **下载任务处理类**
-- CXDownloadModel.swift: **下载模型类**
-- CXDownloadDatabaseManager.swift: **下载数据库管理类**
-- FileUtils.swift: **文件工具类**
-- Logger.swift: **日志输出类**
+- CXDownloadManager.swift: **下载网络请求任务管理**
+- CXDownloadTaskProcessor.swift: **下载任务处理**
+- CXDownloadModel.swift: **下载模型**
+- CXDownloadDatabaseManager.swift: **下载数据库管理**
+- FileUtils.swift: **文件工具**
+- Logger.swift: **日志输出**
 - StringEx.swift: **String扩展cxd_md5、cxd_sha2属性**
+- ...
 
 ## 使用
 
-### 下载
+> 注意：为了更好的理解使用，请查看工程例子。
 
-- 监听下载状态和进度
+### 监听下载状态和进度
 
 ```
 func addNotification() {
@@ -64,6 +64,8 @@ func addNotification() {
     CXDLogger.log(message: "[\(downloadModel.url)] \(Int(downloadModel.progress * 100)) %", level: .info)
 }
 ```
+
+### 下载
 
 - 默认下载目录和文件名
 
@@ -116,6 +118,10 @@ CXDownloadManager.shared.deleteTaskAndCache(url: urlStr2, atDirectory: "Software
 deleteButton1.dl.deleteTaskAndCache(url: urlStr1)
 deleteButton2.dl.deleteTaskAndCache(url: urlStr2, atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
+
+## 作者
+
+chenxing, chenxing640@foxmail.com
 
 ## 许可证
 
