@@ -35,27 +35,27 @@
     AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
     
     [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        NSString *statusString = CXNetworkReachabilityStatus.reachable;
+        NSString *statusString = CXDNetworkReachabilityStatus.reachable;
         switch (status) {
             case AFNetworkReachabilityStatusUnknown:
                 // 未知网络
                 NSLog(@"当前网络：未知网络");
-                statusString = CXNetworkReachabilityStatus.reachable;
+                statusString = CXDNetworkReachabilityStatus.reachable;
                 break;
             case AFNetworkReachabilityStatusNotReachable:
                 // 无网络
                 NSLog(@"当前网络：无网络");
-                statusString = CXNetworkReachabilityStatus.notReachable;
+                statusString = CXDNetworkReachabilityStatus.notReachable;
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
                 // 蜂窝数据
                 NSLog(@"当前网络：蜂窝数据");
-                statusString = CXNetworkReachabilityStatus.reachableViaWWAN;
+                statusString = CXDNetworkReachabilityStatus.reachableViaWWAN;
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
                 // 无线网络
                 NSLog(@"当前网络：无线网络");
-                statusString = CXNetworkReachabilityStatus.reachableViaWiFi;
+                statusString = CXDNetworkReachabilityStatus.reachableViaWiFi;
                 break;
             default:
                 break;
