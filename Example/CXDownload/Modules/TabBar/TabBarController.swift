@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import CXDownload
 
 class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        monitorCellularAccessAvailable()
     }
     
     func setup() {
@@ -52,6 +54,22 @@ class TabBarController: UITabBarController {
             tabBar.tintColor = UIColor.black
             tabBar.barTintColor = UIColor.black
         }
+    }
+    
+}
+
+extension TabBarController {
+    
+    func monitorCellularAccessAvailable() {
+        CXDownloadManager.shared.displayPromptThatCellularAccessNotAllowed {
+            self.showPrompt()
+        }
+    }
+    
+    func showPrompt() {
+        showAlert(in: self, title: "提示", message: "当前为蜂窝网络，已停止下载任务，可在设置中开启", sureTitle: "确定", sureHandler: { action in
+            print("ActionTitle=\(String(describing: action.title))")
+        })
     }
     
 }
