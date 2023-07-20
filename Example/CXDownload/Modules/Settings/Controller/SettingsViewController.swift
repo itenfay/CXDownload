@@ -23,7 +23,7 @@ class SettingsViewController: BaseViewController, SettingsViewable {
         self.configurator = configurator
     }
     
-    private func asSettingsPresenter() -> SettingsPresenter? {
+    private func getSettingsPresenter() -> SettingsPresenter? {
         return presenter as? SettingsPresenter
     }
     
@@ -35,16 +35,16 @@ class SettingsViewController: BaseViewController, SettingsViewable {
         view.addSubview(settingsView)
         
         settingsView.maxConcurrentCountWarningAction = { [weak self] in
-            self?.asSettingsPresenter()?.warnToInputMaxConcurrentCount()
+            self?.getSettingsPresenter()?.warnToInputMaxConcurrentCount()
         }
         settingsView.maxConcurrentCountUpdatingAction = { [weak self] count in
-            self?.asSettingsPresenter()?.updateMaxConcurrentCount(count)
+            self?.getSettingsPresenter()?.updateMaxConcurrentCount(count)
         }
         settingsView.cellularAccessAllowingAction = { [weak self] isOn in
-            self?.asSettingsPresenter()?.allowsCellularAccess(isOn)
+            self?.getSettingsPresenter()?.allowsCellularAccess(isOn)
         }
         settingsView.clearButtonAction = { [weak self] in
-            self?.asSettingsPresenter()?.clearButtonPressed()
+            self?.getSettingsPresenter()?.clearButtonPressed()
         }
     }
     
