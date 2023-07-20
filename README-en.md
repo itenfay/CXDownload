@@ -1,3 +1,5 @@
+[中文版](README.md) | **English Version**
+
 # CXDownload
 
 Realization of breakpoint transmission download with Swift, support Objective-C.
