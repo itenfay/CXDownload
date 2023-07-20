@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
     s.name             = 'CXDownload'
     s.version          = '2.0.0'
-    s.summary          = 'Implements Swift breakpoint continuation download for iOS.'
+    s.summary          = 'Realization of breakpoint transmission download with Swift, support Objective-C.'
     
     # This description is used to generate tags and improve search results.
     #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
     #   * Finally, don't worry about the indent, CocoaPods strips it!
     
     s.description      = <<-DESC
-    Implements Swift breakpoint continuation download for iOS.
+    Realization of breakpoint transmission download with Swift, support Objective-C.
     DESC
     
     s.homepage         = 'https://github.com/chenxing640/CXDownload'
