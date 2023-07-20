@@ -1,3 +1,5 @@
+**中文版** | [English Version](README-en.md)
+
 # CXDownload
 
 实现Swift断点续传下载，支持Objective-C。
@@ -5,8 +7,6 @@
 [![Version](https://img.shields.io/cocoapods/v/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![License](https://img.shields.io/cocoapods/l/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![Platform](https://img.shields.io/cocoapods/p/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
-
-[English Instructions (EN)](README-en.md).
 
 ## 示例项目
 
