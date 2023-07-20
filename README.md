@@ -36,56 +36,53 @@ pod 'CXDownload'
 
 ### 下载
 
+- 监听下载状态和进度
+
+```
+func addNotification() {
+    NotificationCenter.default.addObserver(self, selector: #selector(downloadStateChange(_:)), name: CXDownloadConfig.stateChangeNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(downloadProgressChange(_:)), name: CXDownloadConfig.progressNotification, object: nil)
+}
+
+@objc func downloadStateChange(_ noti: Notification) {
+    guard let downloadModel = noti.object as? CXDownloadModel else {
+        return
+    }
+    if downloadModel.state == .finish {
+        CXDLogger.log(message: "filePath: \(downloadModel.localPath ?? "")", level: .info)
+    } else if downloadModel.state == .error || downloadModel.state == .cancelled {
+        if let stateInfo = downloadModel.stateInfo {
+            CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
+        }
+    }
+}
+
+@objc func downloadProgressChange(_ noti: Notification) {
+    guard let downloadModel = noti.object as? CXDownloadModel else {
+        return
+    }
+    CXDLogger.log(message: "[\(downloadModel.url)] \(Int(downloadModel.progress * 100)) %", level: .info)
+}
+```
+
 - 默认下载目录和文件名
 
 ```
-CXDownloadManager.shared.download(url: urlStr1) { [weak self] model in
-    self?.progressLabel1.text = "\(Int(model.progress * 100)) %"
-} success: { model in
-    CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
-} failure: { model in
-    if let stateInfo = model.stateInfo {
-        CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
-    }
-}
+CXDownloadManager.shared.download(url: urlStr1)
 ```
 
 ```dl
-downloadButton1.dl.download(url: urlStr1) { [weak self] model in
-    self?.progressLabel1.text = "\(Int(model.progress * 100)) %"
-} success: { model in
-    CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
-} failure: {  model in
-    if let stateInfo = model.stateInfo {
-        CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
-    }
-}
+downloadButton1.dl.download(url: urlStr1)
 ```
 
 - 自定义下载目录和文件名
 
 ```
-CXDownloadManager.shared.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") { [weak self] model in
-    self?.progressLabel2.text = "\(Int(model.progress * 100)) %"
-} success: { model in
-    CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
-} failure: { model in
-    if let stateInfo = model.stateInfo {
-        CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
-    }
-}
+CXDownloadManager.shared.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ```dl
-downloadButton2.dl.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") { [weak self] model in
-    self?.progressLabel2.text = "\(Int(model.progress * 100)) %"
-} success: { model in
-    CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
-} failure: {  model in
-    if let stateInfo = model.stateInfo {
-        CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
-    }
-}
+downloadButton2.dl.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ### 暂停

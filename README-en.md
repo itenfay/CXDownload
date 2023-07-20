@@ -34,6 +34,35 @@ pod 'CXDownload'
 
 ### Download
 
+- Monitor download status and progress
+
+```
+func addNotification() {
+    NotificationCenter.default.addObserver(self, selector: #selector(downloadStateChange(_:)), name: CXDownloadConfig.stateChangeNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(downloadProgressChange(_:)), name: CXDownloadConfig.progressNotification, object: nil)
+}
+
+@objc func downloadStateChange(_ noti: Notification) {
+    guard let downloadModel = noti.object as? CXDownloadModel else {
+        return
+    }
+    if downloadModel.state == .finish {
+        CXDLogger.log(message: "filePath: \(downloadModel.localPath ?? "")", level: .info)
+    } else if downloadModel.state == .error || downloadModel.state == .cancelled {
+        if let stateInfo = downloadModel.stateInfo {
+            CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
+        }
+    }
+}
+
+@objc func downloadProgressChange(_ noti: Notification) {
+    guard let downloadModel = noti.object as? CXDownloadModel else {
+        return
+    }
+    CXDLogger.log(message: "[\(downloadModel.url)] \(Int(downloadModel.progress * 100)) %", level: .info)
+}
+```
+
 - Default download directory and file name.
 
 ```
