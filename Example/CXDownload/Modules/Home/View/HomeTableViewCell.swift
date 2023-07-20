@@ -13,7 +13,7 @@ class HomeTableViewCell: BaseTableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var speedLabel: UILabel!
-    @IBOutlet weak var totolLabel: UILabel!
+    @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var downloadButton: UIButton!
     
@@ -27,7 +27,7 @@ class HomeTableViewCell: BaseTableViewCell {
     
     private var state: CXDownloadState = .default {
         didSet {
-            changeDownloadButtonStyle(by: state)
+            adaptDownloadButtonStyle(with: state)
         }
     }
     
@@ -58,16 +58,16 @@ class HomeTableViewCell: BaseTableViewCell {
         nameLabel.text = model.fileName
         speedLabel.text = ""
         progressLabel.text = ""
-        totolLabel.text = ""
+        totalLabel.text = ""
         progress = model.progress
-        updateDownloadState(model.state)
+        reloadLabelWithModel(model)
     }
     
     func updateDownloadState(_ state: CXDownloadState) {
         self.state = state
     }
     
-    func changeDownloadButtonStyle(by state: CXDownloadState) {
+    func adaptDownloadButtonStyle(with state: CXDownloadState) {
         var image: UIImage?
         switch state {
         case .`default`:
@@ -105,15 +105,18 @@ class HomeTableViewCell: BaseTableViewCell {
         let totalSize = CXDToolbox.string(fromByteCount: model.totalFileSize)
         let tmpSize = CXDToolbox.string(fromByteCount: model.tmpFileSize)
         if model.state == .finish {
-            totolLabel.text = totalSize
+            totalLabel.text = totalSize
         } else {
-            totolLabel.text = "\(tmpSize) / \(totalSize)"
+            if model.tmpFileSize > 0 && model.totalFileSize > 0 {
+                totalLabel.text = "\(tmpSize) / \(totalSize)"
+            } else {
+                totalLabel.text = ""
+            }
         }
         
         if model.speed > 0 {
             speedLabel.text = CXDToolbox.string(fromByteCount: model.speed) + " / s"
         }
-        
         speedLabel.isHidden = !(model.state == .downloading && model.totalFileSize > 0)
     }
     
@@ -124,13 +127,7 @@ class HomeTableViewCell: BaseTableViewCell {
     @objc func onDownloadClick(_ sender: UIButton) {
         guard let url = url else { return }
         if state == .default || state == .cancelled || state == .paused || state == .error {
-            CXDownloadManager.shared.download(url: url, toDirectory: nil, fileName: fileName) { [weak self] model in
-                self?.reloadLabelWithModel(model.toDataModel(with: self?.vid ?? ""))
-            } success: { [weak self] model in
-                self?.reloadLabelWithModel(model.toDataModel(with: self?.vid ?? ""))
-            } failure: { [weak self] model in
-                self?.reloadLabelWithModel(model.toDataModel(with: self?.vid ?? ""))
-            }
+            CXDownloadManager.shared.download(url: url, toDirectory: nil, fileName: fileName)
         } else if state == .downloading || state == .waiting {
             CXDownloadManager.shared.pause(url: url)
         }
