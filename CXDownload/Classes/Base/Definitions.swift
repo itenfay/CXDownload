@@ -37,7 +37,7 @@ public typealias CXDImageView = NSImageView
     public static let allowsCellularAccessKey = "CXDownloadAllowsCellularAccessKey"
 }
 
-@objc public class CXNetworkReachabilityStatus: NSObject {
+@objc public class CXDNetworkReachabilityStatus: NSObject {
     @objc static public let notReachable = "NotReachable"
     @objc static public let reachable = "Reachable"
     @objc static public let reachableViaWWAN = "ReachableViaWWAN"
