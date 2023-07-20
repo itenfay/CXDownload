@@ -1,8 +1,7 @@
 # CXDownload
 
-Implements Swift breakpoint continuation download.
+Realization of breakpoint transmission download with Swift, support Objective-C.
 
-[![CI Status](https://img.shields.io/travis/chenxing640/CXDownload.svg?style=flat)](https://travis-ci.org/chenxing640/CXDownload)
 [![Version](https://img.shields.io/cocoapods/v/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![License](https://img.shields.io/cocoapods/l/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![Platform](https://img.shields.io/cocoapods/p/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
@@ -22,19 +21,20 @@ pod 'CXDownload'
 
 ## Explanation
 
-- CXDownloadManager.swift: **The Download network request queue management class.**
-- CXDownloadTaskProcessor.swift: **The Download network sending and receiving class.**
-- CXDownloadModel.swift: **The Download model class.**
-- CXDownloadDatabaseManager.swift: **The Download database manager class.**
-- FileUtils.swift: **The file tool class.**
-- Logger.swift: **This class outputs the log to the console.**
-- String+Cx.swift: **This extends the `cx_md5`, `cxd_sha2` properties for the `String` class.**
+- CXDownloadManager.swift: **The download task manager**
+- CXDownloadTaskProcessor.swift: **The download task processor**
+- CXDownloadModel.swift: **The download model**
+- CXDownloadDatabaseManager.swift: **The download database manager**
+- FileUtils.swift: **The file tool**
+- Logger.swift: **This outputs the log to the console**
+- String+Cx.swift: **This extends the `cx_md5`, `cxd_sha2` properties for `String`**
+- ...
 
 ## Usage
 
-### Download
+> Note: In order to better understand the usages, please check the engineering example.
 
-- Monitor download status and progress
+### Monitor download status and progress
 
 ```
 func addNotification() {
@@ -63,56 +63,26 @@ func addNotification() {
 }
 ```
 
+### Download
+
 - Default download directory and file name.
 
 ```
-CXDownloadManager.shared.download(url: urlStr1) { [weak self] model in
-    self?.progressLabel1.text = "\(Int(model.progress * 100)) %"
-} success: { model in
-    CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
-} failure: { model in
-    if let stateInfo = model.stateInfo {
-        CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
-    }
-}
+CXDownloadManager.shared.download(url: urlStr1)
 ```
 
 ```dl
-downloadButton1.dl.download(url: urlStr1) { [weak self] model in
-    self?.progressLabel1.text = "\(Int(model.progress * 100)) %"
-} success: { model in
-    CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
-} failure: {  model in
-    if let stateInfo = model.stateInfo {
-        CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
-    }
-}
+downloadButton1.dl.download(url: urlStr1)
 ```
 
 - Custom download directory and file name.
 
 ```
-CXDownloadManager.shared.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") { [weak self] model in
-    self?.progressLabel2.text = "\(Int(model.progress * 100)) %"
-} success: { model in
-    CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
-} failure: { model in
-    if let stateInfo = model.stateInfo {
-        CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
-    }
-}
+CXDownloadManager.shared.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ```dl
-downloadButton2.dl.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") { [weak self] model in
-    self?.progressLabel2.text = "\(Int(model.progress * 100)) %"
-} success: { model in
-    CXDLogger.log(message: "filePath: \(model.localPath ?? "")", level: .info)
-} failure: {  model in
-    if let stateInfo = model.stateInfo {
-        CXDLogger.log(message: "error: \(stateInfo.code), message: \(stateInfo.message)", level: .info)
-    }
-}
+downloadButton2.dl.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") 
 ```
 
 ### Pause
@@ -146,6 +116,10 @@ CXDownloadManager.shared.deleteTaskAndCache(url: urlStr2, atDirectory: "Software
 deleteButton1.dl.deleteTaskAndCache(url: urlStr1)
 deleteButton2.dl.deleteTaskAndCache(url: urlStr2, atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
+
+## Author
+
+chenxing, chenxing640@foxmail.com
 
 ## License
 
