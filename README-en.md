@@ -29,7 +29,7 @@ pod 'CXDownload'
 
 ## Explanation
 
-- CXDownloadManager.swift: **The download task management**
+- CXDownloadManager.swift: **The download task processing management**
 - CXDownloadTaskProcessor.swift: **The download task processor**
 - CXDownloadModel.swift: **The download model**
 - CXDownloadDatabaseManager.swift: **The download database management**
@@ -40,7 +40,7 @@ pod 'CXDownload'
 
 ## Usage
 
-> Note: In order to better understand the usages, please check the engineering example.
+> Note: In order to better understand the usages, please check the project example.
 
 ### Monitor download status and progress
 
@@ -76,53 +76,53 @@ func addNotification() {
 - Default download directory and file name.
 
 ```
-CXDownloadManager.shared.download(url: urlStr1)
+CXDownloadManager.shared.download(url: urls[0])
 ```
 
 ```dl
-downloadButton1.dl.download(url: urlStr1)
+downloadButton1.dl.download(url: urls[0])
 ```
 
 - Custom download directory and file name.
 
 ```
-CXDownloadManager.shared.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+CXDownloadManager.shared.download(url: urls[1], toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ```dl
-downloadButton2.dl.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") 
+downloadButton2.dl.download(url: urls[1], toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") 
 ```
 
 ### Pause
 
 ```
-CXDownloadManager.shared.pause(url: urlStr1)
+CXDownloadManager.shared.pause(url: urls[0])
 ```
 
 ```dl
-pauseButton1.dl.pauseTask(url: urlStr1)
+pauseButton1.dl.pauseTask(url: urls[0])
 ```
 
 ### Cancel
 
 ```
-CXDownloadManager.shared.cancel(url: urlStr1)
+CXDownloadManager.shared.cancel(url: urls[0])
 ```
 
 ```dl
-cancelButton1.dl.cancelTask(url: urlStr1)
+cancelButton1.dl.cancelTask(url: urls[0])
 ```
 
 ### Delete target file
 
 ```
-CXDownloadManager.shared.deleteTaskAndCache(url: urlStr1)
-CXDownloadManager.shared.deleteTaskAndCache(url: urlStr2, atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+CXDownloadManager.shared.deleteTaskAndCache(url: urls[0])
+CXDownloadManager.shared.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ```dl
-deleteButton1.dl.deleteTaskAndCache(url: urlStr1)
-deleteButton2.dl.deleteTaskAndCache(url: urlStr2, atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+deleteButton1.dl.deleteTaskAndCache(url: urls[0])
+deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ## Author

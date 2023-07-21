@@ -29,7 +29,7 @@ pod 'CXDownload'
 
 ## 说明
 
-- CXDownloadManager.swift: **下载网络请求任务管理**
+- CXDownloadManager.swift: **下载任务处理管理**
 - CXDownloadTaskProcessor.swift: **下载任务处理**
 - CXDownloadModel.swift: **下载模型**
 - CXDownloadDatabaseManager.swift: **下载数据库管理**
@@ -40,7 +40,7 @@ pod 'CXDownload'
 
 ## 使用
 
-> 注意：为了更好的理解使用，请查看工程例子。
+> 注意：为了更好的理解使用，请查看工程示例。
 
 ### 监听下载状态和进度
 
@@ -76,53 +76,53 @@ func addNotification() {
 - 默认下载目录和文件名
 
 ```
-CXDownloadManager.shared.download(url: urlStr1)
+CXDownloadManager.shared.download(url: urls[0])
 ```
 
 ```dl
-downloadButton1.dl.download(url: urlStr1)
+downloadButton1.dl.download(url: urls[0])
 ```
 
 - 自定义下载目录和文件名
 
 ```
-CXDownloadManager.shared.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+CXDownloadManager.shared.download(url: urls[1], toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ```dl
-downloadButton2.dl.download(url: urlStr2, toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+downloadButton2.dl.download(url: urls[1], toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ### 暂停
 
 ```
-CXDownloadManager.shared.pause(url: urlStr1)
+CXDownloadManager.shared.pause(url: urls[0])
 ```
 
 ```dl
-pauseButton1.dl.pauseTask(url: urlStr1)
+pauseButton1.dl.pauseTask(url: urls[0])
 ```
 
 ### 取消
 
 ```
-CXDownloadManager.shared.cancel(url: urlStr1)
+CXDownloadManager.shared.cancel(url: urls[0])
 ```
 
 ```dl
-cancelButton1.dl.cancelTask(url: urlStr1)
+cancelButton1.dl.cancelTask(url: urls[0])
 ```
 
 ### 删除下载文件
 
 ```
-CXDownloadManager.shared.deleteTaskAndCache(url: urlStr1)
-CXDownloadManager.shared.deleteTaskAndCache(url: urlStr2, atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+CXDownloadManager.shared.deleteTaskAndCache(url: urls[0])
+CXDownloadManager.shared.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ```dl
-deleteButton1.dl.deleteTaskAndCache(url: urlStr1)
-deleteButton2.dl.deleteTaskAndCache(url: urlStr2, atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+deleteButton1.dl.deleteTaskAndCache(url: urls[0])
+deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ## 作者
