@@ -2,12 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-### 2.0.0 (07/15/2023)
+### 2.0.0 (07/22/2023)
 
 - Add the download database manager.
 - Add the download model.
 - Add the download task processor.
 - Observe the changes of the max concurrent count and the network reachability status.
+- Remove the closure callbacks and process downloading by posting notificaitons.
+- Support `Objective-C` project.
 - Add the new samples and user interface.
 
 ### 1.0.3 (06/02/2023)
@@ -32,4 +34,4 @@ All notable changes to this project will be documented in this file.
 
 ### 0.2.1 (08/18/2022)
 
-- Implement Swift breakpoint continuation download.
+- Realization of breakpoint transmission download with Swift.
