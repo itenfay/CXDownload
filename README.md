@@ -2,7 +2,7 @@
 
 # CXDownload
 
-实现Swift断点续传下载，支持Objective-C。
+实现Swift断点续传下载，支持Objective-C。包含大文件下载，后台下载，杀死进程，重新启动时继续下载，设置下载并发数，监听网络改变等。
 
 [![Version](https://img.shields.io/cocoapods/v/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![License](https://img.shields.io/cocoapods/l/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
@@ -20,6 +20,12 @@ CXDownload可通过 [CocoaPods](https://cocoapods.org) 获得。安装
 ```ruby
 pod 'CXDownload'
 ```
+
+## 预览
+
+<div align=left>
+&emsp; <img src="https://github.com/chenxing640/CXDownload/raw/master/IMG_0686.gif" width="90%" />
+</div>
 
 ## 说明
 

@@ -2,7 +2,7 @@
 
 # CXDownload
 
-Realization of breakpoint transmission download with Swift, support Objective-C.
+Realization of breakpoint transmission download with Swift, support Objective-C. Including large file download, background download, killing the process, continuing to download when restarting, setting the number of concurrent downloads, monitoring network changes and so on.
 
 [![Version](https://img.shields.io/cocoapods/v/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![License](https://img.shields.io/cocoapods/l/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
@@ -21,12 +21,18 @@ it, simply add the following line to your Podfile:
 pod 'CXDownload'
 ```
 
+## Preview
+
+<div align=left>
+&emsp; <img src="https://github.com/chenxing640/CXDownload/raw/master/IMG_0686.gif" width="90%" />
+</div>
+
 ## Explanation
 
-- CXDownloadManager.swift: **The download task manager**
+- CXDownloadManager.swift: **The download task management**
 - CXDownloadTaskProcessor.swift: **The download task processor**
 - CXDownloadModel.swift: **The download model**
-- CXDownloadDatabaseManager.swift: **The download database manager**
+- CXDownloadDatabaseManager.swift: **The download database management**
 - FileUtils.swift: **The file tool**
 - Logger.swift: **This outputs the log to the console**
 - String+Cx.swift: **This extends the `cx_md5`, `cxd_sha2` properties for `String`**
