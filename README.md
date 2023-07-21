@@ -24,7 +24,7 @@ pod 'CXDownload'
 ## 预览
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/CXDownload/raw/master/IMG_0686.gif" width="90%" />
+&emsp; <img src="https://github.com/chenxing640/CXDownload/raw/master/IMG_0686.gif" width="50%" />
 </div>
 
 ## 说明
