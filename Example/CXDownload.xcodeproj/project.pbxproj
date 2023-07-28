@@ -842,6 +842,7 @@
 				CURRENT_PROJECT_VERSION = 0720;
 				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				INFOPLIST_FILE = CXDownload/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CXDownload;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0.0;
@@ -865,6 +866,7 @@
 				CURRENT_PROJECT_VERSION = 0720;
 				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				INFOPLIST_FILE = CXDownload/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CXDownload;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0.0;
