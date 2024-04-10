@@ -125,6 +125,10 @@ deleteButton1.dl.deleteTaskAndCache(url: urls[0])
 deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
+## Recommendation
+
+- [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - Provides the utilities and rich extensions of Swift language, and most of them supported Objective-C.
+
 ## Author
 
 chenxing, chenxing640@foxmail.com
