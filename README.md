@@ -8,24 +8,13 @@
 [![License](https://img.shields.io/cocoapods/l/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![Platform](https://img.shields.io/cocoapods/p/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 
-## 示例项目
-
-要运行示例项目，首先克隆repo，并从示例目录运行“pod install”。
-
-## 安装
-
-CXDownload可通过 [CocoaPods](https://cocoapods.org) 获得。安装
-只需将下面一行添加到您的Podfile中:
-
-```ruby
-pod 'CXDownload'
-```
-
 ## 预览
 
 <div align=left>
 &emsp; <img src="https://github.com/chenxing640/CXDownload/raw/master/IMG_0686.gif" width="50%" />
 </div>
+
+> **如果觉得还行呢，就麻烦顺手给个`star`。**
 
 ## 说明
 
@@ -37,6 +26,15 @@ pod 'CXDownload'
 - Logger.swift: **日志输出**
 - StringEx.swift: **String扩展cxd_md5、cxd_sha2属性**
 - ...
+
+## 安装
+
+CXDownload可通过 [CocoaPods](https://cocoapods.org) 获得。安装
+只需将下面一行添加到您的Podfile中:
+
+```ruby
+pod 'CXDownload'
+```
 
 ## 使用
 
@@ -129,9 +127,13 @@ deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", file
 
 - [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - 提供了Swift语言实用工具和丰富的扩展，并大多数支持了Objective-C。
 
+## 示例项目
+
+要运行示例项目，首先克隆repo，并从示例目录运行“pod install”。
+
 ## 作者
 
-chenxing, chenxing640@foxmail.com
+Teng Fei, hansen981@126.com
 
 ## 许可证
 

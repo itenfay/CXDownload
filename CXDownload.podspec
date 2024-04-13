@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
     s.name             = 'CXDownload'
-    s.version          = '2.0.0'
+    s.version          = '2.0.1'
     s.summary          = 'Realization of breakpoint transmission download with Swift, support Objective-C.'
     
     # This description is used to generate tags and improve search results.
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
     s.homepage         = 'https://github.com/chenxing640/CXDownload'
     # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
-    s.author           = { 'chenxing' => 'chenxing640@foxmail.com' }
+    s.author           = { 'Teng Fei' => 'hansen981@126.com' }
     s.source           = { :git => 'https://github.com/chenxing640/CXDownload.git', :tag => s.version.to_s }
     # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
     

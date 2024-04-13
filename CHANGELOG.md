@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.0.1 (04/13/2024)
+
+- Update the contents.
+
 ### 2.0.0 (07/22/2023)
 
 - Add the download database manager.

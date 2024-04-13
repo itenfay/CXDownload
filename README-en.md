@@ -8,24 +8,13 @@ Realization of breakpoint transmission download with Swift, support Objective-C.
 [![License](https://img.shields.io/cocoapods/l/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 [![Platform](https://img.shields.io/cocoapods/p/CXDownload.svg?style=flat)](https://cocoapods.org/pods/CXDownload)
 
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Installation
-
-CXDownload is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod 'CXDownload'
-```
-
 ## Preview
 
 <div align=left>
 &emsp; <img src="https://github.com/chenxing640/CXDownload/raw/master/IMG_0686.gif" width="50%" />
 </div>
+
+> **If you think it's okay, please give it a `star`**
 
 ## Explanation
 
@@ -37,6 +26,15 @@ pod 'CXDownload'
 - Logger.swift: **This outputs the log to the console**
 - String+Cx.swift: **This extends the `cx_md5`, `cxd_sha2` properties for `String`**
 - ...
+
+## Installation
+
+CXDownload is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod 'CXDownload'
+```
 
 ## Usage
 
@@ -129,9 +127,13 @@ deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", file
 
 - [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - Provides the utilities and rich extensions of Swift language, and most of them supported Objective-C.
 
+## Example
+
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
 ## Author
 
-chenxing, chenxing640@foxmail.com
+Teng Fei, hansen981@126.com
 
 ## License
 
