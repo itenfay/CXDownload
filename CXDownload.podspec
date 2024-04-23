@@ -30,8 +30,8 @@ Pod::Spec.new do |s|
   
   s.swift_versions = ['4.2', '5.0']
   s.ios.deployment_target = '11.0'
-  s.osx.deployment_target = '11.0'
-  s.tvos.deployment_target = '11.0' #ERROR | [tvOS] unknown: Encountered an unknown error (The platform of the target `App` (tvOS 11.0) is not compatible with `FMDB (2.7.9)`, which does not support `tvOS`.) during validation.
+  s.osx.deployment_target = '10.13'
+  s.tvos.deployment_target = '16.0' #ERROR | [tvOS] unknown: Encountered an unknown error (The platform of the target `App` (tvOS 11.0) is not compatible with `FMDB (2.7.9)`, which does not support `tvOS`.) during validation.
   s.watchos.deployment_target = "7.0"
   
   s.default_subspecs = 'Core', 'Extension'
