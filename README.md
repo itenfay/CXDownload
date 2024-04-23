@@ -29,8 +29,7 @@
 
 ## 安装
 
-CXDownload可通过 [CocoaPods](https://cocoapods.org) 获得。安装
-只需将下面一行添加到您的Podfile中:
+`CXDownload`可通过 [CocoaPods](https://cocoapods.org) 获得。安装只需将下面一行添加到您的Podfile中:
 
 ```ruby
 pod 'CXDownload'
@@ -125,7 +124,10 @@ deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", file
 
 ## 推荐
 
-- [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - 提供了Swift语言实用工具和丰富的扩展，并大多数支持了Objective-C。
+- [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - `CXSwiftKit`提供了Swift语言实用工具和丰富的扩展。
+- [MarsUIKit](https://github.com/chenxing640/MarsUIKit) - `MarsUIKit` wraps some commonly used UI components.
+- [RxListDataSource](https://github.com/chenxing640/RxListDataSource) - `RxListDataSource` provides data sources for UITableView or UICollectionView.
+- [CXNetwork-Moya](https://github.com/chenxing640/CXNetwork-Moya) - `CXNetwork-Moya` encapsulates a network request library with Moya and ObjectMapper.
 
 ## 示例项目
 
@@ -137,4 +139,4 @@ Teng Fei, hansen981@126.com
 
 ## 许可证
 
-CXDownload在MIT许可下可用。有关更多信息，请参见许可证文件。
+`CXDownload`在MIT许可下可用。有关更多信息，请参见许可证文件。
