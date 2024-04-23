@@ -18,7 +18,7 @@ Realization of breakpoint transmission download with Swift, support Objective-C.
 
 ## Explanation
 
-- CXDownloadManager.swift: **The download task processing management**
+- CXDownloadManager.swift: **The download task processor management**
 - CXDownloadTaskProcessor.swift: **The download task processor**
 - CXDownloadModel.swift: **The download model**
 - CXDownloadDatabaseManager.swift: **The download database management**
@@ -29,8 +29,7 @@ Realization of breakpoint transmission download with Swift, support Objective-C.
 
 ## Installation
 
-CXDownload is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+`CXDownload` is available through [CocoaPods](https://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'CXDownload'
@@ -125,7 +124,10 @@ deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", file
 
 ## Recommendation
 
-- [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - Provides the utilities and rich extensions of Swift language, and most of them supported Objective-C.
+- [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - `CXSwiftKit` provides the utilities and rich extensions of Swift language.
+- [MarsUIKit](https://github.com/chenxing640/MarsUIKit) - `MarsUIKit` wraps some commonly used UI components.
+- [RxListDataSource](https://github.com/chenxing640/RxListDataSource) - `RxListDataSource` provides data sources for UITableView or UICollectionView.
+- [CXNetwork-Moya](https://github.com/chenxing640/CXNetwork-Moya) - `CXNetwork-Moya` encapsulates a network request library with Moya and ObjectMapper.
 
 ## Example
 
@@ -137,4 +139,4 @@ Teng Fei, hansen981@126.com
 
 ## License
 
-CXDownload is available under the MIT license. See the LICENSE file for more info.
+`CXDownload` is available under the MIT license. See the LICENSE file for more info.
