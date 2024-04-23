@@ -6,7 +6,6 @@ target 'CXDownload_Example' do
   use_frameworks!
   
   pod 'CXDownload', :path => '../'
-  pod 'FMDB'
   pod 'AFNetworking'
   
   target 'CXDownload_Tests' do
