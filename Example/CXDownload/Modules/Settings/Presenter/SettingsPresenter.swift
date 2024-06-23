@@ -59,10 +59,8 @@ class SettingsPresenter: BasePresenter, ISettingsPresenter {
             CXDownloadManager.shared.deleteTaskAndCache(url: url, atDirectory: model.directory, fileName: model.fileName)
         }
         NotificationCenter.default.post(name: NSNotification.Name("ClearAllCachesNotification"), object: nil)
-        if allCaches.count > 0 {
-            guard let vc = view as? SettingsViewController else { return }
-            showAlert(in: vc, title: nil, message: "清理完成")
-        }
+        guard let vc = view as? SettingsViewController else { return }
+        showAlert(in: vc, title: nil, message: "清理完成")
     }
     
 }

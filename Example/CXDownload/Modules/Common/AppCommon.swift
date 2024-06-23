@@ -88,13 +88,13 @@ public func showAlert(in controller: UIViewController,
         alertController.addAction(warningAction)
     }
     
+    controller.present(alertController, animated: true)
+    
     if sureTitle == nil && cancelTitle == nil && warningTitle == nil {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
             alertController.dismiss(animated: true)
         }
     }
-    
-    controller.present(alertController, animated: true)
 }
 
 extension UIApplication {

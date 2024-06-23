@@ -18,7 +18,7 @@
 
 ## 说明
 
-- CXDownloadManager.swift: **下载任务处理管理**
+- CXDownloadManager.swift: **下载任务管理**
 - CXDownloadTaskProcessor.swift: **下载任务处理**
 - CXDownloadModel.swift: **下载模型**
 - CXDownloadDatabaseManager.swift: **下载数据库管理**
@@ -114,11 +114,12 @@ cancelButton1.dl.cancelTask(url: urls[0])
 
 ```
 CXDownloadManager.shared.deleteTaskAndCache(url: urls[0])
-CXDownloadManager.shared.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+deleteButton1.dl.deleteTaskAndCache(url: urls[0])
+
 ```
 
 ```
-deleteButton1.dl.deleteTaskAndCache(url: urls[0])
+CXDownloadManager.shared.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 

@@ -18,7 +18,7 @@ Realization of breakpoint transmission download with Swift, support Objective-C.
 
 ## Explanation
 
-- CXDownloadManager.swift: **The download task processor management**
+- CXDownloadManager.swift: **The download task management**
 - CXDownloadTaskProcessor.swift: **The download task processor**
 - CXDownloadModel.swift: **The download model**
 - CXDownloadDatabaseManager.swift: **The download database management**
@@ -76,7 +76,7 @@ func addNotification() {
 CXDownloadManager.shared.download(url: urls[0])
 ```
 
-```dl
+```
 downloadButton1.dl.download(url: urls[0])
 ```
 
@@ -86,7 +86,7 @@ downloadButton1.dl.download(url: urls[0])
 CXDownloadManager.shared.download(url: urls[1], toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
-```dl
+```
 downloadButton2.dl.download(url: urls[1], toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg") 
 ```
 
@@ -96,7 +96,7 @@ downloadButton2.dl.download(url: urls[1], toDirectory: "Softwares", fileName: "M
 CXDownloadManager.shared.pause(url: urls[0])
 ```
 
-```dl
+```
 pauseButton1.dl.pauseTask(url: urls[0])
 ```
 
@@ -106,7 +106,7 @@ pauseButton1.dl.pauseTask(url: urls[0])
 CXDownloadManager.shared.cancel(url: urls[0])
 ```
 
-```dl
+```
 cancelButton1.dl.cancelTask(url: urls[0])
 ```
 
@@ -114,17 +114,17 @@ cancelButton1.dl.cancelTask(url: urls[0])
 
 ```
 CXDownloadManager.shared.deleteTaskAndCache(url: urls[0])
-CXDownloadManager.shared.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
+deleteButton1.dl.deleteTaskAndCache(url: urls[0])
 ```
 
-```dl
-deleteButton1.dl.deleteTaskAndCache(url: urls[0])
+```
+CXDownloadManager.shared.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ## Recommendation
 
-- [CXSwiftKit](https://github.com/itenfay/CXSwiftKit) - `CXSwiftKit` provides the utilities and rich extensions of Swift language.
+- [FireKylin](https://github.com/itenfay/FireKylin) - `FireKylin` provides many utilities and rich extensions of Swift language.
 - [MarsUIKit](https://github.com/itenfay/MarsUIKit) - `MarsUIKit` wraps some commonly used UI components.
 - [RxListDataSource](https://github.com/itenfay/RxListDataSource) - `RxListDataSource` provides data sources for UITableView or UICollectionView.
 - [CXNetwork-Moya](https://github.com/itenfay/CXNetwork-Moya) - `CXNetwork-Moya` encapsulates a network request library with Moya and ObjectMapper.
