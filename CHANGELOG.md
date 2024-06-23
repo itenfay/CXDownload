@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.1.0 (06/23/2024)
+
+- Update some contents.
+
+### 2.0.2 (04/23/2024)
+
+- Update some contents.
+
 ### 2.0.1 (04/13/2024)
 
 - Update the contents.
