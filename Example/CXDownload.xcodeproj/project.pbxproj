@@ -280,8 +280,8 @@
 		79640D5F2A57A3190016EC44 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				79640D642A57D4910016EC44 /* Controller */,
 				798EFCDB2A5BEB7900ECAE57 /* HomeConfigurator.swift */,
+				79640D642A57D4910016EC44 /* Controller */,
 				79640D662A57D4910016EC44 /* Model */,
 				79640D652A57D4910016EC44 /* Presenter */,
 				79640D672A57D4910016EC44 /* View */,
@@ -293,8 +293,8 @@
 		79640D602A57A3190016EC44 /* Me */ = {
 			isa = PBXGroup;
 			children = (
-				79640D712A57D49F0016EC44 /* Controller */,
 				7906737F2A5D3395006E0916 /* MineConfigurator.swift */,
+				79640D712A57D49F0016EC44 /* Controller */,
 				79640D6F2A57D49F0016EC44 /* Model */,
 				79640D702A57D49F0016EC44 /* Presenter */,
 				79640D6E2A57D49F0016EC44 /* View */,
@@ -436,9 +436,9 @@
 				790673722A5CF02B006E0916 /* AppCommon.swift */,
 				7906737B2A5D09E9006E0916 /* DefaultURLSession.swift */,
 				790673732A5CF02B006E0916 /* JSON.swift */,
-				79B882C32A5E761300B9C26F /* Objc */,
 				790673772A5CF3E9006E0916 /* Result.swift */,
 				790673792A5CF9A1006E0916 /* URLSessionStub.swift */,
+				79B882C32A5E761300B9C26F /* Objc */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -532,12 +532,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = ZV3MMP87F8;
+						DevelopmentTeam = S96K5NZ7N7;
 						LastSwiftMigration = 1420;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = ZV3MMP87F8;
+						DevelopmentTeam = S96K5NZ7N7;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 607FACCF1AFB9204008FA782;
@@ -839,16 +839,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 16;
-				DEVELOPMENT_TEAM = ZV3MMP87F8;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = S96K5NZ7N7;
 				INFOPLIST_FILE = CXDownload/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CXDownload;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.1.0;
 				MODULE_NAME = ExampleApp;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.demo.cxdownload.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CXDownload/Modules/Common/Objc/CXDownload_Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -863,15 +863,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 16;
-				DEVELOPMENT_TEAM = ZV3MMP87F8;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = S96K5NZ7N7;
 				INFOPLIST_FILE = CXDownload/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CXDownload;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.1.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.demo.cxdownload.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CXDownload/Modules/Common/Objc/CXDownload_Example-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -885,7 +885,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZV3MMP87F8;
+				DEVELOPMENT_TEAM = S96K5NZ7N7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -896,7 +896,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.cxdownload.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -911,14 +911,14 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZV3MMP87F8;
+				DEVELOPMENT_TEAM = S96K5NZ7N7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.cxdownload.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

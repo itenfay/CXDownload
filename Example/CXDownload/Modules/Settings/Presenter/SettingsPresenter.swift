@@ -2,8 +2,8 @@
 //  SettingsPresenter.swift
 //  CXDownload_Example
 //
-//  Created by chenxing on 2023/7/7.
-//  Copyright © 2023 CocoaPods. All rights reserved.
+//  Created by Tenfay on 2023/7/7.
+//  Copyright © 2023 Tenfay. All rights reserved.
 //
 
 import UIKit
@@ -59,6 +59,10 @@ class SettingsPresenter: BasePresenter, ISettingsPresenter {
             CXDownloadManager.shared.deleteTaskAndCache(url: url, atDirectory: model.directory, fileName: model.fileName)
         }
         NotificationCenter.default.post(name: NSNotification.Name("ClearAllCachesNotification"), object: nil)
+        if allCaches.count > 0 {
+            guard let vc = view as? SettingsViewController else { return }
+            showAlert(in: vc, title: nil, message: "清理完成")
+        }
     }
     
 }

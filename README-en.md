@@ -11,7 +11,7 @@ Realization of breakpoint transmission download with Swift, support Objective-C.
 ## Preview
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/CXDownload/raw/master/IMG_0686.gif" width="50%" />
+&emsp; <img src="https://github.com/itenfay/CXDownload/raw/master/IMG_0686.gif" width="50%" />
 </div>
 
 > **If you think it's okay, please give it a `star`**
@@ -124,19 +124,19 @@ deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", file
 
 ## Recommendation
 
-- [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - `CXSwiftKit` provides the utilities and rich extensions of Swift language.
-- [MarsUIKit](https://github.com/chenxing640/MarsUIKit) - `MarsUIKit` wraps some commonly used UI components.
-- [RxListDataSource](https://github.com/chenxing640/RxListDataSource) - `RxListDataSource` provides data sources for UITableView or UICollectionView.
-- [CXNetwork-Moya](https://github.com/chenxing640/CXNetwork-Moya) - `CXNetwork-Moya` encapsulates a network request library with Moya and ObjectMapper.
+- [CXSwiftKit](https://github.com/itenfay/CXSwiftKit) - `CXSwiftKit` provides the utilities and rich extensions of Swift language.
+- [MarsUIKit](https://github.com/itenfay/MarsUIKit) - `MarsUIKit` wraps some commonly used UI components.
+- [RxListDataSource](https://github.com/itenfay/RxListDataSource) - `RxListDataSource` provides data sources for UITableView or UICollectionView.
+- [CXNetwork-Moya](https://github.com/itenfay/CXNetwork-Moya) - `CXNetwork-Moya` encapsulates a network request library with Moya and ObjectMapper.
 
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Author
-
-Teng Fei, hansen981@126.com
-
 ## License
 
 `CXDownload` is available under the MIT license. See the LICENSE file for more info.
+
+## Feedback is welcome
+
+If you notice any issue to create an issue. I will be happy to help you.

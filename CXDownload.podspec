@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CXDownload'
-  s.version          = '2.0.2'
+  s.version          = '2.1.0'
   s.summary          = 'Realization of breakpoint transmission download with Swift, support Objective-C.'
   
   # This description is used to generate tags and improve search results.
@@ -21,14 +21,15 @@ Pod::Spec.new do |s|
   TODU: Realization of breakpoint transmission download with Swift, support Objective-C. Including large file download, background download, killing the process, continuing to download when restarting, setting the number of concurrent downloads, monitoring network changes and so on.
   DESC
   
-  s.homepage         = 'https://github.com/chenxing640/CXDownload'
+  s.homepage         = 'https://github.com/itenfay/CXDownload'
   # s.screenshots    = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Teng Fei' => 'hansen981@126.com' }
-  s.source           = { :git => 'https://github.com/chenxing640/CXDownload.git', :tag => s.version.to_s }
+  s.author           = { 'Tenfay' => 'itenfay@163.com' }
+  s.source           = { :git => 'https://github.com/itenfay/CXDownload.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
   
-  s.swift_versions = ['4.2', '5.0']
+  #s.swift_versions = ['4.2', '5.0']
+  s.swift_version = '5.0'
   s.ios.deployment_target = '11.0'
   s.osx.deployment_target = '10.13'
   s.tvos.deployment_target = '16.0' #ERROR | [tvOS] unknown: Encountered an unknown error (The platform of the target `App` (tvOS 11.0) is not compatible with `FMDB (2.7.9)`, which does not support `tvOS`.) during validation.
@@ -60,5 +61,4 @@ Pod::Spec.new do |s|
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
-  
 end

@@ -2,7 +2,7 @@
 //  CXDownloadManager.swift
 //  CXDownload
 //
-//  Created by chenxing on 2022/8/15.
+//  Created by Tenfay on 2022/8/15.
 //
 
 import Foundation

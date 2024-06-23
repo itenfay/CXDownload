@@ -11,7 +11,7 @@
 ## 预览
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/CXDownload/raw/master/IMG_0686.gif" width="50%" />
+&emsp; <img src="https://github.com/itenfay/CXDownload/raw/master/IMG_0686.gif" width="50%" />
 </div>
 
 > **如果觉得还行呢，就麻烦顺手给个`star`。**
@@ -76,7 +76,7 @@ func addNotification() {
 CXDownloadManager.shared.download(url: urls[0])
 ```
 
-```dl
+```
 downloadButton1.dl.download(url: urls[0])
 ```
 
@@ -86,7 +86,7 @@ downloadButton1.dl.download(url: urls[0])
 CXDownloadManager.shared.download(url: urls[1], toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
-```dl
+```
 downloadButton2.dl.download(url: urls[1], toDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
@@ -96,7 +96,7 @@ downloadButton2.dl.download(url: urls[1], toDirectory: "Softwares", fileName: "M
 CXDownloadManager.shared.pause(url: urls[0])
 ```
 
-```dl
+```
 pauseButton1.dl.pauseTask(url: urls[0])
 ```
 
@@ -106,7 +106,7 @@ pauseButton1.dl.pauseTask(url: urls[0])
 CXDownloadManager.shared.cancel(url: urls[0])
 ```
 
-```dl
+```
 cancelButton1.dl.cancelTask(url: urls[0])
 ```
 
@@ -117,26 +117,26 @@ CXDownloadManager.shared.deleteTaskAndCache(url: urls[0])
 CXDownloadManager.shared.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
-```dl
+```
 deleteButton1.dl.deleteTaskAndCache(url: urls[0])
 deleteButton2.dl.deleteTaskAndCache(url: urls[1], atDirectory: "Softwares", fileName: "MacDict_v1.20.30.dmg")
 ```
 
 ## 推荐
 
-- [CXSwiftKit](https://github.com/chenxing640/CXSwiftKit) - `CXSwiftKit`提供了Swift语言实用工具和丰富的扩展。
-- [MarsUIKit](https://github.com/chenxing640/MarsUIKit) - `MarsUIKit` wraps some commonly used UI components.
-- [RxListDataSource](https://github.com/chenxing640/RxListDataSource) - `RxListDataSource` provides data sources for UITableView or UICollectionView.
-- [CXNetwork-Moya](https://github.com/chenxing640/CXNetwork-Moya) - `CXNetwork-Moya` encapsulates a network request library with Moya and ObjectMapper.
+- [FireKylin](https://github.com/itenfay/FireKylin) - `FireKylin`提供了许多Swift语言实用工具和丰富的扩展。
+- [MarsUIKit](https://github.com/itenfay/MarsUIKit) - `MarsUIKit` wraps some commonly used UI components.
+- [RxListDataSource](https://github.com/itenfay/RxListDataSource) - `RxListDataSource` provides data sources for UITableView or UICollectionView.
+- [CXNetwork-Moya](https://github.com/itenfay/CXNetwork-Moya) - `CXNetwork-Moya` encapsulates a network request library with Moya and ObjectMapper.
 
 ## 示例项目
 
 要运行示例项目，首先克隆repo，并从示例目录运行“pod install”。
 
-## 作者
-
-Teng Fei, hansen981@126.com
-
 ## 许可证
 
 `CXDownload`在MIT许可下可用。有关更多信息，请参见许可证文件。
+
+## 欢迎反馈
+
+如果您发现任何问题，请创建问题。我很乐意帮助你。

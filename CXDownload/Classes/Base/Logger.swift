@@ -2,7 +2,7 @@
 //  Logger.swift
 //  CXDownload
 //
-//  Created by chenxing on 2022/8/10.
+//  Created by Tenfay on 2022/8/10.
 //
 
 import Foundation

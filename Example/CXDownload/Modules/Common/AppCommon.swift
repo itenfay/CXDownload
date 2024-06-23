@@ -2,8 +2,8 @@
 //  AppCommon.swift
 //  CXDownload_Example
 //
-//  Created by chenxing on 2023/7/7.
-//  Copyright © 2023 CocoaPods. All rights reserved.
+//  Created by Tenfay on 2023/7/7.
+//  Copyright © 2023 Tenfay. All rights reserved.
 //
 
 import UIKit
@@ -86,6 +86,12 @@ public func showAlert(in controller: UIViewController,
             warningHandler?(action)
         }
         alertController.addAction(warningAction)
+    }
+    
+    if sureTitle == nil && cancelTitle == nil && warningTitle == nil {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            alertController.dismiss(animated: true)
+        }
     }
     
     controller.present(alertController, animated: true)

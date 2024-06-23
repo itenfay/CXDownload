@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  CXDownload
 //
-//  Created by chenxing on 08/09/2022.
-//  Copyright (c) 2022 chenxing. All rights reserved.
+//  Created by Tenfay on 08/09/2022.
+//  Copyright (c) 2022 Tenfay. All rights reserved.
 //
 
 import UIKit
